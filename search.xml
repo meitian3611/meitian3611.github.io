@@ -1,0 +1,167 @@
+<?xml version="1.0" encoding="utf-8"?>
+<search>
+  <entry>
+    <title>MarkDown语法教程</title>
+    <url>/2019/10/21/MarkDown%E5%9F%BA%E6%9C%AC%E8%AF%AD%E6%B3%95/</url>
+    <content><![CDATA[<hr><blockquote>
+<p>MarkDown是一种纯文本格式的标记语言，通过简单的标记语法，它可以使普通文本内容具有一定的格式。</p>
+<p>下面让我们一起来快速学习一下MarkDown的语法吧</p>
+</blockquote><h3 id="一、标题"><a href="#一、标题" class="headerlink" title="一、标题"></a>一、标题</h3><p>一般是在标题文字前面加上#来表示</p><p>一个#是一级标题，二个#是二级标题，以此类推。支持六级标题。</p><a id="more"></a>
+
+
+
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line"># 这是一级标题</span><br><span class="line">## 这是二级标题</span><br><span class="line">### 这是三级标题</span><br></pre></td></tr></table></figure>
+
+
+
+<hr>
+<h3 id="二、字体"><a href="#二、字体" class="headerlink" title="二、字体"></a>二、字体</h3><ul>
+<li><strong>加粗</strong></li>
+</ul>
+<p>要加粗的文字左右分别用两个*号包起来</p>
+<ul>
+<li><strong>斜体</strong></li>
+</ul>
+<p>要倾斜的文字左右分别用一个*号包起来</p>
+<ul>
+<li><strong>斜体加粗</strong></li>
+</ul>
+<p>要倾斜和加粗的文字左右分别用三个*号包起来</p>
+<ul>
+<li><strong>删除线</strong></li>
+</ul>
+<p>要加删除线的文字左右分别用两个~~号包起来</p>
+<p>代码示例：</p>
+<figure class="highlight markdown"><table><tr><td class="code"><pre><span class="line"><span class="strong">**这是加粗的文字**</span></span><br><span class="line"><span class="emphasis">*这是倾斜的文字*</span></span><br><span class="line"><span class="strong">***这是斜体加粗的文字**</span>*</span><br><span class="line">~~这是加删除线的文字~~</span><br></pre></td></tr></table></figure>
+
+
+
+<hr>
+<h3 id="三、引用"><a href="#三、引用" class="headerlink" title="三、引用"></a>三、引用</h3><p>在引用的文字前加&gt;即可。引用也可以嵌套，如加两个&gt;&gt;三个&gt;&gt;&gt;，可以加任意个&gt;</p>
+<p>示例：</p>
+<figure class="highlight markdown"><table><tr><td class="code"><pre><span class="line">&gt;这是引用的内容</span><br><span class="line">&gt;&gt;这是引用的内容</span><br><span class="line">&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;这是引用的内容</span><br></pre></td></tr></table></figure>
+
+
+
+<hr>
+<h3 id="四、分割线"><a href="#四、分割线" class="headerlink" title="四、分割线"></a>四、分割线</h3><p>三个或者三个以上的 - 或者 * 都可以。</p>
+<figure class="highlight markdown"><table><tr><td class="code"><pre><span class="line">---</span><br><span class="line">----</span><br><span class="line"><span class="emphasis">***</span></span><br><span class="line"><span class="strong">*****</span></span><br></pre></td></tr></table></figure>
+
+<p>四行代码的效果都是一样的。</p>
+<hr>
+<h3 id="五、图片"><a href="#五、图片" class="headerlink" title="五、图片"></a>五、图片</h3><figure class="highlight markdown"><table><tr><td class="code"><pre><span class="line">![<span class="string">图片alt</span>](<span class="link">"图片地址" "图片title"</span>)</span><br><span class="line"></span><br><span class="line">图片alt就是显示在图片下面的文字，相当于对图片内容的解释。</span><br><span class="line">图片title是图片的标题，当鼠标移到图片上时显示的内容。title可加可不加</span><br></pre></td></tr></table></figure>
+
+
+
+<hr>
+<h3 id="六、超链接"><a href="#六、超链接" class="headerlink" title="六、超链接"></a>六、超链接</h3><p>示例</p>
+<figure class="highlight markdown"><table><tr><td class="code"><pre><span class="line">[<span class="string">超链接名</span>](<span class="link">超链接地址 "超链接title"</span>)</span><br><span class="line">title可以不加，看个人需求</span><br><span class="line"></span><br><span class="line">[<span class="string">百度</span>](<span class="link">https://baidu.com</span>)</span><br></pre></td></tr></table></figure>
+
+
+
+<hr>
+<h3 id="七、列表"><a href="#七、列表" class="headerlink" title="七、列表"></a>七、列表</h3><ul>
+<li><strong>无序列表</strong></li>
+</ul>
+<p>语法：</p>
+<p>无序列表用 - + * 任何一种都可以</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">- 列表内容</span><br><span class="line">+ 列表内容</span><br><span class="line">* 列表内容</span><br><span class="line"></span><br><span class="line">注意：- + * 跟内容之间都要有一个空格</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li><strong>有序列表</strong></li>
+</ul>
+<p>数字加点</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">1.列表内容</span><br><span class="line">2.列表内容</span><br><span class="line">3.列表内容</span><br><span class="line"></span><br><span class="line">注意：序号跟内容之间要有空格</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li><strong>列表嵌套</strong></li>
+</ul>
+<p><strong>第二级列表按下tab键缩进</strong></p>
+<ul>
+<li>一级列表<ul>
+<li>二级列表</li>
+</ul>
+</li>
+</ul>
+<hr>
+<h3 id="八、表格"><a href="#八、表格" class="headerlink" title="八、表格"></a>八、表格</h3><p>语法：</p>
+<figure class="highlight markdown"><table><tr><td class="code"><pre><span class="line">| 姓名 | 技能 | 排行 |</span><br><span class="line">| ---- | :--: | ---: |</span><br><span class="line">| 刘备 |  哭  | 大哥 |</span><br><span class="line">| 关羽 |  打  | 二哥 |</span><br><span class="line">| 张飞 |  骂  | 三弟 |</span><br></pre></td></tr></table></figure>
+
+
+
+<hr>
+<h3 id="九、代码"><a href="#九、代码" class="headerlink" title="九、代码"></a>九、代码</h3><p>语法</p>
+<p>单行代码：代码之间分别用一个反引号包起来</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">`代码内容`</span><br></pre></td></tr></table></figure>
+
+<p>代码块：使用三个反引号回车即可</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">(```)</span><br><span class="line">	代码</span><br><span class="line">	代码</span><br><span class="line">	代码</span><br><span class="line">	</span><br><span class="line">注：这里为了三个反引号不被浏览器转义加上了括号，实际上不需要添加</span><br></pre></td></tr></table></figure>
+
+]]></content>
+      <categories>
+        <category>技术文档</category>
+      </categories>
+      <tags>
+        <tag>语法</tag>
+        <tag>常用</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>Hexo搭建博客</title>
+    <url>/2019/10/19/Hexo%E7%9A%84%E5%8D%9A%E5%AE%A2%E6%90%AD%E5%BB%BA/</url>
+    <content><![CDATA[<hr><blockquote>
+<p>使用Hexo快速搭建一个自己的专属博客</p>
+<p>搭建要求：node.js，git bash, github仓库</p>
+<p>很多命令既可以用Windows的cmd来完成，也可以使用git bash来完成，但是部分命令会有一些问题，为避免不必要的问题，建议全部使用git bash来执行；</p>
+</blockquote><a id="more"></a>
+
+<p><strong>安装之前的准备</strong></p>
+<blockquote>
+<ul>
+<li><p>有一个github账号，这是必要的</p>
+</li>
+<li><p>安装了node.js  npm  并且了解基本终端指令</p>
+</li>
+<li><p>最好有一个git bash</p>
+</li>
+</ul>
+</blockquote>
+<p><strong>开始安装hexo</strong></p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ npm install -g hexo</span><br></pre></td></tr></table></figure>
+
+<p><strong>初始化</strong></p>
+<p>在电脑任意地方新建一个文件夹，用于存放博客文件</p>
+<p>找到当前文件夹的地址进行初始化</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ hexo init</span><br></pre></td></tr></table></figure>
+
+<p><strong>生成文件</strong></p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ hexo new <span class="string">"新文档"</span></span><br></pre></td></tr></table></figure>
+
+<p><strong>生成静态文件</strong></p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ hexo generate</span><br></pre></td></tr></table></figure>
+
+<p><strong>发送到本地端口服务器</strong></p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ hexo server</span><br></pre></td></tr></table></figure>
+
+<p>此时已经生成了本地端口号，默认都是localhost:4000</p>
+<p>输入端口，成功后会出现一个默认的博客页面</p>
+<p><strong>部署网站</strong></p>
+<p>将博客部署到github上面，以后就可以通过github域名查看博客</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ hexo deploy</span><br></pre></td></tr></table></figure>
+
+<p><strong>清除缓存和已生成的静态文件</strong></p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ hexo clean</span><br></pre></td></tr></table></figure>
+
+<p><strong>ERROR Deployer not found: git 解决方法</strong></p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">npm install --save hexo-deployer-git</span><br></pre></td></tr></table></figure>
+
+]]></content>
+      <categories>
+        <category>技术文档</category>
+      </categories>
+      <tags>
+        <tag>hexo</tag>
+        <tag>语法</tag>
+      </tags>
+  </entry>
+</search>
