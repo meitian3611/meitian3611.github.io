@@ -53,16 +53,18 @@
   };
 </script>
 
-  <meta name="description" content="一个正在学习前端的萌新">
-<meta property="og:type" content="website">
-<meta property="og:title" content="梅恬的博客">
-<meta property="og:url" content="http:&#x2F;&#x2F;yoursite.com&#x2F;tags&#x2F;%E7%AC%94%E8%AE%B0&#x2F;index.html">
+  <meta name="description" content="Ajax跨域 由于浏览器的同源策略，禁止ajax从一个域名请求另外一个域名上的数据。 浏览器的同源策略，是对JavaScript实施的安全限制 所谓的同源是指，域名，协议，端口都相同http:&#x2F;&#x2F;image.baidu.com:80&#x2F;search&#x2F;detail?ct=503316480&amp;amp;z=undefined#header">
+<meta name="keywords" content="笔记,知识点">
+<meta property="og:type" content="article">
+<meta property="og:title" content="跨域">
+<meta property="og:url" content="http:&#x2F;&#x2F;yoursite.com&#x2F;2019&#x2F;10&#x2F;23&#x2F;%E8%B7%A8%E5%9F%9F&#x2F;index.html">
 <meta property="og:site_name" content="梅恬的博客">
-<meta property="og:description" content="一个正在学习前端的萌新">
+<meta property="og:description" content="Ajax跨域 由于浏览器的同源策略，禁止ajax从一个域名请求另外一个域名上的数据。 浏览器的同源策略，是对JavaScript实施的安全限制 所谓的同源是指，域名，协议，端口都相同http:&#x2F;&#x2F;image.baidu.com:80&#x2F;search&#x2F;detail?ct=503316480&amp;amp;z=undefined#header">
 <meta property="og:locale" content="zh-CN">
+<meta property="og:updated_time" content="2019-10-23T13:21:10.476Z">
 <meta name="twitter:card" content="summary">
 
-<link rel="canonical" href="http://yoursite.com/tags/%E7%AC%94%E8%AE%B0/">
+<link rel="canonical" href="http://yoursite.com/2019/10/23/%E8%B7%A8%E5%9F%9F/">
 
 
 <script id="page-configurations">
@@ -70,13 +72,13 @@
   CONFIG.page = {
     sidebar: "",
     isHome: false,
-    isPost: false,
+    isPost: true,
     isPage: false,
     isArchive: false
   };
 </script>
 
-  <title>标签: 笔记 | 梅恬的博客</title>
+  <title>跨域 | 梅恬的博客</title>
   
 
 
@@ -184,90 +186,146 @@
           <div class="content">
             
 
+  <div class="posts-expand">
+      
   
   
-  
-  <div class="post-block">
-    <div class="posts-collapse">
-      <div class="collection-title">
-        <h1 class="collection-header">笔记
-          <small>标签</small>
+  <article itemscope itemtype="http://schema.org/Article" class="post-block " lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/10/23/%E8%B7%A8%E5%9F%9F/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="https://pic1.zhimg.com/v2-0a2b112762d84f53ce576a24a8b895ed_b.jpg">
+      <meta itemprop="name" content="梅恬">
+      <meta itemprop="description" content="一个正在学习前端的萌新">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="梅恬的博客">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          跨域
         </h1>
-      </div>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+              
+
+              <time title="创建时间：2019-10-23 21:00:19 / 修改时间：21:21:10" itemprop="dateCreated datePublished" datetime="2019-10-23T21:00:19+08:00">2019-10-23</time>
+            </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/web%E5%89%8D%E7%AB%AF/" itemprop="url" rel="index">
+                    <span itemprop="name">web前端</span>
+                  </a>
+                </span>
+            </span>
+
+          
+            <span class="post-meta-item" title="阅读次数" id="busuanzi_container_page_pv" style="display: none;">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-eye"></i>
+              </span>
+              <span class="post-meta-item-text">阅读次数：</span>
+              <span id="busuanzi_value_page_pv"></span>
+            </span>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
 
       
-    <div class="collection-year">
-      <h1 class="collection-header">2019</h1>
-    </div>
+        <h2 id="Ajax跨域"><a href="#Ajax跨域" class="headerlink" title="Ajax跨域"></a>Ajax跨域</h2><blockquote>
+<p>由于浏览器的同源策略，禁止ajax从一个域名请求另外一个域名上的数据。</p>
+<p>浏览器的同源策略，是对JavaScript实施的安全限制</p>
+</blockquote><p><strong>所谓的同源是指，域名，协议，端口都相同</strong></p><p><a href="http://image.baidu.com/search/detail?ct=503316480&z=undefined#header" target="_blank" rel="noopener">http://image.baidu.com:80/search/detail?ct=503316480&amp;z=undefined#header</a></p><a id="more"></a>
 
-  <article itemscope itemtype="http://schema.org/Article">
-    <header class="post-header">
 
-      <div class="post-meta">
-        <time itemprop="dateCreated"
-              datetime="2019-10-23T21:00:19+08:00"
-              content="2019-10-23">
-          10-23
-        </time>
-      </div>
+<p>URL构成：http —- 超文本传输协议</p>
+<p><a href="http://image.baidu.com/" target="_blank" rel="noopener">image.baidu.com</a> —- 域名</p>
+<p>80 —- 端口</p>
+<p>/search/detail —- 资源目录</p>
+<p>ct=503316480&amp;z=undefined —- 发送到服务器的数据</p>
+<p>#header —- 锚点</p>
+<h3 id="常见的跨域解决方案"><a href="#常见的跨域解决方案" class="headerlink" title="常见的跨域解决方案"></a>常见的跨域解决方案</h3><ol>
+<li><strong>通过服务端语言代理请求。</strong></li>
+</ol>
+<p>如PHP，服务端语言php是没有跨域限制的。 让服务器去别的网站获取内容然后返回页面。</p>
+<ol start="2">
+<li><p><strong>jsonp跨域</strong></p>
+<ul>
+<li><p>jsonp跨域就是利用script标签的跨域能力请求资源</p>
+</li>
+<li><p>既然叫jsonp，显然目的还是json，而且是跨域获取</p>
+</li>
+<li><p><strong>利用js创建一个script标签，把json的url赋给script的scr属性，把这个script插入到页面里，让浏览器去跨域获取资源</strong></p>
+</li>
+<li><p>callback是页面存在的回调方法，参数就是想得到的json</p>
+</li>
+<li><p>回调方法要遵从服务端的约定一般是用 callback 或者 cb</p>
+</li>
+<li><p><strong>jsonp只针对get请求</strong></p>
+</li>
+</ul>
+</li>
+</ol>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">OScript = <span class="built_in">document</span>.createElement(<span class="string">'script'</span>);<span class="comment">//创建script标签 </span></span><br><span class="line">OScript.src = <span class="string">'http://suggestion.baidu.com/su?wd='</span> + <span class="keyword">this</span>.value + <span class="string">'&amp;cb=myCallback'</span>;</span><br><span class="line"><span class="comment">//把数据地址赋值给src</span></span><br><span class="line"><span class="built_in">document</span>.body.appendChild(OScript);<span class="comment">//添加到页面</span></span><br></pre></td></tr></table></figure>
 
-      <h2 class="post-title">
-          <a class="post-title-link" href="/2019/10/23/%E8%B7%A8%E5%9F%9F/" itemprop="url">
-            <span itemprop="name">跨域</span>
-          </a>
-      </h2>
 
-    </header>
-  </article>
 
-  <article itemscope itemtype="http://schema.org/Article">
-    <header class="post-header">
-
-      <div class="post-meta">
-        <time itemprop="dateCreated"
-              datetime="2019-10-23T20:26:59+08:00"
-              content="2019-10-23">
-          10-23
-        </time>
-      </div>
-
-      <h2 class="post-title">
-          <a class="post-title-link" href="/2019/10/23/cookie%E4%B8%8EHTML5%E6%9C%AC%E5%9C%B0%E5%AD%98%E5%82%A8/" itemprop="url">
-            <span itemprop="name">cookie与HTML5本地存储</span>
-          </a>
-      </h2>
-
-    </header>
-  </article>
-
-  <article itemscope itemtype="http://schema.org/Article">
-    <header class="post-header">
-
-      <div class="post-meta">
-        <time itemprop="dateCreated"
-              datetime="2019-10-23T10:09:13+08:00"
-              content="2019-10-23">
-          10-23
-        </time>
-      </div>
-
-      <h2 class="post-title">
-          <a class="post-title-link" href="/2019/10/23/aJax%E7%9A%84%E4%BA%A4%E4%BA%92%E5%8F%8A%E5%BC%82%E5%90%8C/" itemprop="url">
-            <span itemprop="name">AJax的交互和异同</span>
-          </a>
-      </h2>
-
-    </header>
-  </article>
+<ol start="3">
+<li><strong>CORS 跨域资源共享(xhr2)</strong></li>
+</ol>
+<p>实现CORS通信的关键是服务端，只要服务端实现了CORS接口，就可以跨源通信</p>
+<p>实现CORS并不难，只需服务端做一些设置即可：</p>
+<p><code>&lt;?phpheader(&quot;Access-Control-Allow-Origin:*&quot;); // 允许任何来源</code></p>
 
     </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/%E7%AC%94%E8%AE%B0/" rel="tag"><i class="fa fa-tag"></i> 笔记</a>
+              <a href="/tags/%E7%9F%A5%E8%AF%86%E7%82%B9/" rel="tag"><i class="fa fa-tag"></i> 知识点</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-next post-nav-item">
+                <a href="/2019/10/23/cookie%E4%B8%8EHTML5%E6%9C%AC%E5%9C%B0%E5%AD%98%E5%82%A8/" rel="next" title="cookie与HTML5本地存储">
+                  <i class="fa fa-chevron-left"></i> cookie与HTML5本地存储
+                </a>
+            </div>
+
+            <span class="post-nav-divider"></span>
+
+            <div class="post-nav-prev post-nav-item">
+            </div>
+          </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
   </div>
-  
-  
-  
-
-  
-
 
 
           </div>
@@ -296,6 +354,7 @@
 
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#Ajax跨域"><span class="nav-number">1.</span> <span class="nav-text">Ajax跨域</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#常见的跨域解决方案"><span class="nav-number">1.1.</span> <span class="nav-text">常见的跨域解决方案</span></a></li></ol></li></ol></div>
       </div>
       <!--/noindex-->
 

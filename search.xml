@@ -1,6 +1,163 @@
 <?xml version="1.0" encoding="utf-8"?>
 <search>
   <entry>
+    <title>跨域</title>
+    <url>/2019/10/23/%E8%B7%A8%E5%9F%9F/</url>
+    <content><![CDATA[<h2 id="Ajax跨域"><a href="#Ajax跨域" class="headerlink" title="Ajax跨域"></a>Ajax跨域</h2><blockquote>
+<p>由于浏览器的同源策略，禁止ajax从一个域名请求另外一个域名上的数据。</p>
+<p>浏览器的同源策略，是对JavaScript实施的安全限制</p>
+</blockquote><p><strong>所谓的同源是指，域名，协议，端口都相同</strong></p><p><a href="http://image.baidu.com/search/detail?ct=503316480&z=undefined#header" target="_blank" rel="noopener">http://image.baidu.com:80/search/detail?ct=503316480&amp;z=undefined#header</a></p><a id="more"></a>
+
+
+<p>URL构成：http —- 超文本传输协议</p>
+<p><a href="http://image.baidu.com/" target="_blank" rel="noopener">image.baidu.com</a> —- 域名</p>
+<p>80 —- 端口</p>
+<p>/search/detail —- 资源目录</p>
+<p>ct=503316480&amp;z=undefined —- 发送到服务器的数据</p>
+<p>#header —- 锚点</p>
+<h3 id="常见的跨域解决方案"><a href="#常见的跨域解决方案" class="headerlink" title="常见的跨域解决方案"></a>常见的跨域解决方案</h3><ol>
+<li><strong>通过服务端语言代理请求。</strong></li>
+</ol>
+<p>如PHP，服务端语言php是没有跨域限制的。 让服务器去别的网站获取内容然后返回页面。</p>
+<ol start="2">
+<li><p><strong>jsonp跨域</strong></p>
+<ul>
+<li><p>jsonp跨域就是利用script标签的跨域能力请求资源</p>
+</li>
+<li><p>既然叫jsonp，显然目的还是json，而且是跨域获取</p>
+</li>
+<li><p><strong>利用js创建一个script标签，把json的url赋给script的scr属性，把这个script插入到页面里，让浏览器去跨域获取资源</strong></p>
+</li>
+<li><p>callback是页面存在的回调方法，参数就是想得到的json</p>
+</li>
+<li><p>回调方法要遵从服务端的约定一般是用 callback 或者 cb</p>
+</li>
+<li><p><strong>jsonp只针对get请求</strong></p>
+</li>
+</ul>
+</li>
+</ol>
+<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line">OScript = <span class="built_in">document</span>.createElement(<span class="string">'script'</span>);<span class="comment">//创建script标签 </span></span><br><span class="line">OScript.src = <span class="string">'http://suggestion.baidu.com/su?wd='</span> + <span class="keyword">this</span>.value + <span class="string">'&amp;cb=myCallback'</span>;</span><br><span class="line"><span class="comment">//把数据地址赋值给src</span></span><br><span class="line"><span class="built_in">document</span>.body.appendChild(OScript);<span class="comment">//添加到页面</span></span><br></pre></td></tr></table></figure>
+
+
+
+<ol start="3">
+<li><strong>CORS 跨域资源共享(xhr2)</strong></li>
+</ol>
+<p>实现CORS通信的关键是服务端，只要服务端实现了CORS接口，就可以跨源通信</p>
+<p>实现CORS并不难，只需服务端做一些设置即可：</p>
+<p><code>&lt;?phpheader(&quot;Access-Control-Allow-Origin:*&quot;); // 允许任何来源</code></p>
+]]></content>
+      <categories>
+        <category>web前端</category>
+      </categories>
+      <tags>
+        <tag>笔记</tag>
+        <tag>知识点</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>cookie与HTML5本地存储</title>
+    <url>/2019/10/23/cookie%E4%B8%8EHTML5%E6%9C%AC%E5%9C%B0%E5%AD%98%E5%82%A8/</url>
+    <content><![CDATA[<h2 id="cookie是什么"><a href="#cookie是什么" class="headerlink" title="cookie是什么"></a>cookie是什么</h2><blockquote>
+<p>cookie是浏览器提供的一种机制，可以由JavaScript对其进行操作(设置、读取、删除)cookie是一种会话跟踪技术，是存储于访问者计算机中的一小块数据</p>
+<p>会话：用户进入网站，开始浏览信息到关闭浏览器的过程，就称之为是一次会话会话跟踪技术：浏览器和服务器之间在进行多次请求间共享数据的过程，就称为会话跟踪技术</p>
+</blockquote><a id="more"></a>
+<p><strong>cookie的特性</strong>（服务端运行）</p>
+<blockquote>
+<ul>
+<li>cookie可以实现跨页面全局变量</li>
+<li>cookie可以跨越同域名下的多个网页，但不能跨域使用</li>
+<li>cookie会随着HTTP请求发送给服务器</li>
+<li>cookie会存储于访问者的计算机中</li>
+<li>同一个网站中所有页面共享一套cookie</li>
+<li>可以设置有效期限</li>
+<li>存储空间为4KB左右</li>
+<li><strong>cookie过期会自动消失</strong></li>
+</ul>
+</blockquote>
+<p><strong>cookie的应用场景</strong></p>
+<blockquote>
+<ul>
+<li>会话状态管理（如用户登录状态、购物车等）</li>
+<li>个性化设置（保存用户设置的样式等）</li>
+<li>浏览器行为跟踪（如跟踪分析用户行为等）</li>
+</ul>
+</blockquote>
+<p><strong>cookie的缺点</strong></p>
+<blockquote>
+<ol>
+<li>cookie可能被禁用</li>
+<li>cookie与浏览器相关，不能互相访问</li>
+<li>cookie可能被用户删除</li>
+<li>cookie安全性不够高</li>
+<li>cookie会随着HTTP请求发送给服务器</li>
+<li>cookie存储空间很小(只有4KB左右)</li>
+<li>cookie操作麻烦，没有方便的API</li>
+</ol>
+</blockquote>
+<hr>
+<p><strong>操作cookie</strong></p>
+<p>设置cookie:</p>
+<p>如果要改变值，则需要重新赋值</p>
+<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="built_in">document</span>.cookie = <span class="string">"user=zhangsan"</span>;</span><br><span class="line"><span class="built_in">document</span>.cookie = <span class="string">"pass=123456"</span>;</span><br></pre></td></tr></table></figure>
+
+<p>设置有效期</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">var d = new Date();</span><br><span class="line">d.setDate(d.getDate()+3); //按天数设置</span><br><span class="line">document.cookie=&quot;user3=xd; expires=&quot;+d;</span><br></pre></td></tr></table></figure>
+
+<p>读取cookie</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">var cookies = document.cookie;</span><br></pre></td></tr></table></figure>
+
+<p>删除cookie:</p>
+<p>可以将有效期设为一个已经过去的时间</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">var d=new Date();</span><br><span class="line">d.setDate(d.getDate()-1);</span><br><span class="line">document.cookie=&quot;user1=xh; expires=&quot;+d;</span><br></pre></td></tr></table></figure>
+
+
+
+<h2 id="HTML5本地存储"><a href="#HTML5本地存储" class="headerlink" title="HTML5本地存储"></a>HTML5本地存储</h2><blockquote>
+<p>H5本地存储有 localStorage 与 sessionStorage 两种</p>
+</blockquote>
+<p><strong>优点：</strong></p>
+<ul>
+<li>更大的存储空间，有5MB左右</li>
+<li>不会随HTTP请求发送给服务器</li>
+<li>有方便的API操作</li>
+<li>移动端普及高</li>
+</ul>
+<p><strong>操作：</strong></p>
+<p> <strong>保存或设置数据</strong></p>
+<p><code>localStorage.setItem(key , value)</code> </p>
+<p>如果key已经存在，则覆盖key对应的value</p>
+<p>如果不存在则添加key与value</p>
+<p>  <strong>获取key对应的value</strong></p>
+<p><code>localStorage.getItem(key)</code></p>
+<p>  <strong>获取指定下标位置的key</strong></p>
+<p><code>localStorage.key(index)</code></p>
+<p><strong>获取数据条数（长度）</strong></p>
+<p><code>localStorage.length</code></p>
+<hr>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">localStorage.clear() 将同域名下的所有数据都清空</span><br><span class="line"></span><br><span class="line">localStorage.removeItem(&apos;key&apos;) 删除某个键值对</span><br><span class="line"></span><br><span class="line">sessionStorage 为临时性保存数据，当页面关闭就会消失</span><br><span class="line">sessionStorage 不能跨页面访问，只局限在当前的标签页</span><br><span class="line">sessionStorage 各种操作与 localStorage 一样</span><br></pre></td></tr></table></figure>
+
+
+
+<h2 id="JSON转换"><a href="#JSON转换" class="headerlink" title="JSON转换"></a>JSON转换</h2><blockquote>
+<p>目前 JavaScript 使用非常多的 json 格式</p>
+<p>可以使用 JSON.stringify() 将 json对象 转为 json字符串</p>
+<p>然后把 json字符串 存储在 cookie 或 localStorage 里面</p>
+<p>读取出来以后使用 JSON.parse() 将 json字符串 转为 json对象</p>
+</blockquote>
+<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="keyword">var</span> jsonObj = &#123;<span class="string">"name1"</span>:<span class="string">"jack"</span>,<span class="string">"name2"</span>:<span class="string">"lily"</span>&#125;;</span><br><span class="line">localStorage.setItem(<span class="string">"user"</span>,<span class="built_in">JSON</span>.stringify(jsonObj)); <span class="comment">// 存储</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">var</span> jsonObj = <span class="built_in">JSON</span>.parse(localStorage.getItem(<span class="string">"user"</span>)); <span class="comment">// 读取</span></span><br></pre></td></tr></table></figure>
+
+]]></content>
+      <categories>
+        <category>web前端</category>
+      </categories>
+      <tags>
+        <tag>笔记</tag>
+        <tag>知识点</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>AJax的交互和异同</title>
     <url>/2019/10/23/aJax%E7%9A%84%E4%BA%A4%E4%BA%92%E5%8F%8A%E5%BC%82%E5%90%8C/</url>
     <content><![CDATA[<hr><blockquote>
@@ -9,14 +166,13 @@
 <p>通俗的来说，Ajax就是JS通过一个网址去加载数据，这个过程用户是不可见的，传统的网页（不使用Ajax）如果需要更新内容，必须重新加载整个网页</p>
 </blockquote><a id="more"></a>
 
-<hr>
-<h3 id="Ajax怎么使用？"><a href="#Ajax怎么使用？" class="headerlink" title="Ajax怎么使用？"></a>Ajax怎么使用？</h3><ul>
+<h2 id="Ajax怎么使用？"><a href="#Ajax怎么使用？" class="headerlink" title="Ajax怎么使用？"></a>Ajax怎么使用？</h2><ul>
 <li>ajax请求分4个步骤</li>
 </ul>
 <figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="comment">// 1.创建XMLHttpRequest对象(数据交互对象)</span></span><br><span class="line"><span class="keyword">if</span> (<span class="built_in">window</span>.XMLHttpRequest) &#123;</span><br><span class="line">    <span class="keyword">var</span> xhr = <span class="keyword">new</span> XMLHttpRequest();</span><br><span class="line">&#125; <span class="keyword">else</span> &#123;</span><br><span class="line">    <span class="keyword">var</span> xhr = ActiveXObject(<span class="string">'Microsoft.XMLHTTP'</span>);<span class="comment">//ie 5 6</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 2.打开与服务器的链接</span></span><br><span class="line">xhr.open(<span class="string">'post'</span>,<span class="string">'xxx.php'</span>,<span class="literal">true</span>);<span class="comment">//解决缓存 </span></span><br><span class="line"></span><br><span class="line"><span class="comment">// 3.发送请求</span></span><br><span class="line"><span class="comment">// xhr.send(null);//get请求</span></span><br><span class="line">xhr.send(<span class="string">'can='</span>+ele.value);<span class="comment">//post请求</span></span><br><span class="line"></span><br><span class="line"><span class="comment">// 4.等待服务的响应</span></span><br><span class="line">xhr.onreadystatechange = <span class="function"><span class="keyword">function</span> (<span class="params"></span>)</span>&#123;</span><br><span class="line">    <span class="comment">// console.log(xhr.readyState);//2 3 4</span></span><br><span class="line">    <span class="keyword">if</span> (xhr.readyState == <span class="number">4</span>) &#123;<span class="comment">//请求完成</span></span><br><span class="line">        <span class="keyword">if</span> (xhr.status == <span class="number">200</span>) &#123;<span class="comment">//请求成功</span></span><br><span class="line">            <span class="keyword">var</span> json = <span class="built_in">JSON</span>.parse(xhr.responseText);<span class="comment">//转成json对象</span></span><br><span class="line">            con.innerHTML = <span class="string">''</span>;</span><br><span class="line">        &#125;<span class="keyword">else</span> &#123;</span><br><span class="line">            alert(<span class="string">'请求失败，'</span> + xhr.status);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
 <hr>
-<h3 id="GET和POST之间的区别"><a href="#GET和POST之间的区别" class="headerlink" title="GET和POST之间的区别"></a>GET和POST之间的区别</h3><blockquote>
+<h2 id="GET和POST之间的区别"><a href="#GET和POST之间的区别" class="headerlink" title="GET和POST之间的区别"></a>GET和POST之间的区别</h2><blockquote>
 <ol>
 <li>get参数通过url传递，post放在请求体（request  body）中；</li>
 <li>get请求在url传递的参数有长度限制，而post没有；</li>
@@ -26,10 +182,10 @@
 </ol>
 </blockquote>
 <hr>
-<h3 id="Ajax的函数封装"><a href="#Ajax的函数封装" class="headerlink" title="Ajax的函数封装"></a>Ajax的函数封装</h3><figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">ajax</span>(<span class="params">option</span>)</span>&#123;</span><br><span class="line">    <span class="comment">// 1.创建XMLHttpRequest对象(数据交互对象)</span></span><br><span class="line">    <span class="keyword">if</span> (<span class="built_in">window</span>.XMLHttpRequest) &#123;</span><br><span class="line">        <span class="keyword">var</span> xhr = <span class="keyword">new</span> XMLHttpRequest();</span><br><span class="line">    &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">        <span class="keyword">var</span> xhr = ActiveXObject(<span class="string">'Microsoft.XMLHTTP'</span>);<span class="comment">//ie 5 6</span></span><br><span class="line">    &#125;</span><br><span class="line">    <span class="comment">// data -&gt; 'a=123&amp;b=456'</span></span><br><span class="line">    <span class="keyword">if</span> (option.type == <span class="string">'get'</span> || option.type == <span class="string">'GET'</span>) &#123;</span><br><span class="line">        <span class="comment">// 2.打开与服务器的链接</span></span><br><span class="line">        xhr.open(option.type,option.url + <span class="string">'?'</span>+ option.data + <span class="string">'&amp;_='</span>+<span class="keyword">new</span> <span class="built_in">Date</span>().getTime(),<span class="literal">true</span>);<span class="comment">//解决缓存</span></span><br><span class="line">        <span class="comment">// 3.发送请求</span></span><br><span class="line">        xhr.send(<span class="literal">null</span>);<span class="comment">//get请求</span></span><br><span class="line">    &#125; <span class="keyword">else</span> <span class="keyword">if</span> (option.type == <span class="string">'post'</span> || option.type == <span class="string">'POST'</span>)&#123;</span><br><span class="line">        <span class="comment">// 2.打开与服务器的链接</span></span><br><span class="line">        xhr.open(option.type,option.url,<span class="literal">true</span>);<span class="comment">//解决缓存</span></span><br><span class="line">        <span class="comment">// 模拟表单form的post方式提交数据，在send之前设置</span></span><br><span class="line">        xhr.setRequestHeader(<span class="string">"Content-type"</span>,<span class="string">"application/x-www-form-urlencoded"</span>);</span><br><span class="line">        <span class="comment">// 3.发送请求</span></span><br><span class="line">        xhr.send(option.data);<span class="comment">//post请求</span></span><br><span class="line">    &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">        alert(<span class="string">'目前只支持get和post请求方式!'</span>);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 4.等待服务的响应</span></span><br><span class="line">    xhr.onreadystatechange = <span class="function"><span class="keyword">function</span> (<span class="params"></span>)</span>&#123;</span><br><span class="line">        <span class="comment">// console.log(xhr.readyState);//2 3 4</span></span><br><span class="line">        <span class="keyword">if</span> (xhr.readyState == <span class="number">4</span>) &#123;<span class="comment">//请求完成</span></span><br><span class="line">            <span class="keyword">if</span> (xhr.status == <span class="number">200</span>) &#123;<span class="comment">//请求成功</span></span><br><span class="line">                option.success(xhr.responseText);</span><br><span class="line">            &#125;<span class="keyword">else</span> &#123;<span class="comment">//请求失败</span></span><br><span class="line">                option.failed(xhr.status);</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">//调用Ajax</span></span><br><span class="line">    ajax(&#123;</span><br><span class="line">        url: <span class="string">'./data/post.php'</span>,</span><br><span class="line">        type: <span class="string">'post'</span>,</span><br><span class="line">        data: <span class="string">'age='</span>+ ipt.value,</span><br><span class="line">        success: <span class="function"><span class="keyword">function</span> (<span class="params">data</span>)</span>&#123;</span><br><span class="line">            <span class="keyword">var</span> json = <span class="built_in">JSON</span>.parse(data);</span><br><span class="line">            con.innerHTML = <span class="string">'姓名：'</span>+json.name;</span><br><span class="line">        &#125;,</span><br><span class="line">        failed: <span class="function"><span class="keyword">function</span> (<span class="params">status</span>)</span>&#123;</span><br><span class="line">            alert(<span class="string">'请求失败'</span>);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;);</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h2 id="Ajax的函数封装"><a href="#Ajax的函数封装" class="headerlink" title="Ajax的函数封装"></a>Ajax的函数封装</h2><figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">ajax</span>(<span class="params">option</span>)</span>&#123;</span><br><span class="line">    <span class="comment">// 1.创建XMLHttpRequest对象(数据交互对象)</span></span><br><span class="line">    <span class="keyword">if</span> (<span class="built_in">window</span>.XMLHttpRequest) &#123;</span><br><span class="line">        <span class="keyword">var</span> xhr = <span class="keyword">new</span> XMLHttpRequest();</span><br><span class="line">    &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">        <span class="keyword">var</span> xhr = ActiveXObject(<span class="string">'Microsoft.XMLHTTP'</span>);<span class="comment">//ie 5 6</span></span><br><span class="line">    &#125;</span><br><span class="line">    <span class="comment">// data -&gt; 'a=123&amp;b=456'</span></span><br><span class="line">    <span class="keyword">if</span> (option.type == <span class="string">'get'</span> || option.type == <span class="string">'GET'</span>) &#123;</span><br><span class="line">        <span class="comment">// 2.打开与服务器的链接</span></span><br><span class="line">        xhr.open(option.type,option.url + <span class="string">'?'</span>+ option.data + <span class="string">'&amp;_='</span>+<span class="keyword">new</span> <span class="built_in">Date</span>().getTime(),<span class="literal">true</span>);<span class="comment">//解决缓存</span></span><br><span class="line">        <span class="comment">// 3.发送请求</span></span><br><span class="line">        xhr.send(<span class="literal">null</span>);<span class="comment">//get请求</span></span><br><span class="line">    &#125; <span class="keyword">else</span> <span class="keyword">if</span> (option.type == <span class="string">'post'</span> || option.type == <span class="string">'POST'</span>)&#123;</span><br><span class="line">        <span class="comment">// 2.打开与服务器的链接</span></span><br><span class="line">        xhr.open(option.type,option.url,<span class="literal">true</span>);<span class="comment">//解决缓存</span></span><br><span class="line">        <span class="comment">// 模拟表单form的post方式提交数据，在send之前设置</span></span><br><span class="line">        xhr.setRequestHeader(<span class="string">"Content-type"</span>,<span class="string">"application/x-www-form-urlencoded"</span>);</span><br><span class="line">        <span class="comment">// 3.发送请求</span></span><br><span class="line">        xhr.send(option.data);<span class="comment">//post请求</span></span><br><span class="line">    &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">        alert(<span class="string">'目前只支持get和post请求方式!'</span>);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 4.等待服务的响应</span></span><br><span class="line">    xhr.onreadystatechange = <span class="function"><span class="keyword">function</span> (<span class="params"></span>)</span>&#123;</span><br><span class="line">        <span class="comment">// console.log(xhr.readyState);//2 3 4</span></span><br><span class="line">        <span class="keyword">if</span> (xhr.readyState == <span class="number">4</span>) &#123;<span class="comment">//请求完成</span></span><br><span class="line">            <span class="keyword">if</span> (xhr.status == <span class="number">200</span>) &#123;<span class="comment">//请求成功</span></span><br><span class="line">                option.success(xhr.responseText);</span><br><span class="line">            &#125;<span class="keyword">else</span> &#123;<span class="comment">//请求失败</span></span><br><span class="line">                option.failed(xhr.status);</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">//调用Ajax</span></span><br><span class="line">    ajax(&#123;</span><br><span class="line">        url: <span class="string">'./data/post.php'</span>,</span><br><span class="line">        type: <span class="string">'post'</span>,</span><br><span class="line">        data: <span class="string">'age='</span>+ ipt.value,</span><br><span class="line">        success: <span class="function"><span class="keyword">function</span> (<span class="params">data</span>)</span>&#123;</span><br><span class="line">            <span class="keyword">var</span> json = <span class="built_in">JSON</span>.parse(data);</span><br><span class="line">            con.innerHTML = <span class="string">'姓名：'</span>+json.name;</span><br><span class="line">        &#125;,</span><br><span class="line">        failed: <span class="function"><span class="keyword">function</span> (<span class="params">status</span>)</span>&#123;</span><br><span class="line">            alert(<span class="string">'请求失败'</span>);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;);</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
 <hr>
-<h3 id="jQuery的Ajax调用"><a href="#jQuery的Ajax调用" class="headerlink" title="jQuery的Ajax调用"></a>jQuery的Ajax调用</h3><figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line">$.ajax(&#123;</span><br><span class="line">    url: <span class="string">"study/data/get.php"</span>,</span><br><span class="line">    type: <span class="string">'get'</span>,</span><br><span class="line">    data: <span class="string">'age=28'</span>,</span><br><span class="line">    cache: <span class="literal">false</span>,       <span class="comment">//是否使用缓存</span></span><br><span class="line">    dataType: <span class="string">'json'</span>,   <span class="comment">//转换成json或者text格式</span></span><br><span class="line">    success: <span class="function"><span class="keyword">function</span> (<span class="params">data</span>) </span>&#123;</span><br><span class="line">        $(<span class="string">'.con'</span>).text(data.name);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;)</span><br></pre></td></tr></table></figure>
+<h2 id="jQuery的Ajax调用"><a href="#jQuery的Ajax调用" class="headerlink" title="jQuery的Ajax调用"></a>jQuery的Ajax调用</h2><figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line">$.ajax(&#123;</span><br><span class="line">    url: <span class="string">"study/data/get.php"</span>,</span><br><span class="line">    type: <span class="string">'get'</span>,</span><br><span class="line">    data: <span class="string">'age=28'</span>,</span><br><span class="line">    cache: <span class="literal">false</span>,       <span class="comment">//是否使用缓存</span></span><br><span class="line">    dataType: <span class="string">'json'</span>,   <span class="comment">//转换成json或者text格式</span></span><br><span class="line">    success: <span class="function"><span class="keyword">function</span> (<span class="params">data</span>) </span>&#123;</span><br><span class="line">        $(<span class="string">'.con'</span>).text(data.name);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;)</span><br></pre></td></tr></table></figure>
 
 <p><strong>简写方式</strong></p>
 <figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line">    $.<span class="keyword">get</span>('study/data/<span class="keyword">get</span>.php', 'age=18', function (json) &#123;</span><br><span class="line">        $(<span class="string">'.con'</span>).text(json.name)</span><br><span class="line">    &#125;, <span class="string">'json'</span>)</span><br><span class="line">&#125;)</span><br></pre></td></tr></table></figure>
@@ -145,8 +301,8 @@
         <category>技术文档</category>
       </categories>
       <tags>
-        <tag>语法</tag>
         <tag>常用</tag>
+        <tag>语法</tag>
       </tags>
   </entry>
   <entry>
@@ -203,8 +359,8 @@
         <category>技术文档</category>
       </categories>
       <tags>
-        <tag>hexo</tag>
         <tag>语法</tag>
+        <tag>hexo</tag>
       </tags>
   </entry>
 </search>
