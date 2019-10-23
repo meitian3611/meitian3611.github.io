@@ -1,6 +1,29 @@
 <?xml version="1.0" encoding="utf-8"?>
 <search>
   <entry>
+    <title>AJax的交互和异同</title>
+    <url>/2019/10/23/aJax%E7%9A%84%E5%90%84%E7%A7%8D%E5%AE%9E%E7%8E%B0/</url>
+    <content><![CDATA[<hr><blockquote>
+<p>Ajax是什么？</p>
+<p>Ajax是一种在无需加载整个网页的情况下，能够更新部分网页的技术（局部刷新）</p>
+<p>通俗的来说，Ajax就是JS通过一个网址去加载数据，这个过程用户是不可见的，传统的网页（不使用Ajax）如果需要更新内容，必须重新加载整个网页</p>
+</blockquote><a id="more"></a>
+
+<hr>
+<p><strong>Ajax怎么使用？</strong></p>
+<p>ajax请求分4个步骤</p>
+<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="comment">// 1.创建XMLHttpRequest对象(数据交互对象)</span></span><br><span class="line"><span class="keyword">if</span> (<span class="built_in">window</span>.XMLHttpRequest) &#123;</span><br><span class="line">    <span class="keyword">var</span> xhr = <span class="keyword">new</span> XMLHttpRequest();</span><br><span class="line">&#125; <span class="keyword">else</span> &#123;</span><br><span class="line">    <span class="keyword">var</span> xhr = ActiveXObject(<span class="string">'Microsoft.XMLHTTP'</span>);<span class="comment">//ie 5 6</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 2.打开与服务器的链接</span></span><br><span class="line">xhr.open(<span class="string">'post'</span>,<span class="string">'xxx.php'</span>,<span class="literal">true</span>);<span class="comment">//解决缓存 </span></span><br><span class="line"></span><br><span class="line"><span class="comment">// 3.发送请求</span></span><br><span class="line"><span class="comment">// xhr.send(null);//get请求</span></span><br><span class="line">xhr.send(<span class="string">'can='</span>+ele.value);<span class="comment">//post请求</span></span><br><span class="line"></span><br><span class="line"><span class="comment">// 4.等待服务的响应</span></span><br><span class="line">xhr.onreadystatechange = <span class="function"><span class="keyword">function</span> (<span class="params"></span>)</span>&#123;</span><br><span class="line">    <span class="comment">// console.log(xhr.readyState);//2 3 4</span></span><br><span class="line">    <span class="keyword">if</span> (xhr.readyState == <span class="number">4</span>) &#123;<span class="comment">//请求完成</span></span><br><span class="line">        <span class="keyword">if</span> (xhr.status == <span class="number">200</span>) &#123;<span class="comment">//请求成功</span></span><br><span class="line">            <span class="keyword">var</span> json = <span class="built_in">JSON</span>.parse(xhr.responseText);<span class="comment">//转成json对象</span></span><br><span class="line">            con.innerHTML = <span class="string">''</span>;</span><br><span class="line">        &#125;<span class="keyword">else</span> &#123;</span><br><span class="line">            alert(<span class="string">'请求失败，'</span> + xhr.status);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+]]></content>
+      <categories>
+        <category>web前端</category>
+      </categories>
+      <tags>
+        <tag>笔记</tag>
+        <tag>知识点</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>MarkDown语法教程</title>
     <url>/2019/10/21/MarkDown%E5%9F%BA%E6%9C%AC%E8%AF%AD%E6%B3%95/</url>
     <content><![CDATA[<hr><blockquote>
