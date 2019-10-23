@@ -47,6 +47,8 @@
 <p>实现CORS通信的关键是服务端，只要服务端实现了CORS接口，就可以跨源通信</p>
 <p>实现CORS并不难，只需服务端做一些设置即可：</p>
 <p><code>&lt;?phpheader(&quot;Access-Control-Allow-Origin:*&quot;); // 允许任何来源</code></p>
+<h3 id="jQuery使用跨域"><a href="#jQuery使用跨域" class="headerlink" title="jQuery使用跨域"></a>jQuery使用跨域</h3><figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line">&lt;body&gt;</span><br><span class="line">&lt;input type=<span class="string">"text"</span> <span class="class"><span class="keyword">class</span></span>=<span class="string">"ipt"</span>&gt;</span><br><span class="line">&lt;button <span class="class"><span class="keyword">class</span></span>=<span class="string">"btn"</span>&gt;请求jsonp数据&lt;<span class="regexp">/button&gt;</span></span><br><span class="line"><span class="regexp">&lt;ul class="list"&gt;&lt;/u</span>l&gt;</span><br><span class="line"></span><br><span class="line">&lt;script src=<span class="string">"../jquery-1.12.4.js"</span>&gt;<span class="xml"><span class="tag">&lt;/<span class="name">script</span>&gt;</span></span></span><br><span class="line">&lt;script&gt;</span><br><span class="line">    $(<span class="string">'.btn'</span>).click(<span class="function"><span class="keyword">function</span> (<span class="params"></span>) </span>&#123;</span><br><span class="line">        $.ajax(&#123;</span><br><span class="line">            url: <span class="string">'http://suggestion.baidu.com/su'</span>, <span class="comment">// 输入接口地址</span></span><br><span class="line">            type: <span class="string">'get'</span>, 		<span class="comment">//必须为get类型</span></span><br><span class="line">            data: <span class="string">'wd='</span> + $(<span class="string">'.ipt'</span>).val(),</span><br><span class="line">            cache: <span class="literal">false</span>,</span><br><span class="line">            dataType: <span class="string">'jsonp'</span>,  <span class="comment">//修改为jsonp格式</span></span><br><span class="line">            jsonp: <span class="string">'cb'</span>,        <span class="comment">//传入回调函数</span></span><br><span class="line">            success: <span class="function"><span class="keyword">function</span> (<span class="params">json</span>) </span>&#123;</span><br><span class="line">                $.each(json.s, <span class="function"><span class="keyword">function</span> (<span class="params">index, val</span>) </span>&#123;</span><br><span class="line">                    $(<span class="string">'.list'</span>).append(<span class="string">'&lt;li&gt;'</span> + val + <span class="string">'&lt;/li&gt;'</span>);</span><br><span class="line">                &#125;)</span><br><span class="line">            &#125;,</span><br><span class="line">            error: <span class="function"><span class="keyword">function</span> (<span class="params">err</span>) </span>&#123;</span><br><span class="line">                alert(<span class="string">'请求失败'</span>)</span><br><span class="line">                <span class="built_in">console</span>.log(err.status);</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;)</span><br><span class="line">    &#125;)</span><br><span class="line"></span><br><span class="line">&lt;<span class="regexp">/script&gt;</span></span><br><span class="line"><span class="regexp">&lt;/</span>body&gt;</span><br></pre></td></tr></table></figure>
+
 ]]></content>
       <categories>
         <category>web前端</category>
@@ -166,9 +168,7 @@
 <p>通俗的来说，Ajax就是JS通过一个网址去加载数据，这个过程用户是不可见的，传统的网页（不使用Ajax）如果需要更新内容，必须重新加载整个网页</p>
 </blockquote><a id="more"></a>
 
-<h2 id="Ajax怎么使用？"><a href="#Ajax怎么使用？" class="headerlink" title="Ajax怎么使用？"></a>Ajax怎么使用？</h2><ul>
-<li>ajax请求分4个步骤</li>
-</ul>
+<h2 id="Ajax怎么使用"><a href="#Ajax怎么使用" class="headerlink" title="Ajax怎么使用"></a>Ajax怎么使用</h2><p><strong>ajax请求分4个步骤</strong></p>
 <figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="comment">// 1.创建XMLHttpRequest对象(数据交互对象)</span></span><br><span class="line"><span class="keyword">if</span> (<span class="built_in">window</span>.XMLHttpRequest) &#123;</span><br><span class="line">    <span class="keyword">var</span> xhr = <span class="keyword">new</span> XMLHttpRequest();</span><br><span class="line">&#125; <span class="keyword">else</span> &#123;</span><br><span class="line">    <span class="keyword">var</span> xhr = ActiveXObject(<span class="string">'Microsoft.XMLHTTP'</span>);<span class="comment">//ie 5 6</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 2.打开与服务器的链接</span></span><br><span class="line">xhr.open(<span class="string">'post'</span>,<span class="string">'xxx.php'</span>,<span class="literal">true</span>);<span class="comment">//解决缓存 </span></span><br><span class="line"></span><br><span class="line"><span class="comment">// 3.发送请求</span></span><br><span class="line"><span class="comment">// xhr.send(null);//get请求</span></span><br><span class="line">xhr.send(<span class="string">'can='</span>+ele.value);<span class="comment">//post请求</span></span><br><span class="line"></span><br><span class="line"><span class="comment">// 4.等待服务的响应</span></span><br><span class="line">xhr.onreadystatechange = <span class="function"><span class="keyword">function</span> (<span class="params"></span>)</span>&#123;</span><br><span class="line">    <span class="comment">// console.log(xhr.readyState);//2 3 4</span></span><br><span class="line">    <span class="keyword">if</span> (xhr.readyState == <span class="number">4</span>) &#123;<span class="comment">//请求完成</span></span><br><span class="line">        <span class="keyword">if</span> (xhr.status == <span class="number">200</span>) &#123;<span class="comment">//请求成功</span></span><br><span class="line">            <span class="keyword">var</span> json = <span class="built_in">JSON</span>.parse(xhr.responseText);<span class="comment">//转成json对象</span></span><br><span class="line">            con.innerHTML = <span class="string">''</span>;</span><br><span class="line">        &#125;<span class="keyword">else</span> &#123;</span><br><span class="line">            alert(<span class="string">'请求失败，'</span> + xhr.status);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
 <hr>
@@ -187,7 +187,7 @@
 <hr>
 <h2 id="jQuery的Ajax调用"><a href="#jQuery的Ajax调用" class="headerlink" title="jQuery的Ajax调用"></a>jQuery的Ajax调用</h2><figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line">$.ajax(&#123;</span><br><span class="line">    url: <span class="string">"study/data/get.php"</span>,</span><br><span class="line">    type: <span class="string">'get'</span>,</span><br><span class="line">    data: <span class="string">'age=28'</span>,</span><br><span class="line">    cache: <span class="literal">false</span>,       <span class="comment">//是否使用缓存</span></span><br><span class="line">    dataType: <span class="string">'json'</span>,   <span class="comment">//转换成json或者text格式</span></span><br><span class="line">    success: <span class="function"><span class="keyword">function</span> (<span class="params">data</span>) </span>&#123;</span><br><span class="line">        $(<span class="string">'.con'</span>).text(data.name);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;)</span><br></pre></td></tr></table></figure>
 
-<p><strong>简写方式</strong></p>
+<p><strong>简写方式</strong>：</p>
 <figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line">    $.<span class="keyword">get</span>('study/data/<span class="keyword">get</span>.php', 'age=18', function (json) &#123;</span><br><span class="line">        $(<span class="string">'.con'</span>).text(json.name)</span><br><span class="line">    &#125;, <span class="string">'json'</span>)</span><br><span class="line">&#125;)</span><br></pre></td></tr></table></figure>
 
 ]]></content>
@@ -301,8 +301,8 @@
         <category>技术文档</category>
       </categories>
       <tags>
-        <tag>常用</tag>
         <tag>语法</tag>
+        <tag>常用</tag>
       </tags>
   </entry>
   <entry>
@@ -359,8 +359,8 @@
         <category>技术文档</category>
       </categories>
       <tags>
-        <tag>语法</tag>
         <tag>hexo</tag>
+        <tag>语法</tag>
       </tags>
   </entry>
 </search>

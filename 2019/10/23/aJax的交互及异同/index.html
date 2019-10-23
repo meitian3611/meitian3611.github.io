@@ -61,7 +61,7 @@
 <meta property="og:site_name" content="梅恬的博客">
 <meta property="og:description" content="Ajax是什么？ Ajax是一种在无需加载整个网页的情况下，能够更新部分网页的技术（局部刷新） 通俗的来说，Ajax就是JS通过一个网址去加载数据，这个过程用户是不可见的，传统的网页（不使用Ajax）如果需要更新内容，必须重新加载整个网页">
 <meta property="og:locale" content="zh-CN">
-<meta property="og:updated_time" content="2019-10-23T12:55:58.170Z">
+<meta property="og:updated_time" content="2019-10-23T13:32:06.340Z">
 <meta name="twitter:card" content="summary">
 
 <link rel="canonical" href="http://yoursite.com/2019/10/23/aJax%E7%9A%84%E4%BA%A4%E4%BA%92%E5%8F%8A%E5%BC%82%E5%90%8C/">
@@ -215,7 +215,7 @@
               <span class="post-meta-item-text">发表于</span>
               
 
-              <time title="创建时间：2019-10-23 10:09:13 / 修改时间：20:55:58" itemprop="dateCreated datePublished" datetime="2019-10-23T10:09:13+08:00">2019-10-23</time>
+              <time title="创建时间：2019-10-23 10:09:13 / 修改时间：21:32:06" itemprop="dateCreated datePublished" datetime="2019-10-23T10:09:13+08:00">2019-10-23</time>
             </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -253,9 +253,7 @@
 <p>通俗的来说，Ajax就是JS通过一个网址去加载数据，这个过程用户是不可见的，传统的网页（不使用Ajax）如果需要更新内容，必须重新加载整个网页</p>
 </blockquote><a id="more"></a>
 
-<h2 id="Ajax怎么使用？"><a href="#Ajax怎么使用？" class="headerlink" title="Ajax怎么使用？"></a>Ajax怎么使用？</h2><ul>
-<li>ajax请求分4个步骤</li>
-</ul>
+<h2 id="Ajax怎么使用"><a href="#Ajax怎么使用" class="headerlink" title="Ajax怎么使用"></a>Ajax怎么使用</h2><p><strong>ajax请求分4个步骤</strong></p>
 <figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 1.创建XMLHttpRequest对象(数据交互对象)</span></span><br><span class="line"><span class="keyword">if</span> (<span class="built_in">window</span>.XMLHttpRequest) &#123;</span><br><span class="line">    <span class="keyword">var</span> xhr = <span class="keyword">new</span> XMLHttpRequest();</span><br><span class="line">&#125; <span class="keyword">else</span> &#123;</span><br><span class="line">    <span class="keyword">var</span> xhr = ActiveXObject(<span class="string">'Microsoft.XMLHTTP'</span>);<span class="comment">//ie 5 6</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 2.打开与服务器的链接</span></span><br><span class="line">xhr.open(<span class="string">'post'</span>,<span class="string">'xxx.php'</span>,<span class="literal">true</span>);<span class="comment">//解决缓存 </span></span><br><span class="line"></span><br><span class="line"><span class="comment">// 3.发送请求</span></span><br><span class="line"><span class="comment">// xhr.send(null);//get请求</span></span><br><span class="line">xhr.send(<span class="string">'can='</span>+ele.value);<span class="comment">//post请求</span></span><br><span class="line"></span><br><span class="line"><span class="comment">// 4.等待服务的响应</span></span><br><span class="line">xhr.onreadystatechange = <span class="function"><span class="keyword">function</span> (<span class="params"></span>)</span>&#123;</span><br><span class="line">    <span class="comment">// console.log(xhr.readyState);//2 3 4</span></span><br><span class="line">    <span class="keyword">if</span> (xhr.readyState == <span class="number">4</span>) &#123;<span class="comment">//请求完成</span></span><br><span class="line">        <span class="keyword">if</span> (xhr.status == <span class="number">200</span>) &#123;<span class="comment">//请求成功</span></span><br><span class="line">            <span class="keyword">var</span> json = <span class="built_in">JSON</span>.parse(xhr.responseText);<span class="comment">//转成json对象</span></span><br><span class="line">            con.innerHTML = <span class="string">''</span>;</span><br><span class="line">        &#125;<span class="keyword">else</span> &#123;</span><br><span class="line">            alert(<span class="string">'请求失败，'</span> + xhr.status);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
 <hr>
@@ -274,7 +272,7 @@
 <hr>
 <h2 id="jQuery的Ajax调用"><a href="#jQuery的Ajax调用" class="headerlink" title="jQuery的Ajax调用"></a>jQuery的Ajax调用</h2><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">$.ajax(&#123;</span><br><span class="line">    url: <span class="string">"study/data/get.php"</span>,</span><br><span class="line">    type: <span class="string">'get'</span>,</span><br><span class="line">    data: <span class="string">'age=28'</span>,</span><br><span class="line">    cache: <span class="literal">false</span>,       <span class="comment">//是否使用缓存</span></span><br><span class="line">    dataType: <span class="string">'json'</span>,   <span class="comment">//转换成json或者text格式</span></span><br><span class="line">    success: <span class="function"><span class="keyword">function</span> (<span class="params">data</span>) </span>&#123;</span><br><span class="line">        $(<span class="string">'.con'</span>).text(data.name);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;)</span><br></pre></td></tr></table></figure>
 
-<p><strong>简写方式</strong></p>
+<p><strong>简写方式</strong>：</p>
 <figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">    $.<span class="keyword">get</span>('study/data/<span class="keyword">get</span>.php', 'age=18', function (json) &#123;</span><br><span class="line">        $(<span class="string">'.con'</span>).text(json.name)</span><br><span class="line">    &#125;, <span class="string">'json'</span>)</span><br><span class="line">&#125;)</span><br></pre></td></tr></table></figure>
 
 
@@ -343,7 +341,7 @@
 
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
-          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#Ajax怎么使用？"><span class="nav-number">1.</span> <span class="nav-text">Ajax怎么使用？</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#GET和POST之间的区别"><span class="nav-number">2.</span> <span class="nav-text">GET和POST之间的区别</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Ajax的函数封装"><span class="nav-number">3.</span> <span class="nav-text">Ajax的函数封装</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#jQuery的Ajax调用"><span class="nav-number">4.</span> <span class="nav-text">jQuery的Ajax调用</span></a></li></ol></div>
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#Ajax怎么使用"><span class="nav-number">1.</span> <span class="nav-text">Ajax怎么使用</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#GET和POST之间的区别"><span class="nav-number">2.</span> <span class="nav-text">GET和POST之间的区别</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Ajax的函数封装"><span class="nav-number">3.</span> <span class="nav-text">Ajax的函数封装</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#jQuery的Ajax调用"><span class="nav-number">4.</span> <span class="nav-text">jQuery的Ajax调用</span></a></li></ol></div>
       </div>
       <!--/noindex-->
 
