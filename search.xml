@@ -1,6 +1,21 @@
 <?xml version="1.0" encoding="utf-8"?>
 <search>
   <entry>
+    <title>Promise</title>
+    <url>/2019/10/24/Promise%E5%BC%82%E6%AD%A5%E5%A4%84%E7%90%86/</url>
+    <content><![CDATA[<h2 id="Promise"><a href="#Promise" class="headerlink" title="Promise"></a>Promise</h2><blockquote>
+<p>Promise 是ES6对异步编程的一种解决方案，比传统的解决方案（回调函数和事件）更合理更强大。</p>
+<p>Promise 简单说就是一个容器，里面保存着一个尚未完成且预计在未来完成的异步操作。</p>
+</blockquote>]]></content>
+      <categories>
+        <category>web前端</category>
+      </categories>
+      <tags>
+        <tag>笔记</tag>
+        <tag>知识点</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>跨域</title>
     <url>/2019/10/23/%E8%B7%A8%E5%9F%9F/</url>
     <content><![CDATA[<h2 id="Ajax跨域"><a href="#Ajax跨域" class="headerlink" title="Ajax跨域"></a>Ajax跨域</h2><blockquote>
@@ -301,8 +316,8 @@
         <category>技术文档</category>
       </categories>
       <tags>
-        <tag>语法</tag>
         <tag>常用</tag>
+        <tag>语法</tag>
       </tags>
   </entry>
   <entry>
@@ -359,8 +374,8 @@
         <category>技术文档</category>
       </categories>
       <tags>
-        <tag>hexo</tag>
         <tag>语法</tag>
+        <tag>hexo</tag>
       </tags>
   </entry>
 </search>
