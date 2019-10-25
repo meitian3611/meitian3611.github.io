@@ -198,12 +198,11 @@
   <entry>
     <title>AJax的交互和异同</title>
     <url>/2019/10/23/aJax%E7%9A%84%E4%BA%A4%E4%BA%92%E5%8F%8A%E5%BC%82%E5%90%8C/</url>
-    <content><![CDATA[<hr><blockquote>
+    <content><![CDATA[<blockquote>
 <p>Ajax是什么？</p>
 <p>Ajax是一种在无需加载整个网页的情况下，能够更新部分网页的技术（局部刷新）</p>
 <p>通俗的来说，Ajax就是JS通过一个网址去加载数据，这个过程用户是不可见的，传统的网页（不使用Ajax）如果需要更新内容，必须重新加载整个网页</p>
 </blockquote><a id="more"></a>
-
 <h2 id="Ajax怎么使用"><a href="#Ajax怎么使用" class="headerlink" title="Ajax怎么使用"></a>Ajax怎么使用</h2><p><strong>ajax请求分4个步骤</strong></p>
 <figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="comment">// 1.创建XMLHttpRequest对象(数据交互对象)</span></span><br><span class="line"><span class="keyword">if</span> (<span class="built_in">window</span>.XMLHttpRequest) &#123;</span><br><span class="line">    <span class="keyword">var</span> xhr = <span class="keyword">new</span> XMLHttpRequest();</span><br><span class="line">&#125; <span class="keyword">else</span> &#123;</span><br><span class="line">    <span class="keyword">var</span> xhr = ActiveXObject(<span class="string">'Microsoft.XMLHTTP'</span>);<span class="comment">//ie 5 6</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 2.打开与服务器的链接</span></span><br><span class="line">xhr.open(<span class="string">'post'</span>,<span class="string">'xxx.php'</span>,<span class="literal">true</span>);<span class="comment">//解决缓存 </span></span><br><span class="line"></span><br><span class="line"><span class="comment">// 3.发送请求</span></span><br><span class="line"><span class="comment">// xhr.send(null);//get请求</span></span><br><span class="line">xhr.send(<span class="string">'can='</span>+ele.value);<span class="comment">//post请求</span></span><br><span class="line"></span><br><span class="line"><span class="comment">// 4.等待服务的响应</span></span><br><span class="line">xhr.onreadystatechange = <span class="function"><span class="keyword">function</span> (<span class="params"></span>)</span>&#123;</span><br><span class="line">    <span class="comment">// console.log(xhr.readyState);//2 3 4</span></span><br><span class="line">    <span class="keyword">if</span> (xhr.readyState == <span class="number">4</span>) &#123;<span class="comment">//请求完成</span></span><br><span class="line">        <span class="keyword">if</span> (xhr.status == <span class="number">200</span>) &#123;<span class="comment">//请求成功</span></span><br><span class="line">            <span class="keyword">var</span> json = <span class="built_in">JSON</span>.parse(xhr.responseText);<span class="comment">//转成json对象</span></span><br><span class="line">            con.innerHTML = <span class="string">''</span>;</span><br><span class="line">        &#125;<span class="keyword">else</span> &#123;</span><br><span class="line">            alert(<span class="string">'请求失败，'</span> + xhr.status);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
@@ -238,11 +237,10 @@
   <entry>
     <title>MarkDown语法教程</title>
     <url>/2019/10/21/MarkDown%E5%9F%BA%E6%9C%AC%E8%AF%AD%E6%B3%95/</url>
-    <content><![CDATA[<hr><blockquote>
+    <content><![CDATA[<blockquote>
 <p>MarkDown是一种纯文本格式的标记语言，通过简单的标记语法，它可以使普通文本内容具有一定的格式。</p>
 <p>下面让我们一起来快速学习一下MarkDown的语法吧</p>
 </blockquote><h3 id="一、标题"><a href="#一、标题" class="headerlink" title="一、标题"></a>一、标题</h3><p>一般是在标题文字前面加上#来表示</p><p>一个#是一级标题，二个#是二级标题，以此类推。支持六级标题。</p><a id="more"></a>
-
 
 
 <figure class="highlight plain"><table><tr><td class="code"><pre><span class="line"># 这是一级标题</span><br><span class="line">## 这是二级标题</span><br><span class="line">### 这是三级标题</span><br></pre></td></tr></table></figure>
@@ -344,12 +342,11 @@
   <entry>
     <title>Hexo搭建博客</title>
     <url>/2019/10/19/Hexo%E7%9A%84%E5%8D%9A%E5%AE%A2%E6%90%AD%E5%BB%BA/</url>
-    <content><![CDATA[<hr><blockquote>
+    <content><![CDATA[<blockquote>
 <p>使用Hexo快速搭建一个自己的专属博客</p>
 <p>搭建要求：node.js，git bash, github仓库</p>
 <p>很多命令既可以用Windows的cmd来完成，也可以使用git bash来完成，但是部分命令会有一些问题，为避免不必要的问题，建议全部使用git bash来执行；</p>
 </blockquote><a id="more"></a>
-
 <p><strong>安装之前的准备</strong></p>
 <blockquote>
 <ul>
