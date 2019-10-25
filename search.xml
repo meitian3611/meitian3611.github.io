@@ -9,14 +9,12 @@
 <p>Promise 是一个构造函数，用来创建一个Promise对象。</p>
 <p>有了Promise对象，就可以将<strong>异步操作以同步操作的流程表达出来</strong>，避免了层层嵌套的回调函数。</p>
 </blockquote><a id="more"></a>
-<p><strong>Promise对象代表一个异步操作，有三种状态</strong>：</p>
-<ul>
+<h3 id="Promise对象代表一个异步操作，有三种状态："><a href="#Promise对象代表一个异步操作，有三种状态：" class="headerlink" title="Promise对象代表一个异步操作，有三种状态："></a>Promise对象代表一个异步操作，有三种状态：</h3><ul>
 <li>pending（进行中）</li>
 <li>fulfilled（已成功）</li>
 <li>rejected（已失败）</li>
 </ul>
-<p><strong>Promise 对象的状态改变有两种</strong>：</p>
-<p>从 pending 变为 fulfilled</p>
+<h3 id="Promise-对象的状态改变有两种："><a href="#Promise-对象的状态改变有两种：" class="headerlink" title="Promise 对象的状态改变有两种："></a>Promise 对象的状态改变有两种：</h3><p>从 pending 变为 fulfilled</p>
 <p>从 pending 变为 rejected</p>
 <hr>
 <p>Promise构造函数接受一个函数作为参数，该函数的两个参数分别是resolve和reject。</p>
@@ -26,7 +24,12 @@
 <p><strong>resolve</strong> 函数的作用是，将Promise对象的状态从“进行中”变为“成功”（即从 pending 变为 resolved），在异步操作成功时调用，并将异步操作的结果，作为参数传递出去。</p>
 <p><strong>reject</strong> 函数的作用是，将Promise对象的状态从“进行中”变为“失败”（即从 pending 变为 rejected），在异步操作失败时调用，并将异步操作报出的错误，作为参数传递出去。</p>
 <hr>
-<p>promise-then</p>
+<h3 id="then和catch"><a href="#then和catch" class="headerlink" title="then和catch"></a>then和catch</h3><figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line">p1.then(<span class="function"><span class="keyword">function</span>(<span class="params">value</span>)</span>&#123;</span><br><span class="line">    <span class="comment">//成功执行的函数（resolve）</span></span><br><span class="line">    <span class="built_in">console</span>.log(value)</span><br><span class="line">    </span><br><span class="line">&#125;,<span class="function"><span class="keyword">function</span>(<span class="params">rej</span>)</span>&#123;</span><br><span class="line">    <span class="comment">//失败执行的函数（reject）</span></span><br><span class="line">    <span class="built_in">console</span>.log(rej)</span><br><span class="line">    </span><br><span class="line">&#125;).catch(<span class="function"><span class="keyword">function</span>(<span class="params">err</span>)</span>&#123;</span><br><span class="line">    <span class="built_in">console</span>.log(err)</span><br><span class="line">    <span class="comment">//捕获报错信息</span></span><br><span class="line">&#125;)</span><br></pre></td></tr></table></figure>
+
+<p><strong>then</strong>有两个参数，一个是成功后的回调函数，另一个是失败后的回调函数</p>
+<p><strong>catch</strong>是一个用于指定发生错误的回调函数，将报错信息捕获</p>
+<h3 id="使用Promise解决定时器嵌套问题"><a href="#使用Promise解决定时器嵌套问题" class="headerlink" title="使用Promise解决定时器嵌套问题"></a>使用Promise解决定时器嵌套问题</h3><figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="comment">//封装一个Promise的定时器函数 </span></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">getPromise</span>(<span class="params">msg, time</span>) </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">new</span> <span class="built_in">Promise</span>(<span class="function"><span class="keyword">function</span> (<span class="params">resolve, reject</span>) </span>&#123;</span><br><span class="line">            setTimeout(<span class="function"><span class="keyword">function</span> (<span class="params"></span>) </span>&#123;</span><br><span class="line">                <span class="built_in">console</span>.log(msg);</span><br><span class="line">                resolve();</span><br><span class="line">            &#125;, time)</span><br><span class="line">        &#125;);</span><br><span class="line">    &#125;</span><br><span class="line"><span class="comment">//利用getPromise函数同步执行</span></span><br><span class="line"><span class="comment">//结果为： 一 二 三 完成</span></span><br><span class="line">    getPromise(<span class="string">'第一个任务'</span>, <span class="number">1000</span>)</span><br><span class="line">        .then(<span class="function"><span class="keyword">function</span> (<span class="params"></span>) </span>&#123;</span><br><span class="line">            <span class="keyword">return</span> getPromise(<span class="string">'第二个任务'</span>, <span class="number">2000</span>)</span><br><span class="line">        &#125;)</span><br><span class="line">        .then(<span class="function"><span class="keyword">function</span> (<span class="params"></span>) </span>&#123;</span><br><span class="line">            <span class="keyword">return</span> getPromise(<span class="string">'第三个任务'</span>, <span class="number">3000</span>)</span><br><span class="line">        &#125;)</span><br><span class="line">        .then(<span class="function"><span class="keyword">function</span> (<span class="params"></span>) </span>&#123;</span><br><span class="line">            <span class="keyword">return</span> getPromise(<span class="string">'完成'</span>, <span class="number">4000</span>)</span><br><span class="line">        &#125;)</span><br></pre></td></tr></table></figure>
+
 ]]></content>
       <categories>
         <category>web前端</category>
@@ -335,8 +338,8 @@
         <category>技术文档</category>
       </categories>
       <tags>
-        <tag>语法</tag>
         <tag>常用</tag>
+        <tag>语法</tag>
       </tags>
   </entry>
   <entry>
@@ -392,8 +395,8 @@
         <category>技术文档</category>
       </categories>
       <tags>
-        <tag>hexo</tag>
         <tag>语法</tag>
+        <tag>hexo</tag>
       </tags>
   </entry>
 </search>
