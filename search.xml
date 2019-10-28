@@ -1,6 +1,164 @@
 <?xml version="1.0" encoding="utf-8"?>
 <search>
   <entry>
+    <title>模块化编程</title>
+    <url>/2019/10/28/%E6%A8%A1%E5%9D%97%E5%8C%96%E7%BC%96%E7%A8%8B/</url>
+    <content><![CDATA[<h2 id="ES6-module"><a href="#ES6-module" class="headerlink" title="ES6 module"></a>ES6 module</h2><blockquote>
+<p>在 ES6 之前，社区制定了一些模块加载方案，最主要的有 CommonJS 和 AMD  两种。前者用于服务器，后者用于浏览器。ES6 在语言标准的层面上，实现了模块功能，而且实现得相当简单，完全可以取代 CommonJS 和 AMD 规范，成为浏览器和服务器通用的模块解决方案。</p>
+</blockquote><a id="more"></a>
+<p><strong>设置浏览器启用es6语法功能：（Chrome 61+，Firefox 54+）</strong></p>
+<blockquote>
+<ol>
+<li><p>在浏览器的url中输入：<a href="chrome://flags/" target="_blank" rel="noopener">chrome://flags/</a></p>
+</li>
+<li><p>搜索 JavaScript 关键字</p>
+</li>
+<li><p>设置选项 Experimental JavaScript 为 Enable</p>
+</li>
+<li><p>重启浏览器后生效</p>
+</li>
+</ol>
+</blockquote>
+<p><strong>注意事项</strong></p>
+<blockquote>
+<ul>
+<li><p>script 标签里面要加 type=”module”, 这样浏览器才会把相关的代码当作ES6的module 来对待</p>
+</li>
+<li><p>不能写“裸”路径，即使是同一层级下面的文件，也要加上 ‘./name.js’</p>
+</li>
+<li><p>ES6 的模块自动采用严格模式，不管你有没有在模块头部加上”use strict”。</p>
+</li>
+<li><p>ES6 模块功能主要由两个命令构成：export 和 import。</p>
+</li>
+<li><p>export命令用于规定模块的对外接口，import命令用于输入其他模块提供的功能。</p>
+</li>
+<li><p>一个模块就是一个独立的文件，该文件内部的所有变量，外部无法获取。</p>
+</li>
+</ul>
+</blockquote>
+<h3 id="export-关键字"><a href="#export-关键字" class="headerlink" title="export 关键字"></a><strong>export 关键字</strong></h3><p>如果你希望外部能够读取模块内部的某个变量，就必须使用export关键字输出该变量。</p>
+<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="keyword">var</span> userName = <span class="string">'xiaoming'</span>;</span><br><span class="line"><span class="keyword">var</span> userSex = <span class="string">'男'</span>;</span><br><span class="line"><span class="keyword">var</span> userAge = <span class="number">27</span>;</span><br><span class="line"><span class="keyword">export</span> &#123; userName, userSex, userAge &#125;;</span><br></pre></td></tr></table></figure>
+
+<p>export命令除了输出变量，还可以输出对象、函数或类（class）。</p>
+<p><code>export function sum(x, y) { return x + y;};</code></p>
+<p>上面代码对外输出一个函数sum</p>
+<p>通常情况下，export输出的变量就是本来的名字，但是可以使用<strong>as关键字</strong>重命名。</p>
+<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">f1</span>(<span class="params"></span>) </span>&#123; ... &#125;</span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">f2</span>(<span class="params"></span>) </span>&#123; ... &#125;</span><br><span class="line"><span class="keyword">export</span> &#123;</span><br><span class="line">  f1 <span class="keyword">as</span> test1,</span><br><span class="line">  f2 <span class="keyword">as</span> test2,</span><br><span class="line">  f2 <span class="keyword">as</span> test3</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+
+<p>上面代码使用as关键字，重命名了函数f1和f2的对外接口。重命名后，f2可以用不同的名字输出两次。</p>
+<p><strong>正确的写法</strong></p>
+<ul>
+<li><p><code>export var m = 1;</code></p>
+</li>
+<li><p><code>var m = 1;  export {m};</code></p>
+</li>
+<li><p><code>var n = 1;    export {n as m};</code></p>
+</li>
+<li><p><code>export function f() {};</code></p>
+</li>
+<li><p><code>function f() {}export {f};</code></p>
+</li>
+</ul>
+<h3 id="import-关键字"><a href="#import-关键字" class="headerlink" title="import 关键字"></a>import 关键字</h3><p>使用export命令定义了模块的对外接口以后，其他 JS 文件就可以通过import命令加载这个模块。</p>
+<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="keyword">import</span> &#123; userName, userSex, userAge &#125; <span class="keyword">from</span> <span class="string">'./module1.js'</span>;</span><br><span class="line"><span class="built_in">console</span>.log(userName);</span><br><span class="line"><span class="built_in">console</span>.log(userSex);</span><br><span class="line"><span class="built_in">console</span>.log(userAge);</span><br></pre></td></tr></table></figure>
+
+<p>如果想为输入的变量重新取一个名字，import命令要使用as关键字，将输入的变量重命名。</p>
+<p><code>import { userName as xm } from &#39;./module1.js&#39;;</code></p>
+<p>import命令输入的变量都是只读的，因为它的本质是输入接口。也就是说，不允许在加载模块的脚本里面，改写接口。如果a是一个对象，改写a的属性是允许的。</p>
+<p><code>import {a} from &#39;./xxx.js&#39;        a.foo = &#39;hello&#39;; // 合法操作</code></p>
+<p><strong>import命令具有提升效果，会提升到整个模块的头部，首先执行。</strong></p>
+<p>除了指定加载某些输出值，还可以使用整体加载，即用 * 指定一个对象，所有输出值都加载在这个对象上面。</p>
+<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="keyword">import</span> * <span class="keyword">as</span> obj <span class="keyword">from</span> <span class="string">'./module1.js'</span>;</span><br><span class="line"><span class="built_in">console</span>.log(obj.userName);</span><br><span class="line"><span class="built_in">console</span>.log(obj.userSex);</span><br><span class="line"><span class="built_in">console</span>.log(obj.userAge);</span><br></pre></td></tr></table></figure>
+
+<h3 id="export-default-命令"><a href="#export-default-命令" class="headerlink" title="export default 命令"></a>export default 命令</h3><p>为了给用户提供方便，用export default命令，为模块指定默认输出。</p>
+<p>默认输出</p>
+<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="keyword">export</span> <span class="keyword">default</span> <span class="function"><span class="keyword">function</span> <span class="title">test</span>(<span class="params"></span>) </span>&#123; <span class="comment">// 输出</span></span><br><span class="line">  <span class="comment">// ...</span></span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">import</span> test <span class="keyword">from</span> <span class="string">'./test.js'</span>; <span class="comment">// 输入</span></span><br></pre></td></tr></table></figure>
+
+<p>正常输出</p>
+<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="keyword">export</span> <span class="function"><span class="keyword">function</span> <span class="title">test</span>(<span class="params"></span>) </span>&#123; <span class="comment">// 输出</span></span><br><span class="line">  <span class="comment">// ...</span></span><br><span class="line">&#125;;</span><br><span class="line"><span class="keyword">import</span> &#123; test &#125; <span class="keyword">from</span> <span class="string">'./test.js'</span>; <span class="comment">// 输入</span></span><br></pre></td></tr></table></figure>
+
+<p>使用export default时，对应的import语句不需要使用大括号；</p>
+<p>不使用export default时，对应的import语句需要使用大括号。</p>
+<p><strong>注意：</strong></p>
+<p>一个模块只能有一个默认输出，因此export default命令只能使用一次。</p>
+<p>因为export default命令其实只是输出一个叫做default的变量，所以它后面不能跟变量声明语句。</p>
+<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="comment">// 正确</span></span><br><span class="line"><span class="keyword">export</span> <span class="keyword">var</span> a = <span class="number">1</span>;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 正确</span></span><br><span class="line"><span class="keyword">var</span> a = <span class="number">1</span>;</span><br><span class="line"><span class="keyword">export</span> <span class="keyword">default</span> a;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 错误</span></span><br><span class="line"><span class="keyword">export</span> <span class="keyword">default</span> <span class="keyword">var</span> a = <span class="number">1</span>;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 正确</span></span><br><span class="line"><span class="keyword">export</span> <span class="keyword">default</span> <span class="number">42</span>;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 报错</span></span><br><span class="line"><span class="keyword">export</span> <span class="number">42</span>;</span><br></pre></td></tr></table></figure>
+
+<h2 id="浏览器加载规则"><a href="#浏览器加载规则" class="headerlink" title="浏览器加载规则"></a>浏览器加载规则</h2><blockquote>
+<p>默认情况下，浏览器是同步加载 JavaScript 脚本，即渲染引擎遇到<script>标签就会停下来，等到执行完脚本，再继续向下渲染。如果是外部脚本，还必须加入脚本下载的时间。如果脚本体积很大，下载和执行的时间就会很长，因此造成浏览器堵塞，用户会感觉到浏览器“卡死”了，没有任何响应。</p>
+</blockquote>
+<p><strong>浏览器两种异步加载的语法</strong></p>
+<p><code>&lt;script src=&quot;path/to/myModule.js&quot; defer&gt;&lt;/script&gt;</code></p>
+<p><code>&lt;script src=&quot;path/to/myModule.js&quot; async&gt;&lt;/script&gt;</code></p>
+<p>上面代码中，<script>标签打开defer或async属性，脚本就会异步加载。渲染引擎遇到这一行命令，就会开始下载外部脚本，但不会等它下载和执行，而是直接执行后面的命令。</p>
+<p><strong>defer与async的区别</strong></p>
+<p>defer要等到整个页面在内存中正常渲染结束（DOM 结构完全生成，以及其他脚本执行完成），才会执行；</p>
+<p>async一旦下载完，渲染引擎就会中断渲染，执行这个脚本以后，再继续渲染</p>
+<p><strong>defer是“渲染完再执行”，async是“下载完就执行”。</strong></p>
+<p>如果有多个defer脚本，会按照它们在页面出现的顺序加载，而多个async脚本是不能保证加载顺序的。</p>
+<p>浏览器加载 ES6 模块，也使用<script>标签，但是要加入type="module"属性。</p>
+<p>浏览器对于带有type="module"的<script>，都是异步加载，不会造成堵塞浏览器，即等到整个页面渲染完，再执行模块脚本，等同于打开了<script>标签的defer属性。</p>
+<p><code>&lt;script type=&quot;module&quot; src=&quot;./foo.js&quot; defer&gt;&lt;/script&gt;</code></p>
+<h2 id="RequireJs"><a href="#RequireJs" class="headerlink" title="RequireJs"></a>RequireJs</h2><p><strong>什么是RequireJs</strong></p>
+<blockquote>
+<p>RequireJS是一个非常小巧的JavaScript模块载入框架，是AMD规范最好的实现者之一。</p>
+<p>AMD即Asynchronous Module Definition（异步模块定义）。</p>
+<p>AMD 是 RequireJS 在推广过程中对模块定义的规范化产出。</p>
+<p>CMD即Common Moudle Definition（通用模块定义）。</p>
+<p>CMD 是 SeaJS 在推广过程中对模块定义的规范化产出。</p>
+</blockquote>
+<p><strong>AMD和CMD相同点：</strong></p>
+<blockquote>
+<ul>
+<li><p>都是异步加载模块；</p>
+</li>
+<li><p>都实现了浏览器端模块化开发的目的；</p>
+</li>
+<li><p>都倡导模块化开发理念，使前端模块化开发变得简单自然；</p>
+</li>
+<li><p>解决前端开发过程中的两大问题：</p>
+<ol>
+<li><p>文件之间的依赖问题；</p>
+</li>
+<li><p>浏览器加载多个JS文件时页面失去响应的时间过长。</p>
+</li>
+</ol>
+</li>
+</ul>
+</blockquote>
+<p><strong>AMD和CMD不同点：</strong></p>
+<blockquote>
+<ol>
+<li><p>官方推荐的写法不同，AMD推崇依赖前置，CMD推崇依赖就近；</p>
+</li>
+<li><p>模块的执行时机不同，AMD是提前执行，CMD是延迟执行；</p>
+</li>
+<li><p>api的设计不同，AMD 的 API 默认是一个当多个用，CMD 的 API 严格区分，推崇职责单一。</p>
+</li>
+</ol>
+</blockquote>
+<p><strong>"一个模块就是一个文件"</strong></p>
+<p><strong>require 用来加载依赖模块，并执行加载完后的回调函数</strong></p>
+<p><code>require([&#39;moduleA&#39;, &#39;moduleB&#39;], function (a, b){ });</code></p>
+<p>第一个参数是依赖模块列表，第二个参数是一个callback函数</p>
+<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="comment">//全局配置</span></span><br><span class="line"><span class="built_in">require</span>.config(&#123;</span><br><span class="line">    baseUrl: <span class="string">'js/lib'</span>,</span><br><span class="line">    paths : &#123;</span><br><span class="line">        <span class="string">"jquery"</span> : [<span class="string">"http://libs.baidu.com/jquery/2.0.3/jquery"</span>,<span class="string">"jquery-2.1.4.min"</span>],</span><br><span class="line">        <span class="string">"mytask"</span> : <span class="string">"myTask"</span>   </span><br><span class="line">    &#125;</span><br><span class="line">&#125;)</span><br><span class="line"><span class="built_in">require</span>([<span class="string">"jquery"</span>,<span class="string">"mytask"</span>],<span class="function"><span class="keyword">function</span>(<span class="params">$, mytask</span>)</span>&#123;</span><br><span class="line">    $(<span class="function"><span class="keyword">function</span>(<span class="params"></span>)</span>&#123;</span><br><span class="line">       mytask(<span class="string">"load finished"</span>);</span><br><span class="line">    &#125;)</span><br><span class="line">&#125;)</span><br></pre></td></tr></table></figure>
+
+<p><strong>require.config</strong>是用来配置模块加载位置，简单点说就是<strong>引入模块并起一个别名</strong></p>
+<p>配置完成还要记得在html中设置<strong>入口文件</strong></p>
+<p><code>&lt;script src=&quot;js/require.js&quot; data-main=&quot;js/main&quot;&gt;&lt;/script&gt;</code></p>
+<p><strong>define 用来定义一个模块</strong></p>
+<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line">define(&#123;</span><br><span class="line">　 <span class="comment">// ...</span></span><br><span class="line">    key: value</span><br><span class="line">&#125;);</span><br><span class="line"></span><br><span class="line">define(<span class="function"><span class="keyword">function</span>(<span class="params"> </span>)</span>&#123;</span><br><span class="line">　 <span class="comment">// ...</span></span><br><span class="line">    <span class="keyword">return</span> &#123;</span><br><span class="line">        <span class="comment">// ...</span></span><br><span class="line">    &#125;</span><br><span class="line">&#125;);</span><br><span class="line"></span><br><span class="line">define([<span class="string">'依赖的模块路径'</span>], <span class="function"><span class="keyword">function</span>(<span class="params">依赖模块名称</span>)</span>&#123;</span><br><span class="line">　<span class="comment">// ...</span></span><br><span class="line">　<span class="keyword">return</span> &#123;</span><br><span class="line">　　<span class="comment">// ...</span></span><br><span class="line">　&#125;;</span><br><span class="line">&#125;);</span><br><span class="line"></span><br><span class="line">define(<span class="string">'模块名称'</span>, [<span class="string">'依赖的模块路径'</span>], <span class="function"><span class="keyword">function</span>(<span class="params">依赖模块名称</span>)</span>&#123;</span><br><span class="line">　<span class="comment">// ...</span></span><br><span class="line">　<span class="keyword">return</span> &#123;</span><br><span class="line">　　<span class="comment">// ...</span></span><br><span class="line">　&#125;;</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
+
+</script></p></blockquote>]]></content>
+      <categories>
+        <category>web前端</category>
+      </categories>
+      <tags>
+        <tag>笔记</tag>
+        <tag>知识点</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>Promise</title>
     <url>/2019/10/24/Promise%E5%BC%82%E6%AD%A5%E5%A4%84%E7%90%86/</url>
     <content><![CDATA[<h2 id="Promise"><a href="#Promise" class="headerlink" title="Promise"></a>Promise</h2><blockquote>
