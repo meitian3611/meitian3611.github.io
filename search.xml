@@ -1,6 +1,102 @@
 <?xml version="1.0" encoding="utf-8"?>
 <search>
   <entry>
+    <title>Node.js的初步认识</title>
+    <url>/2019/10/29/nodeJs%E7%9A%84%E5%88%9D%E6%AD%A5%E8%AE%A4%E8%AF%86/</url>
+    <content><![CDATA[<h2 id="Node-js简介"><a href="#Node-js简介" class="headerlink" title="Node.js简介"></a>Node.js简介</h2><blockquote>
+<p>Node.js 是一个基于 Chrome V8 引擎的 JavaScript 运行环境。</p>
+<p>Node.js 使用了一个事件驱动、非阻塞式 I/O 的模型，使其轻量又高效。</p>
+<p>简单的说 Node.js 就是运行在服务端的 JavaScript</p>
+<p>Node.js是一个让JavaScript运行在服务器端的开发平台，它让JavaScript的触角伸到了服务器端，可以与PHP、JSP、Python、Ruby平起平坐。</p>
+</blockquote><a id="more"></a>
+<p><strong>node.js三大特点：</strong></p>
+<p><strong>1.单线程</strong></p>
+<blockquote>
+<p>Node.js不为每个客户连接创建一个新的线程，而仅仅使用一个线程。当有用户连接了，就触发一个内部事件，通过非阻塞I/O、事件驱动机制，让Node.js程序宏观上也是并行的。使用Node.js，一个8GB内存的服务器，可以同时处理超过4万用户的连接。</p>
+</blockquote>
+<p><strong>2.非阻塞I/O(异步)</strong></p>
+<blockquote>
+<p>阻塞模式下，一个线程只能处理一项任务，要想提高吞吐量必须通过多线程。而非阻塞模式下，一个线程永远在执行计算操作，这个线程的CPU核心利用率永远是100%。</p>
+<p>这是一种特别有哲理的解决方案：<strong>与其人多，但是好多人闲着；还不如一个人玩命，往死里干活儿。</strong></p>
+</blockquote>
+<p><strong>3.事件驱动</strong></p>
+<blockquote>
+<p>在Node中，客户端请求建立连接，提交数据等行为，会触发相应的事件。在Node中，在一个时刻，只能执行一个事件回调函数，但是在执行一个事件回调函数的中途，可以转而处理其他事件（比如，又有新用户连接了），然后返回继续执行原事件的回调函数，这种处理机制，称为“事件循环”机制。</p>
+<p>用事件驱动来完成服务器的任务调度，用一个线程，担负起了处理非常多的任务的使命。</p>
+</blockquote>
+<h2 id="搭建web服务器"><a href="#搭建web服务器" class="headerlink" title="搭建web服务器"></a>搭建web服务器</h2><p><strong>总共分为四个步骤</strong></p>
+<ol>
+<li><p>加载http模块    </p>
+</li>
+<li><p>创建http服务    </p>
+</li>
+<li><p>服务端对象监听request 请求事件，用于监听客户端的请求    </p>
+</li>
+<li><p>启动http服务，监听端口</p>
+</li>
+</ol>
+<p><strong>参考代码：</strong></p>
+<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="keyword">var</span> http = <span class="built_in">require</span>(<span class="string">'http'</span>);		 <span class="comment">//加载http模块</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">var</span> server = http.createServer();<span class="comment">//创建http服务</span></span><br><span class="line"></span><br><span class="line">server.on(<span class="string">'request'</span>,<span class="function"><span class="keyword">function</span> (<span class="params">req, res</span>) </span>&#123; <span class="comment">//服务对象监听request 请求事件，用于监听客户端的请求</span></span><br><span class="line">  <span class="comment">//req-请求对象 , res-响应对象</span></span><br><span class="line">  <span class="comment">//处理客户端请求逻辑</span></span><br><span class="line">  <span class="built_in">console</span>.log(<span class="string">'收到请求: '</span>+ req.url); <span class="comment">//用户请求地址</span></span><br><span class="line">  res.setHeader(<span class="string">"Content-type"</span>,<span class="string">"text/plain;charset=utf-8"</span>); <span class="comment">//设置文件类型</span></span><br><span class="line">  res.end(); <span class="comment">//必须结束响应，否则浏览器会被挂起</span></span><br><span class="line">&#125;);</span><br><span class="line"></span><br><span class="line">server.listen(<span class="number">3000</span>, <span class="function"><span class="keyword">function</span> (<span class="params"></span>) </span>&#123; <span class="comment">//启动http服务，开始监听3000端口</span></span><br><span class="line">  <span class="built_in">console</span>.log(<span class="string">'服务已经启动，请访问： http://localhost:3000 或 http://127.0.0.1:3000'</span>);</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
+
+<p><strong>注意点：</strong></p>
+<ol>
+<li>在监听request事件中，最后一定要res.end()结束响应。</li>
+<li>浏览器显示中文可能是乱码，需设置响应头告诉浏览器显示时所使用的编码，要在res.end()之前设置</li>
+</ol>
+<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line">res.setHeader(<span class="string">"Content-type"</span>,<span class="string">"text/plain;charset=utf-8"</span>); <span class="comment">// 响应为纯文本</span></span><br><span class="line">res.setHeader(<span class="string">"Content-type"</span>,<span class="string">"text/html;charset=utf-8"</span>);  <span class="comment">//响应为html文本</span></span><br></pre></td></tr></table></figure>
+
+<ol start="3">
+<li><strong>node.js没有根目录、没有web容器的概念！</strong></li>
+</ol>
+<h2 id="node-js读写文件"><a href="#node-js读写文件" class="headerlink" title="node.js读写文件"></a>node.js读写文件</h2><p><strong>读文件</strong></p>
+<p><code>fs.readFile(file[, options], callback)</code></p>
+<ul>
+<li>参数1：要读取的文件路径，必填。   </li>
+<li>参数2：读取文件时的选项，比如：文件编码utf8。选填。 </li>
+<li>参数3：文件读取完毕后的回调函数，必填。</li>
+</ul>
+<p><strong>注意点：</strong></p>
+<ul>
+<li>该操作采用异步执行    </li>
+<li>回调函数有两个参数，分别是err和data    </li>
+<li>如果读取文件时没有指定编码，返回的是二进制数据，如指定编码utf8，会返回指定的编码数据。    </li>
+<li>只要异步操作，回调函数第一个都是错误对象err优先</li>
+</ul>
+<p><strong>示例：</strong></p>
+<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="comment">//加载http包(nodeJS内置包)</span></span><br><span class="line"><span class="keyword">let</span> http = <span class="built_in">require</span>(<span class="string">"http"</span>);</span><br><span class="line"><span class="comment">//创建服务器  </span></span><br><span class="line"><span class="keyword">let</span> server = http.createServer()</span><br><span class="line"><span class="keyword">let</span> fs = <span class="built_in">require</span>(<span class="string">'fs'</span>); <span class="comment">//引入内部模块</span></span><br><span class="line"><span class="comment">//监听服务器的请求状态(用户发送请求触发)</span></span><br><span class="line">server.on(<span class="string">'request'</span>, <span class="function"><span class="keyword">function</span> (<span class="params">req, res</span>) </span>&#123;</span><br><span class="line">    <span class="built_in">console</span>.log(<span class="string">'用户发送了请求'</span>);</span><br><span class="line">    <span class="keyword">if</span> (req.url == <span class="string">'/heihei'</span>) &#123;<span class="comment">//地址可以自定义</span></span><br><span class="line">        fs.readFile(<span class="string">'./home.html'</span>, <span class="string">'utf-8'</span>, <span class="function"><span class="keyword">function</span> (<span class="params">err, data</span>) </span>&#123;</span><br><span class="line">            <span class="keyword">if</span> (!err) &#123;</span><br><span class="line">                res.setHeader(<span class="string">'Content-type'</span>, <span class="string">'text/html;charset=utf-8'</span>);</span><br><span class="line">                res.end(data);</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;)</span><br><span class="line">    &#125;<span class="keyword">else</span> &#123;</span><br><span class="line">        res.writeHead(<span class="number">404</span>, &#123; <span class="string">'Content-type'</span>: <span class="string">'text/plain;charset=utf-8'</span> &#125;);</span><br><span class="line">        res.end(<span class="string">'404,页面丢失了！！！'</span>);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;)</span><br><span class="line"><span class="comment">//启动服务，监听端口 ip地址 回调函数</span></span><br><span class="line">server.listen(<span class="string">"3000"</span>, <span class="string">"10.36.147.180"</span>, <span class="function"><span class="keyword">function</span> (<span class="params"></span>) </span>&#123;</span><br><span class="line">    <span class="built_in">console</span>.log(<span class="string">'服务已启动，请访问：10.36.147.180:3000'</span>);</span><br><span class="line">&#125;)</span><br></pre></td></tr></table></figure>
+
+<p><strong>写文件</strong></p>
+<p><code>fs.writeFile(file, data[, options], callback);</code></p>
+<ul>
+<li>参数1：要写入的文件路径，必填</li>
+<li>参数2：要写入的数据，必填</li>
+<li>参数3：写入文件时的选项，比如：文件编码</li>
+<li>参数4：文件写入完毕后的回调函数，必填</li>
+</ul>
+<p><strong>注意点：</strong></p>
+<ul>
+<li>该操作采用异步执行    </li>
+<li>如果文件存在则替换原内容    </li>
+<li>默认写入的文件编码为utf8    </li>
+<li>回调函数有1个参数：err，表示在写入文件的操作过程中是否出错了。    </li>
+<li>如果出错了err != null，成功时 err === null    </li>
+<li>写入文件（文件不存在则自动创建）</li>
+</ul>
+<p>writeFile写入文件是先把文件内容清空再写入，如果要追加写入的话可以使用appendFile函数</p>
+<p><strong>示例：</strong></p>
+<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="comment">//加载http包(nodeJS内置包)</span></span><br><span class="line"><span class="keyword">var</span> http = <span class="built_in">require</span>(<span class="string">"http"</span>);</span><br><span class="line"><span class="keyword">var</span> fs = <span class="built_in">require</span>(<span class="string">'fs'</span>); <span class="comment">//引入内部模块</span></span><br><span class="line"> </span><br><span class="line"><span class="keyword">var</span> server = http.createServer(<span class="function"><span class="keyword">function</span>(<span class="params">req,res</span>)</span>&#123;</span><br><span class="line">    <span class="comment">//给用户生成一个id</span></span><br><span class="line">    <span class="keyword">var</span> userid = <span class="built_in">parseInt</span>(<span class="built_in">Math</span>.radom()*<span class="number">89999</span>)+<span class="number">10000</span>;</span><br><span class="line">    <span class="built_in">console</span>.log(<span class="string">'用户'</span>+userid);</span><br><span class="line">    res.writeHead(<span class="number">200</span>,&#123;<span class="string">"Content-Type"</span>:<span class="string">"text/html;charset=UTF8"</span>&#125;);</span><br><span class="line">    <span class="keyword">var</span> str = <span class="string">'新修改的文字'</span>;</span><br><span class="line">    <span class="comment">//参数一是当前文件路径 参数二是写入数据</span></span><br><span class="line">    <span class="comment">//参数三是文件编码	  参数四是回调函数</span></span><br><span class="line">    fs.writeFile(<span class="string">"./test.txt"</span>,str,<span class="string">'utf8'</span>,<span class="function"><span class="keyword">function</span>(<span class="params">err</span>)</span>&#123;</span><br><span class="line">       <span class="keyword">if</span>(err)&#123;</span><br><span class="line">           <span class="keyword">throw</span> err;</span><br><span class="line">       &#125; </span><br><span class="line">        <span class="built_in">console</span>.log(<span class="string">'文件写入完成'</span>);</span><br><span class="line">        res.end();</span><br><span class="line">    &#125;)</span><br><span class="line">&#125;)</span><br><span class="line">server.listen(<span class="string">"3002"</span>, <span class="string">"10.36.147.180"</span>, <span class="function"><span class="keyword">function</span> (<span class="params"></span>) </span>&#123;</span><br><span class="line">    <span class="built_in">console</span>.log(<span class="string">'服务已启动，请访问：10.36.147.180:3002'</span>);</span><br><span class="line">&#125;)</span><br></pre></td></tr></table></figure>
+
+]]></content>
+      <categories>
+        <category>nodeJS</category>
+      </categories>
+      <tags>
+        <tag>笔记</tag>
+        <tag>知识点</tag>
+        <tag>node</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>模块化编程</title>
     <url>/2019/10/28/%E6%A8%A1%E5%9D%97%E5%8C%96%E7%BC%96%E7%A8%8B/</url>
     <content><![CDATA[<h2 id="ES6-module"><a href="#ES6-module" class="headerlink" title="ES6 module"></a>ES6 module</h2><blockquote>
@@ -384,6 +480,7 @@
       <tags>
         <tag>笔记</tag>
         <tag>知识点</tag>
+        <tag>Ajax</tag>
       </tags>
   </entry>
   <entry>
@@ -489,6 +586,7 @@
       <tags>
         <tag>语法</tag>
         <tag>常用</tag>
+        <tag>MarkDown</tag>
       </tags>
   </entry>
   <entry>
@@ -546,6 +644,7 @@
       <tags>
         <tag>hexo</tag>
         <tag>语法</tag>
+        <tag>博客</tag>
       </tags>
   </entry>
 </search>
