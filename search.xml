@@ -85,19 +85,19 @@
 <figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="comment">// 正确</span></span><br><span class="line"><span class="keyword">export</span> <span class="keyword">var</span> a = <span class="number">1</span>;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 正确</span></span><br><span class="line"><span class="keyword">var</span> a = <span class="number">1</span>;</span><br><span class="line"><span class="keyword">export</span> <span class="keyword">default</span> a;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 错误</span></span><br><span class="line"><span class="keyword">export</span> <span class="keyword">default</span> <span class="keyword">var</span> a = <span class="number">1</span>;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 正确</span></span><br><span class="line"><span class="keyword">export</span> <span class="keyword">default</span> <span class="number">42</span>;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 报错</span></span><br><span class="line"><span class="keyword">export</span> <span class="number">42</span>;</span><br></pre></td></tr></table></figure>
 
 <h2 id="浏览器加载规则"><a href="#浏览器加载规则" class="headerlink" title="浏览器加载规则"></a>浏览器加载规则</h2><blockquote>
-<p>默认情况下，浏览器是同步加载 JavaScript 脚本，即渲染引擎遇到<script>标签就会停下来，等到执行完脚本，再继续向下渲染。如果是外部脚本，还必须加入脚本下载的时间。如果脚本体积很大，下载和执行的时间就会很长，因此造成浏览器堵塞，用户会感觉到浏览器“卡死”了，没有任何响应。</p>
+<p>默认情况下，浏览器是同步加载 JavaScript 脚本，即渲染引擎遇到script&gt;标签就会停下来，等到执行完脚本，再继续向下渲染。如果是外部脚本，还必须加入脚本下载的时间。如果脚本体积很大，下载和执行的时间就会很长，因此造成浏览器堵塞，用户会感觉到浏览器“卡死”了，没有任何响应。</p>
 </blockquote>
 <p><strong>浏览器两种异步加载的语法</strong></p>
 <p><code>&lt;script src=&quot;path/to/myModule.js&quot; defer&gt;&lt;/script&gt;</code></p>
 <p><code>&lt;script src=&quot;path/to/myModule.js&quot; async&gt;&lt;/script&gt;</code></p>
-<p>上面代码中，<script>标签打开defer或async属性，脚本就会异步加载。渲染引擎遇到这一行命令，就会开始下载外部脚本，但不会等它下载和执行，而是直接执行后面的命令。</p>
+<p>上面代码中，script&gt;标签打开defer或async属性，脚本就会异步加载。渲染引擎遇到这一行命令，就会开始下载外部脚本，但不会等它下载和执行，而是直接执行后面的命令。</p>
 <p><strong>defer与async的区别</strong></p>
 <p>defer要等到整个页面在内存中正常渲染结束（DOM 结构完全生成，以及其他脚本执行完成），才会执行；</p>
 <p>async一旦下载完，渲染引擎就会中断渲染，执行这个脚本以后，再继续渲染</p>
 <p><strong>defer是“渲染完再执行”，async是“下载完就执行”。</strong></p>
 <p>如果有多个defer脚本，会按照它们在页面出现的顺序加载，而多个async脚本是不能保证加载顺序的。</p>
-<p>浏览器加载 ES6 模块，也使用<script>标签，但是要加入type="module"属性。</p>
-<p>浏览器对于带有type="module"的<script>，都是异步加载，不会造成堵塞浏览器，即等到整个页面渲染完，再执行模块脚本，等同于打开了<script>标签的defer属性。</p>
+<p>浏览器加载 ES6 模块，也使用script&gt;标签，但是要加入type=”module”属性。</p>
+<p>浏览器对于带有type=”module”的script&gt;，都是异步加载，不会造成堵塞浏览器，即等到整个页面渲染完，再执行模块脚本，等同于打开了script&gt;标签的defer属性。</p>
 <p><code>&lt;script type=&quot;module&quot; src=&quot;./foo.js&quot; defer&gt;&lt;/script&gt;</code></p>
 <h2 id="RequireJs"><a href="#RequireJs" class="headerlink" title="RequireJs"></a>RequireJs</h2><p><strong>什么是RequireJs</strong></p>
 <blockquote>
@@ -110,18 +110,12 @@
 <p><strong>AMD和CMD相同点：</strong></p>
 <blockquote>
 <ul>
-<li><p>都是异步加载模块；</p>
-</li>
-<li><p>都实现了浏览器端模块化开发的目的；</p>
-</li>
-<li><p>都倡导模块化开发理念，使前端模块化开发变得简单自然；</p>
-</li>
-<li><p>解决前端开发过程中的两大问题：</p>
-<ol>
-<li><p>文件之间的依赖问题；</p>
-</li>
-<li><p>浏览器加载多个JS文件时页面失去响应的时间过长。</p>
-</li>
+<li>都是异步加载模块；</li>
+<li>都实现了浏览器端模块化开发的目的；</li>
+<li>都倡导模块化开发理念，使前端模块化开发变得简单自然；</li>
+<li>解决前端开发过程中的两大问题：<ol>
+<li>文件之间的依赖问题；</li>
+<li>浏览器加载多个JS文件时页面失去响应的时间过长。</li>
 </ol>
 </li>
 </ul>
@@ -129,15 +123,12 @@
 <p><strong>AMD和CMD不同点：</strong></p>
 <blockquote>
 <ol>
-<li><p>官方推荐的写法不同，AMD推崇依赖前置，CMD推崇依赖就近；</p>
-</li>
-<li><p>模块的执行时机不同，AMD是提前执行，CMD是延迟执行；</p>
-</li>
-<li><p>api的设计不同，AMD 的 API 默认是一个当多个用，CMD 的 API 严格区分，推崇职责单一。</p>
-</li>
+<li>官方推荐的写法不同，AMD推崇依赖前置，CMD推崇依赖就近；</li>
+<li>模块的执行时机不同，AMD是提前执行，CMD是延迟执行；</li>
+<li>api的设计不同，AMD 的 API 默认是一个当多个用，CMD 的 API 严格区分，推崇职责单一。</li>
 </ol>
 </blockquote>
-<p><strong>"一个模块就是一个文件"</strong></p>
+<p><strong>“一个模块就是一个文件”</strong></p>
 <p><strong>require 用来加载依赖模块，并执行加载完后的回调函数</strong></p>
 <p><code>require([&#39;moduleA&#39;, &#39;moduleB&#39;], function (a, b){ });</code></p>
 <p>第一个参数是依赖模块列表，第二个参数是一个callback函数</p>
@@ -149,7 +140,7 @@
 <p><strong>define 用来定义一个模块</strong></p>
 <figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line">define(&#123;</span><br><span class="line">　 <span class="comment">// ...</span></span><br><span class="line">    key: value</span><br><span class="line">&#125;);</span><br><span class="line"></span><br><span class="line">define(<span class="function"><span class="keyword">function</span>(<span class="params"> </span>)</span>&#123;</span><br><span class="line">　 <span class="comment">// ...</span></span><br><span class="line">    <span class="keyword">return</span> &#123;</span><br><span class="line">        <span class="comment">// ...</span></span><br><span class="line">    &#125;</span><br><span class="line">&#125;);</span><br><span class="line"></span><br><span class="line">define([<span class="string">'依赖的模块路径'</span>], <span class="function"><span class="keyword">function</span>(<span class="params">依赖模块名称</span>)</span>&#123;</span><br><span class="line">　<span class="comment">// ...</span></span><br><span class="line">　<span class="keyword">return</span> &#123;</span><br><span class="line">　　<span class="comment">// ...</span></span><br><span class="line">　&#125;;</span><br><span class="line">&#125;);</span><br><span class="line"></span><br><span class="line">define(<span class="string">'模块名称'</span>, [<span class="string">'依赖的模块路径'</span>], <span class="function"><span class="keyword">function</span>(<span class="params">依赖模块名称</span>)</span>&#123;</span><br><span class="line">　<span class="comment">// ...</span></span><br><span class="line">　<span class="keyword">return</span> &#123;</span><br><span class="line">　　<span class="comment">// ...</span></span><br><span class="line">　&#125;;</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
 
-</script></p></blockquote>]]></content>
+]]></content>
       <categories>
         <category>web前端</category>
       </categories>
