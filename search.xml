@@ -1,6 +1,108 @@
 <?xml version="1.0" encoding="utf-8"?>
 <search>
   <entry>
+    <title>gulp</title>
+    <url>/2019/10/30/gulp/</url>
+    <content><![CDATA[<h2 id="什么是Gulp"><a href="#什么是Gulp" class="headerlink" title="什么是Gulp"></a>什么是Gulp</h2><blockquote>
+<p>Gulp是基于Node.js流的前端自动化构建工具</p>
+<p>Gulp自动化构建工具可以增强你的工作流程！易于使用、易于学习、构建快速、插件高质！</p>
+<p>在日常开发中，可以借助Gulp的一些插件完成很多的前端任务。</p>
+<p>如：代码的编译（sass、less）、压缩css，js、图片、合并js，css、es6转es5、自动刷新页面等。</p>
+</blockquote><a id="more"></a>
+<h2 id="使用Gulp"><a href="#使用Gulp" class="headerlink" title="使用Gulp"></a>使用Gulp</h2><p>第一步先确保根目录存在 <code>package.json</code> 文件，执行 <code>npm init -y</code> 生成</p>
+<p><strong>1. 全局安装gulp-cli脚手架</strong></p>
+<p><code>npm install gulp-cli --global</code></p>
+<p><strong>2. 安装项目开发依赖</strong></p>
+<p><code>npm install gulp --save-dev</code></p>
+<p><strong>3.在项目根目录下创建一个名为 gulpfile.js 的配置文件：</strong></p>
+<p>此文件是项目主文件，运行gulp命令时，默认运行此文件</p>
+<p><strong>4.命令行运行 gulp：</strong></p>
+<p>gulp + 任务名</p>
+<hr>
+<h2 id="Gulp常用的API"><a href="#Gulp常用的API" class="headerlink" title="Gulp常用的API"></a>Gulp常用的API</h2><blockquote>
+<p>task()、src()、dest()、watch()、series()、parallel()</p>
+</blockquote>
+<p><strong>gulp.task 方法用来注册任务</strong></p>
+<blockquote>
+<p>gulp.task(taskName, taskFunction)</p>
+<p>taskName 为任务名</p>
+<p>taskFunction 为任务函数，我们把任务要执行的代码都写在里面。</p>
+</blockquote>
+<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="keyword">var</span> gulp = <span class="built_in">require</span>(<span class="string">'gulp'</span>);</span><br><span class="line">gulp.task(<span class="string">'task1'</span>, <span class="function"><span class="keyword">function</span> (<span class="params"></span>) </span>&#123; <span class="comment">//注册任务task1</span></span><br><span class="line">    <span class="built_in">console</span>.log(<span class="string">'执行task1'</span>);</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
+
+<p><strong>新版本<a href="mailto:Gulp@4.0" target="_blank" rel="noopener">Gulp@4.0</a>书写方式</strong></p>
+<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="keyword">var</span> gulp = <span class="built_in">require</span>(<span class="string">'gulp'</span>);</span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">myTask</span>(<span class="params">done</span>)</span>&#123;</span><br><span class="line">    <span class="built_in">console</span>.log(<span class="string">'执行task2'</span>);</span><br><span class="line">    done(); <span class="comment">//异步任务完成</span></span><br><span class="line">&#125;</span><br><span class="line">exports.task2 = myTask; <span class="comment">//注册任务task2</span></span><br></pre></td></tr></table></figure>
+
+<p><strong>gulp.dest 创建一个流，用于从文件系统读取元数据对象</strong>（用来读取文件）</p>
+<blockquote>
+<p>gulp.src(‘./js/a.js’); // 读取一个文件</p>
+<p>gulp.src(‘./js/*.js’); // 读取js目录下的所有js文件</p>
+<p>gulp.src([‘./js/a.js’,’./js/b.js’]); // 读取两个文件</p>
+</blockquote>
+<p><strong>gulp.dest 创建一个流，用于将元数据对象写入到文件系统</strong>（设置生成文件的路径）</p>
+<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="keyword">var</span> gulp = <span class="built_in">require</span>(<span class="string">'gulp'</span>);</span><br><span class="line">gulp.task(<span class="string">'mytask'</span>, <span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">    gulp.src(<span class="string">"./js/a.js"</span>)</span><br><span class="line">    .pipe(gulp.dest(<span class="string">"./dist"</span>));</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
+
+<p>读取文件流（gulp.src），通过管道（pipe），把文件流写入（gulp.dest）当前目录下的 dist 文件夹中</p>
+<p><strong>gulp.watch  监听 globs 并在发生更改时运行任务</strong></p>
+<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line">gulp.task(<span class="string">'watchs'</span>,<span class="function"><span class="keyword">function</span>(<span class="params"></span>)</span>&#123;<span class="comment">//监听任务</span></span><br><span class="line">    <span class="comment">//当匹配任务变化时执行相应任务</span></span><br><span class="line">    gulp.watch(<span class="string">'./js/*.js'</span>,gulp.series(<span class="string">'concat'</span>));</span><br><span class="line">    gulp.watch(<span class="string">'./css/*.css'</span>,gulp.series(<span class="string">'task1'</span>));</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
+
+<p><strong>gulp.series() 将任务函数或组合操作组合成更大的操作（按顺序执行，同步）</strong></p>
+<p><strong>gulp.parallel() 将任务函数或组合操作组合成更大的操作（同时进行，异步）</strong></p>
+<hr>
+<h2 id="常用插件"><a href="#常用插件" class="headerlink" title="常用插件"></a>常用插件</h2><p>常见问题解决方案：清理残留缓存<code>npm cache clean --force</code></p>
+<p><strong>文件合并</strong></p>
+<p>安装：<code>npm install --save-dev gulp-concat</code></p>
+<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="keyword">var</span> gulp = <span class="built_in">require</span>(<span class="string">'gulp'</span>);</span><br><span class="line"><span class="keyword">var</span> concat = <span class="built_in">require</span>(<span class="string">'gulp-concat'</span>); <span class="comment">//引入插件</span></span><br><span class="line">gulp.task(<span class="string">'concat'</span>, <span class="function"><span class="keyword">function</span> (<span class="params"></span>) </span>&#123;</span><br><span class="line">    <span class="keyword">return</span> gulp.src(<span class="string">'./js/*.js'</span>) 	<span class="comment">//要合并的文件</span></span><br><span class="line">    .pipe(concat(<span class="string">'main.js'</span>)) 		<span class="comment">//合并匹配到的js文件并命名为 "main.js"</span></span><br><span class="line">    .pipe(gulp.dest(<span class="string">'./dist/js'</span>));	<span class="comment">//写入dist/js文件夹下</span></span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
+
+<p><strong>js文件压缩</strong></p>
+<p>安装：<code>npm install --save-dev gulp-uglify</code></p>
+<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="keyword">var</span> gulp = <span class="built_in">require</span>(<span class="string">'gulp'</span>);</span><br><span class="line"><span class="keyword">var</span> uglify = <span class="built_in">require</span>(<span class="string">'gulp-uglify'</span>); <span class="comment">//引入插件</span></span><br><span class="line">gulp.task(<span class="string">'uglifyJS'</span>, <span class="function"><span class="keyword">function</span> (<span class="params"></span>) </span>&#123;</span><br><span class="line">    <span class="keyword">return</span> gulp.src(<span class="string">'./dist/main.js'</span>) <span class="comment">// 要压缩的js文件</span></span><br><span class="line">    .pipe(uglify()) 				<span class="comment">//使用uglify进行压缩</span></span><br><span class="line">    .pipe(gulp.dest(<span class="string">'./dist/js'</span>));	<span class="comment">//写入js文件夹</span></span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
+
+<p><strong>css文件压缩</strong></p>
+<p>安装：<code>npm install --save-dev gulp-minify-css</code></p>
+<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="keyword">var</span> gulp = <span class="built_in">require</span>(<span class="string">'gulp'</span>);</span><br><span class="line"><span class="keyword">var</span> minifyCss = <span class="built_in">require</span>(<span class="string">'gulp-minify-css'</span>);<span class="comment">//引入插件</span></span><br><span class="line">gulp.task(<span class="string">'minifyCss'</span>, <span class="function"><span class="keyword">function</span> (<span class="params"></span>) </span>&#123;</span><br><span class="line">    <span class="keyword">return</span> gulp.src(<span class="string">'./dist/main.css'</span>) <span class="comment">// 要压缩的css文件</span></span><br><span class="line">    .pipe(minifyCss()) 				<span class="comment">//压缩css</span></span><br><span class="line">    .pipe(gulp.dest(<span class="string">'./dist/css'</span>));	<span class="comment">//写入dist文件夹</span></span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
+
+<p><strong>css/js文件合并压缩</strong></p>
+<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="keyword">var</span> gulp = <span class="built_in">require</span>(<span class="string">'gulp'</span>);</span><br><span class="line"><span class="keyword">var</span> uglify = <span class="built_in">require</span>(<span class="string">'gulp-uglify'</span>); <span class="comment">//引入js压缩插件</span></span><br><span class="line"><span class="keyword">var</span> concat = <span class="built_in">require</span>(<span class="string">'gulp-concat'</span>); <span class="comment">//引入合并插件</span></span><br><span class="line"></span><br><span class="line"><span class="comment">//js文件的合并压缩</span></span><br><span class="line">gulp.task(<span class="string">'concatJs'</span>, <span class="function"><span class="keyword">function</span> (<span class="params"></span>) </span>&#123;</span><br><span class="line">    <span class="keyword">return</span> gulp.src([<span class="string">'./js/*.js'</span>, <span class="string">'!./js/j*.js'</span>]) <span class="comment">//要合并的文件</span></span><br><span class="line">        .pipe(concat(<span class="string">'main.js'</span>)) 		<span class="comment">//合并匹配到的js文件并命名为 "main.js"</span></span><br><span class="line">        .pipe(uglify())					<span class="comment">//将合并后的js文件进行压缩</span></span><br><span class="line">        .pipe(gulp.dest(<span class="string">'./dist/js'</span>))<span class="comment">//写入dist/js文件夹</span></span><br><span class="line">        .pipe(connect.reload())</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
+
+<p><strong>html文件压缩</strong></p>
+<p>安装：<code>npm install --save-dev gulp-minify-html</code></p>
+<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="keyword">var</span> gulp = <span class="built_in">require</span>(<span class="string">'gulp'</span>);</span><br><span class="line"><span class="keyword">var</span> minifyHtml = <span class="built_in">require</span>(<span class="string">'gulp-minify-html'</span>);<span class="comment">//引入插件</span></span><br><span class="line">gulp.task(<span class="string">'minifyHtml'</span>, <span class="function"><span class="keyword">function</span> (<span class="params"></span>) </span>&#123;</span><br><span class="line">    <span class="keyword">return</span> gulp.src(<span class="string">'./test.html'</span>) <span class="comment">//要压缩的html文件</span></span><br><span class="line">    .pipe(minifyHtml()) 			<span class="comment">//压缩html</span></span><br><span class="line">    .pipe(gulp.dest(<span class="string">'./dist/'</span>));	<span class="comment">//写入dist文件夹</span></span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
+
+<p><strong>重命名</strong></p>
+<p>安装：<code>npm install --save-dev gulp-rename</code></p>
+<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="keyword">var</span> gulp = <span class="built_in">require</span>(<span class="string">'gulp'</span>);</span><br><span class="line"><span class="keyword">var</span> uglify = <span class="built_in">require</span>(<span class="string">'gulp-uglify'</span>);</span><br><span class="line"><span class="keyword">var</span> rename = <span class="built_in">require</span>(<span class="string">'gulp-rename'</span>);<span class="comment">//引入插件</span></span><br><span class="line">gulp.task(<span class="string">'rename'</span>, <span class="function"><span class="keyword">function</span> (<span class="params"></span>) </span>&#123;</span><br><span class="line">    <span class="keyword">return</span> gulp.src(<span class="string">'./js/jquery-1.8.3.js'</span>) <span class="comment">//读取文件</span></span><br><span class="line">    .pipe(uglify()) 						<span class="comment">//压缩</span></span><br><span class="line">    .pipe(rename(<span class="string">'jquery-1.8.3.min.js'</span>))	<span class="comment">//重命名</span></span><br><span class="line">    .pipe(gulp.dest(<span class="string">'./dist/js'</span>));			<span class="comment">//写入js文件夹</span></span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
+
+
+
+<p><strong>ES6转ES5</strong></p>
+<p>安装：<code>npm install --save-dev gulp-babel @babel/core @babel/preset-env</code></p>
+<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="keyword">var</span> gulp = <span class="built_in">require</span>(<span class="string">'gulp'</span>);</span><br><span class="line"><span class="keyword">var</span> babel = <span class="built_in">require</span>(<span class="string">'gulp-babel'</span>);</span><br><span class="line">gulp.task(<span class="string">'es6Toes5'</span>, <span class="function"><span class="keyword">function</span> (<span class="params"></span>) </span>&#123;</span><br><span class="line">    <span class="keyword">return</span> gulp.src(<span class="string">'./js/class.js'</span>)</span><br><span class="line">    .pipe(babel(&#123; <span class="attr">presets</span>: [<span class="string">'@babel/preset-env'</span>]&#125;))</span><br><span class="line">    .pipe(gulp.dest(<span class="string">'./dist/js'</span>))</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
+
+<p><strong>sass编译</strong></p>
+<p>安装：<code>npm install --save-dev gulp-sass</code></p>
+<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="keyword">const</span> gulp = <span class="built_in">require</span>(<span class="string">'gulp'</span>);</span><br><span class="line"><span class="keyword">const</span> sass = <span class="built_in">require</span>(<span class="string">"gulp-sass"</span>);</span><br><span class="line">gulp.task(<span class="string">'sass'</span>,<span class="function"><span class="keyword">function</span> (<span class="params"></span>) </span>&#123;</span><br><span class="line">    <span class="keyword">return</span> gulp.src(<span class="string">'./test.scss'</span>)</span><br><span class="line">    .pipe(sass())</span><br><span class="line">    .pipe(gulp.dest(<span class="string">'./dist'</span>));</span><br><span class="line">&#125;);</span><br><span class="line"></span><br><span class="line">gulp.task(<span class="string">'compileSass'</span>,<span class="function"><span class="keyword">function</span> (<span class="params"></span>) </span>&#123;</span><br><span class="line">    gulp.watch(<span class="string">'./test.scss'</span>,gulp.series(<span class="string">'sass'</span>));</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
+
+
+
+<p><strong>*自动刷新</strong></p>
+<p>安装：<code>npm install --save-dev gulp-connect</code></p>
+<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="keyword">const</span> gulp = <span class="built_in">require</span>(<span class="string">'gulp'</span>);<span class="comment">//gulp包</span></span><br><span class="line"><span class="keyword">const</span> minifyHtml = <span class="built_in">require</span>(<span class="string">'gulp-minify-html'</span>);<span class="comment">//压缩html</span></span><br><span class="line"><span class="keyword">const</span> connect = <span class="built_in">require</span>(<span class="string">'gulp-connect'</span>);<span class="comment">//浏览器刷新插件</span></span><br><span class="line"></span><br><span class="line">gulp.task(<span class="string">'reload'</span>, <span class="function"><span class="keyword">function</span> (<span class="params">done</span>) </span>&#123;</span><br><span class="line">    connect.server(&#123;</span><br><span class="line">        livereload: <span class="literal">true</span>,</span><br><span class="line">    &#125;);</span><br><span class="line">    done();</span><br><span class="line">&#125;);</span><br><span class="line"></span><br><span class="line">gulp.task(<span class="string">'minifyHtml'</span>, <span class="function"><span class="keyword">function</span> (<span class="params"></span>) </span>&#123;</span><br><span class="line">    <span class="keyword">return</span> gulp.src(<span class="string">'./test.html'</span>)  <span class="comment">//要压缩的html文件</span></span><br><span class="line">    .pipe(minifyHtml()) 			<span class="comment">//压缩html</span></span><br><span class="line">    .pipe(gulp.dest(<span class="string">'./dist'</span>))		<span class="comment">//写入dist文件夹</span></span><br><span class="line">    .pipe(connect.reload())<span class="comment">//自动刷新的关键，css合并压缩和js合并压缩都要加上这一句，就不一一举例了</span></span><br><span class="line">&#125;);</span><br><span class="line"></span><br><span class="line"><span class="comment">//监视文件的状态并同步更新</span></span><br><span class="line">gulp.task(<span class="string">'watchs'</span>, <span class="function"><span class="keyword">function</span> (<span class="params"></span>) </span>&#123;</span><br><span class="line">    gulp.watch(<span class="string">'./css/*.css'</span>, gulp.series(<span class="string">'concatCss'</span>))  <span class="comment">//监视 并同步css  压缩代码</span></span><br><span class="line">    gulp.watch(<span class="string">'./js/*.js'</span>, gulp.series(<span class="string">'concatJs'</span>))     <span class="comment">//监视 并同步js   压缩代码   </span></span><br><span class="line">    gulp.watch(<span class="string">'./*.html'</span>, gulp.series(<span class="string">'minifyHtml'</span>))    <span class="comment">//监视 并同步html 压缩代码   </span></span><br><span class="line">&#125;);</span><br><span class="line"></span><br><span class="line">gulp.task(<span class="string">'run'</span>, gulp.series(<span class="string">'reload'</span>, <span class="string">'watchs'</span>));</span><br></pre></td></tr></table></figure>
+
+<p><strong>*一键打包</strong></p>
+<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line">gulp.task(<span class="string">'bulid'</span>, gulp.parallel( <span class="comment">//一键打包生成</span></span><br><span class="line">    gulp.series(<span class="string">'concatCss'</span>),</span><br><span class="line">    gulp.series(<span class="string">'concatJs'</span>),</span><br><span class="line">    gulp.series(<span class="string">'rename'</span>),</span><br><span class="line">    gulp.series(<span class="string">'minifyHtml'</span>)</span><br><span class="line">));</span><br></pre></td></tr></table></figure>
+
+]]></content>
+      <categories>
+        <category>项目相关</category>
+      </categories>
+      <tags>
+        <tag>笔记</tag>
+        <tag>知识点</tag>
+        <tag>gulp</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>npm的使用</title>
     <url>/2019/10/30/npm%E7%9A%84%E4%BD%BF%E7%94%A8/</url>
     <content><![CDATA[<p><strong>NPM是随同NodeJS一起安装的包管理工具，包的结构使您能够轻松跟踪依赖项和版本。</strong></p><blockquote>
@@ -621,8 +723,8 @@
         <category>技术文档</category>
       </categories>
       <tags>
-        <tag>语法</tag>
         <tag>常用</tag>
+        <tag>语法</tag>
         <tag>MarkDown</tag>
       </tags>
   </entry>
@@ -679,8 +781,8 @@
         <category>技术文档</category>
       </categories>
       <tags>
-        <tag>hexo</tag>
         <tag>语法</tag>
+        <tag>hexo</tag>
         <tag>博客</tag>
       </tags>
   </entry>
