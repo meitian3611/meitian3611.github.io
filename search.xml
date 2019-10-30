@@ -1,6 +1,43 @@
 <?xml version="1.0" encoding="utf-8"?>
 <search>
   <entry>
+    <title>npm的使用</title>
+    <url>/2019/10/30/npm%E7%9A%84%E4%BD%BF%E7%94%A8/</url>
+    <content><![CDATA[<p><strong>NPM是随同NodeJS一起安装的包管理工具，包的结构使您能够轻松跟踪依赖项和版本。</strong></p><blockquote>
+<p>NPM能解决NodeJS代码部署上的很多问题，常见的使用场景有以下几种：</p>
+<p>允许用户从NPM服务器下载别人编写的第三方包到本地使用。</p>
+<p>允许用户从NPM服务器下载并安装别人编写的命令行程序到本地使用。</p>
+<p>允许用户将自己编写的包或命令行程序上传到NPM服务器供别人使用。</p>
+</blockquote><a id="more"></a>
+
+<p><strong>项目初始化：</strong> package.json 配置文件</p>
+<p><code>$ npm init -y  跳过所有提问</code></p>
+<p><strong>安装包</strong></p>
+<p>本地安装 <code>$ npm install 包名</code></p>
+<p>全局安装<code>$ npm install 包名 -global</code></p>
+<p>缩写形式<code>$ npm i 包名 -g</code></p>
+<p><strong>项目依赖</strong></p>
+<p> <code>$ npm install 包名 -save</code></p>
+<p>项目上线需要用到的包，缩写<code>$ npm install 包名 -S (大写)</code></p>
+<p><strong>开发依赖</strong></p>
+<p><code>$ npm install 包名 --save-dev</code></p>
+<p>开发测试需要用到的包，缩写 <code>$ npm install 包名 -D (大写)</code></p>
+<p><strong>移除依赖模块</strong></p>
+<p><code>$ npm uninstall 包名 -save</code></p>
+<p><code>$ npm uninstall 包名 --save-dev</code></p>
+<p><strong>清除缓存数据</strong></p>
+<p><code>npm cache verify</code></p>
+]]></content>
+      <categories>
+        <category>项目相关</category>
+      </categories>
+      <tags>
+        <tag>笔记</tag>
+        <tag>npm</tag>
+        <tag>操作指令</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>Node.js的初步认识</title>
     <url>/2019/10/29/nodeJs%E7%9A%84%E5%88%9D%E6%AD%A5%E8%AE%A4%E8%AF%86/</url>
     <content><![CDATA[<h2 id="Node-js简介"><a href="#Node-js简介" class="headerlink" title="Node.js简介"></a>Node.js简介</h2><blockquote>
