@@ -1,6 +1,78 @@
 <?xml version="1.0" encoding="utf-8"?>
 <search>
   <entry>
+    <title>Sass</title>
+    <url>/2019/10/31/Sass/</url>
+    <content><![CDATA[<h2 id="Sass是什么"><a href="#Sass是什么" class="headerlink" title="Sass是什么"></a>Sass是什么</h2><blockquote>
+<ul>
+<li><p>SASS是一种动态的CSS（CSS预处理器），它扩展了 CSS 语法，</p>
+</li>
+<li><p>定义了一套新的语法规则和函数，以加强和提升CSS。</p>
+</li>
+<li><p>浏览器不认识sass，都需要编译成css文件！！</p>
+</li>
+<li><p>你仍然可以在Sass中写普通的CSS语句！</p>
+</li>
+</ul>
+</blockquote><a id="more"></a>
+<p>Sass 扩展了 css 的特性：</p>
+<p>变量嵌套规则</p>
+<p>@import导入样式</p>
+<p>@mixin 混合器及传参</p>
+<p>@extend 继承</p>
+<p>@if、@for、@function 等</p>
+<h3 id="软件方式编译"><a href="#软件方式编译" class="headerlink" title="软件方式编译"></a>软件方式编译</h3><p>使用Koala编译sass</p>
+<p>koala是一个国产免费前端预处理器语言图形编译工具，支持Less、Sass、Compass、CoffeeScript，帮助web开发者更高效地使用它们进行开发。跨平台运行，完美兼容windows、linux、mac。</p>
+<p>koala：<a href="http://koala-app.com/index-zh.html" target="_blank" rel="noopener">http://koala-app.com/index-zh.html</a></p>
+<p><strong>注：以下均为scss语法</strong></p>
+<h3 id="变量"><a href="#变量" class="headerlink" title="变量"></a>变量</h3><blockquote>
+<p>sass使用$符号来标识变量</p>
+</blockquote>
+<figure class="highlight scss"><table><tr><td class="code"><pre><span class="line"><span class="variable">$nav-color</span>: <span class="number">#F90</span>;</span><br><span class="line"><span class="variable">$width</span>: <span class="number">100px</span>;</span><br><span class="line"><span class="selector-tag">nav</span> &#123;</span><br><span class="line">    <span class="attribute">width</span>: <span class="variable">$width</span>;</span><br><span class="line">    <span class="attribute">color</span>: <span class="variable">$nav-color</span>;</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">//编译后</span></span><br><span class="line"><span class="selector-tag">nav</span> &#123;</span><br><span class="line">    <span class="attribute">width</span>: <span class="number">100px</span>;</span><br><span class="line">    <span class="attribute">color</span>: <span class="number">#F90</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="嵌套"><a href="#嵌套" class="headerlink" title="嵌套"></a>嵌套</h3><blockquote>
+<p>在Sass中，你可以像俄罗斯套娃那样在规则块中嵌套规则块。</p>
+<p>Sass允许将一套 CSS 样式嵌套进另一套样式中，内层的样式将它外层的选择器作为父选择器。</p>
+</blockquote>
+<figure class="highlight scss"><table><tr><td class="code"><pre><span class="line"><span class="selector-id">#box</span>&#123;</span><br><span class="line">    <span class="attribute">width</span>:<span class="number">100px</span>;</span><br><span class="line">    <span class="attribute">height</span>:<span class="number">100px</span>;</span><br><span class="line">    <span class="selector-tag">h1</span>&#123;<span class="comment">//通过缩进用于嵌套</span></span><br><span class="line">        <span class="attribute">text-align</span>:center;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="selector-tag">span</span>&#123;</span><br><span class="line">        <span class="attribute">font-size</span>:<span class="number">16px</span>;</span><br><span class="line">        <span class="selector-tag">a</span>&#123;</span><br><span class="line">            <span class="attribute">color</span>:blue</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line">//编译后</span><br><span class="line"><span class="number">#b</span>ox &#123;</span><br><span class="line">    width: <span class="number">100px</span>;</span><br><span class="line">    <span class="attribute">height</span>: <span class="number">100px</span>;</span><br><span class="line">&#125;</span><br><span class="line"><span class="selector-id">#box</span> <span class="selector-tag">h1</span> &#123;</span><br><span class="line">    <span class="attribute">text-align</span>: center;</span><br><span class="line">&#125;</span><br><span class="line"><span class="selector-id">#box</span> <span class="selector-tag">span</span> &#123;</span><br><span class="line">    <span class="attribute">font-size</span>: <span class="number">16px</span>;</span><br><span class="line">&#125;</span><br><span class="line"><span class="selector-id">#box</span> <span class="selector-tag">span</span> <span class="selector-tag">a</span> &#123;</span><br><span class="line">    <span class="attribute">color</span>: blue;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>父选择器的标识符 <strong>&amp;</strong></p>
+<figure class="highlight scss"><table><tr><td class="code"><pre><span class="line"><span class="selector-tag">a</span> &#123;</span><br><span class="line">    <span class="attribute">background-color</span>:red;</span><br><span class="line">    &amp;:hover&#123;</span><br><span class="line">        <span class="attribute">font-size</span>:<span class="number">60px</span>;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">//编译后</span></span><br><span class="line"><span class="selector-tag">a</span> &#123;</span><br><span class="line">    <span class="attribute">background-color</span>: red;</span><br><span class="line">&#125;</span><br><span class="line"><span class="selector-tag">a</span>:hover &#123;</span><br><span class="line">    <span class="attribute">font-size</span>: <span class="number">60px</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="import导入样式"><a href="#import导入样式" class="headerlink" title="@import导入样式"></a>@import导入样式</h3><blockquote>
+<p>css有一个特别不常用的特性，即@import url()规则，它允许在一个css文件中导入其他css文件。 页面打开时，link引用的css文件被加载。而@import引用的CSS等页面加载完(DOM)之后再加载。</p>
+</blockquote>
+<blockquote>
+<p>sass也有一个@import规则，但不同的是，sass的@import规则在生成css文件时就把相关文件导入进来。@import “b”;这条命令将把 b.scss文件中所有样式添加到当前样式表中</p>
+</blockquote>
+<figure class="highlight scss"><table><tr><td class="code"><pre><span class="line"><span class="comment">// a.scss</span></span><br><span class="line"><span class="variable">$width</span> : <span class="number">100px</span>;</span><br><span class="line"><span class="selector-class">.before</span> &#123;</span><br><span class="line">    <span class="attribute">width</span>: <span class="variable">$width</span>;</span><br><span class="line">&#125;</span><br><span class="line">@<span class="keyword">import</span> <span class="string">"b"</span>;</span><br><span class="line"><span class="selector-class">.after</span> &#123;</span><br><span class="line">    <span class="attribute">width</span>: <span class="variable">$width</span>;</span><br><span class="line">&#125;</span><br><span class="line"><span class="selector-class">.container</span> &#123;</span><br><span class="line">    <span class="attribute">width</span>: <span class="variable">$width</span>;</span><br><span class="line">    <span class="attribute">height</span>: <span class="variable">$height</span>;</span><br><span class="line">    <span class="attribute">border</span>: <span class="number">1px</span> solid;</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">// b.scss</span></span><br><span class="line"><span class="variable">$width</span> : <span class="number">200px</span>;</span><br><span class="line"><span class="variable">$height</span> : <span class="number">200px</span></span><br></pre></td></tr></table></figure>
+
+<p><strong>编译后</strong></p>
+<figure class="highlight scss"><table><tr><td class="code"><pre><span class="line"><span class="comment">// a.css</span></span><br><span class="line"><span class="selector-class">.before</span> &#123;</span><br><span class="line">    <span class="attribute">width</span>: <span class="number">100px</span>;</span><br><span class="line">&#125;</span><br><span class="line"><span class="selector-class">.after</span> &#123;</span><br><span class="line">    <span class="attribute">width</span>: <span class="number">200px</span>;</span><br><span class="line">&#125;</span><br><span class="line"><span class="selector-class">.container</span> &#123;</span><br><span class="line">    <span class="attribute">width</span>: <span class="number">200px</span>;</span><br><span class="line">    <span class="attribute">height</span>: <span class="number">200px</span>;</span><br><span class="line">    <span class="attribute">border</span>: <span class="number">1px</span> solid;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="混合器-mixin"><a href="#混合器-mixin" class="headerlink" title="混合器 @mixin"></a>混合器 @mixin</h3><blockquote>
+<p>你可以通过sass的混合器实现大段样式的重用。</p>
+</blockquote>
+<figure class="highlight scss"><table><tr><td class="code"><pre><span class="line">@<span class="keyword">mixin</span> no-bullets &#123;</span><br><span class="line">    <span class="attribute">list-style</span>: none;</span><br><span class="line">    <span class="selector-tag">li</span> &#123;</span><br><span class="line">        <span class="attribute">list-style-image</span>: none;</span><br><span class="line">        <span class="attribute">list-style-type</span>: none;</span><br><span class="line">        <span class="attribute">margin-left</span>: <span class="number">0px</span>;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"><span class="selector-tag">ul</span><span class="selector-class">.plain</span> &#123;</span><br><span class="line">    <span class="attribute">color</span>: <span class="number">#444</span>;</span><br><span class="line">    @<span class="keyword">include</span> no-bullets;</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">// 编译后：</span></span><br><span class="line"><span class="selector-tag">ul</span><span class="selector-class">.plain</span> &#123;</span><br><span class="line">    <span class="attribute">color</span>: <span class="number">#444</span>;</span><br><span class="line">    <span class="attribute">list-style</span>: none;</span><br><span class="line">&#125;</span><br><span class="line"><span class="selector-tag">ul</span><span class="selector-class">.plain</span> <span class="selector-tag">li</span> &#123;</span><br><span class="line">    <span class="attribute">list-style-image</span>: none;</span><br><span class="line">    <span class="attribute">list-style-type</span>: none;</span><br><span class="line">    <span class="attribute">margin-left</span>: <span class="number">0px</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p><strong>还可以给混合器传参</strong></p>
+<figure class="highlight scss"><table><tr><td class="code"><pre><span class="line">@<span class="keyword">mixin</span> link-colors(<span class="variable">$normal</span>, <span class="variable">$hover</span>, <span class="variable">$visited</span>) &#123;</span><br><span class="line">    <span class="attribute">color</span>: <span class="variable">$normal</span>;</span><br><span class="line">    &amp;:hover &#123;</span><br><span class="line">        <span class="attribute">color</span>: <span class="variable">$hover</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    &amp;:visited &#123;</span><br><span class="line">        <span class="attribute">color</span>: <span class="variable">$visited</span>;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"><span class="selector-tag">a</span> &#123;</span><br><span class="line">    @<span class="keyword">include</span> link-colors(blue, red, green);</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">// 编译后：</span></span><br><span class="line"><span class="selector-tag">a</span> &#123;</span><br><span class="line">    <span class="attribute">color</span>: blue;</span><br><span class="line">&#125;</span><br><span class="line"><span class="selector-tag">a</span>:hover &#123;</span><br><span class="line">    <span class="attribute">color</span>: red;</span><br><span class="line">&#125;</span><br><span class="line"><span class="selector-tag">a</span>:visited &#123;</span><br><span class="line">    <span class="attribute">color</span>: green;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="继承-extend"><a href="#继承-extend" class="headerlink" title="继承@extend"></a>继承@extend</h3><figure class="highlight scss"><table><tr><td class="code"><pre><span class="line"><span class="selector-class">.error</span> &#123;</span><br><span class="line">    <span class="attribute">border</span>: <span class="number">1px</span> solid red;</span><br><span class="line">    <span class="attribute">background-color</span>: <span class="number">#fdd</span>;</span><br><span class="line">&#125;</span><br><span class="line"><span class="selector-class">.seriousError</span> &#123;</span><br><span class="line">    @<span class="keyword">extend</span> .error; <span class="comment">//继承所有样式</span></span><br><span class="line">    <span class="attribute">border-width</span>: <span class="number">3px</span>;</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">// 编译后：</span></span><br><span class="line"><span class="selector-class">.error</span> &#123;</span><br><span class="line">    <span class="attribute">border</span>: <span class="number">1px</span> solid red;</span><br><span class="line">    <span class="attribute">background-color</span>: <span class="number">#fdd</span>;</span><br><span class="line">&#125;</span><br><span class="line"><span class="selector-class">.seriousError</span> &#123;</span><br><span class="line">    <span class="attribute">border</span>: <span class="number">1px</span> solid red;</span><br><span class="line">    <span class="attribute">background-color</span>: <span class="number">#fdd</span>;</span><br><span class="line">    <span class="attribute">border-width</span>: <span class="number">3px</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="颜色函数"><a href="#颜色函数" class="headerlink" title="颜色函数"></a>颜色函数</h3><figure class="highlight scss"><table><tr><td class="code"><pre><span class="line"><span class="variable">$color</span>要改变的颜色，<span class="variable">$amount</span>取值范围是0~100%</span><br><span class="line">lighten(<span class="variable">$color</span>, <span class="variable">$amount</span>) <span class="comment">//颜色变浅函数；</span></span><br><span class="line">darken(<span class="variable">$color</span>, <span class="variable">$amount</span>) <span class="comment">//颜色变深函数；</span></span><br><span class="line"></span><br><span class="line">saturate(<span class="variable">$color</span>, <span class="variable">$amount</span>) <span class="comment">//增加颜色的饱和度；</span></span><br><span class="line">desaturate(<span class="variable">$color</span>, <span class="variable">$amount</span>) <span class="comment">//减少颜色的饱和度；</span></span><br><span class="line">grayscale(<span class="variable">$color</span>) <span class="comment">//将该颜色转换为相对应的灰度颜色；</span></span><br><span class="line">complement(<span class="variable">$color</span>) <span class="comment">//获取该颜色值旋转180度后相对应的颜色；</span></span><br></pre></td></tr></table></figure>
+
+]]></content>
+      <categories>
+        <category>sass</category>
+      </categories>
+      <tags>
+        <tag>知识点</tag>
+        <tag>sass</tag>
+        <tag>css扩展</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>gulp</title>
     <url>/2019/10/30/gulp/</url>
     <content><![CDATA[<h2 id="什么是Gulp"><a href="#什么是Gulp" class="headerlink" title="什么是Gulp"></a>什么是Gulp</h2><blockquote>
@@ -723,8 +795,8 @@
         <category>技术文档</category>
       </categories>
       <tags>
-        <tag>常用</tag>
         <tag>语法</tag>
+        <tag>常用</tag>
         <tag>MarkDown</tag>
       </tags>
   </entry>
@@ -781,8 +853,8 @@
         <category>技术文档</category>
       </categories>
       <tags>
-        <tag>语法</tag>
         <tag>hexo</tag>
+        <tag>语法</tag>
         <tag>博客</tag>
       </tags>
   </entry>
