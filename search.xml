@@ -30,7 +30,7 @@
 <h3 id="六，提交远程仓库"><a href="#六，提交远程仓库" class="headerlink" title="六，提交远程仓库"></a>六，提交远程仓库</h3><p>命令1. git remote add origin <a href="https://github.com/你的账号/你的项目名" target="_blank" rel="noopener">https: // github.com/你的账号/你的项目</a><a href="https://github.com/你的账号/你的项目名" target="_blank" rel="noopener">名</a>称   设置远程仓库地址<br>命令2. git push -u origin master 将本地的库推送到master分支 （就是推送到服务器上）</p>
 <p><code>git remote -v</code>  查看远程仓库地址</p>
 <p><code>git remote rm origin</code>  删除远程仓库地址</p>
-<p>第一次需要这么操作，以后就是直接 git push就行</p>
+<p>第一次需要这么操作，以后就是直接 <strong>git push</strong>就行</p>
 <hr>
 <h2 id="操作指令总结"><a href="#操作指令总结" class="headerlink" title="操作指令总结"></a>操作指令总结</h2><blockquote>
 <p><strong>git init</strong>                                  项目文件初始化</p>
@@ -39,8 +39,8 @@
 <p><strong>git commit -m ‘</strong>一段注释’  提交到本地仓库</p>
 <p><strong>git status</strong>                              查看仓库状态 </p>
 <p>git reflog                                查看日志</p>
-<p>git remote add origin <a href="https://github.com/你的账号/你的项目名" target="_blank" rel="noopener">https: // github.com/你的账号/你的项目</a><a href="https://github.com/你的账号/你的项目名" target="_blank" rel="noopener">名</a>称   设置远程仓库地址 <strong>第一次创建需要</strong></p>
-<p>git push -u origin master 将本地的库推送到master分支 （就是推送到服务器）<strong>第一次创建需要</strong></p>
+<p>git remote add origin <a href="https://github.com/你的账号/你的项目名" target="_blank" rel="noopener">https: // github.com/你的账号/你的项目</a><a href="https://github.com/你的账号/你的项目名" target="_blank" rel="noopener">名</a>称  <strong>第一次创建需要</strong></p>
+<p>git push -u origin master 将本地的库推送到master分支                  <strong>第一次创建需要</strong></p>
 <p>git remote -v                      查看远程仓库地址</p>
 <p>git remote rm origin           删除远程仓库地址</p>
 <p><strong>git push</strong>                                日常提交指令</p>
@@ -69,8 +69,8 @@
         <category>项目相关</category>
       </categories>
       <tags>
-        <tag>笔记</tag>
         <tag>Git</tag>
+        <tag>笔记</tag>
         <tag>工具</tag>
       </tags>
   </entry>
