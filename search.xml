@@ -1,6 +1,80 @@
 <?xml version="1.0" encoding="utf-8"?>
 <search>
   <entry>
+    <title>Git版本管理工具</title>
+    <url>/2019/11/01/Git%E7%89%88%E6%9C%AC%E7%AE%A1%E7%90%86%E5%B7%A5%E5%85%B7/</url>
+    <content><![CDATA[<blockquote>
+<p> Git是目前世界上最先进的分布式版本控制系统。</p>
+<p>GIT为分布式版本控制系统根本没有“中央服务器”，每个人的电脑上都是一个完整的版本库适合分布式开发，强调个体公共服务器压力和数据量都不会太大速度快灵活可以离线工作操作复杂，代码保密性差</p>
+</blockquote><a id="more"></a>
+<h2 id="操作流程"><a href="#操作流程" class="headerlink" title="操作流程"></a>操作流程</h2><h3 id="一，初始化"><a href="#一，初始化" class="headerlink" title="一，初始化"></a>一，初始化</h3><p>命令  <code>git init</code></p>
+<p>显示成功后去相应的文件夹中查看是不是多了一个.git隐藏文件</p>
+<p>这个文件夹就是你的版本库了，把项目放在文件夹下。</p>
+<h3 id="二，提交到本地暂存"><a href="#二，提交到本地暂存" class="headerlink" title="二，提交到本地暂存"></a>二，提交到本地暂存</h3><p><strong>*提交之前需要记住先刷新原有代码！！</strong></p>
+<p>命令 <strong>git pull</strong>   刷新再提交  这一步很重要！</p>
+<p>命令 git add ‘文件名’        </p>
+<p>​         git add -u   提交所有被修改(modified)和被删除(deleted)文件，不包括新文件(new)        </p>
+<p>​         git add .      提交所有新文件(new)和被修改(modified)文件，不包括被删除(deleted)文件        </p>
+<p>​         git add -A   提交所有变化</p>
+<h3 id="三，提交到本地仓库"><a href="#三，提交到本地仓库" class="headerlink" title="三，提交到本地仓库"></a>三，提交到本地仓库</h3><p>命令  git commit -m ‘一段注释内容’</p>
+<h3 id="四，查看仓库状态"><a href="#四，查看仓库状态" class="headerlink" title="四，查看仓库状态"></a>四，查看仓库状态</h3><p>命令  git status  用于显示工作目录和暂存区的状态。</p>
+<p><strong>查看修改内容</strong></p>
+<p>命令  git diff 你的文件名</p>
+<p>将更改后的东西提交上去，和之前一样。先add 然后再commit</p>
+<h3 id="五，版本回退"><a href="#五，版本回退" class="headerlink" title="五，版本回退"></a>五，版本回退</h3><p><strong>查看提交日志</strong></p>
+<p>命令  <code>git log</code> <code>git reflog</code></p>
+<p><strong>回退版本</strong></p>
+<p>命令   <code>git reset --hard HEAD^</code> 退回到上个版本 </p>
+<p>如果需要退回好多版本就在后面加上 ^ 例： <code>git reset --hard HEAD^^</code>退回两个版本。</p>
+<p><code>git reset --hard 191e0c7</code>  回退到指定版本然后去查看readme.txt是否成功退回。</p>
+<h3 id="六，提交远程仓库"><a href="#六，提交远程仓库" class="headerlink" title="六，提交远程仓库"></a>六，提交远程仓库</h3><p>命令1. git remote add origin <a href="https://github.com/你的账号/你的项目名" target="_blank" rel="noopener">https: // github.com/你的账号/你的项目</a><a href="https://github.com/你的账号/你的项目名" target="_blank" rel="noopener">名</a>称   设置远程仓库地址<br>命令2. git push -u origin master 将本地的库推送到master分支 （就是推送到服务器上）</p>
+<p><code>git remote -v</code>  查看远程仓库地址</p>
+<p><code>git remote rm origin</code>  删除远程仓库地址</p>
+<p>第一次需要这么操作，以后就是直接 git push就行</p>
+<hr>
+<h2 id="操作指令总结"><a href="#操作指令总结" class="headerlink" title="操作指令总结"></a>操作指令总结</h2><blockquote>
+<p><strong>git init</strong>                                  项目文件初始化</p>
+<p><strong>git pull</strong>                                  提交前的刷新操作，新建仓库可以忽略</p>
+<p><strong>git add -A</strong>                             提交到暂存仓库</p>
+<p><strong>git commit -m ‘</strong>一段注释’  提交到本地仓库</p>
+<p><strong>git status</strong>                              查看仓库状态 </p>
+<p>git reflog                                查看日志</p>
+<p>git remote add origin <a href="https://github.com/你的账号/你的项目名" target="_blank" rel="noopener">https: // github.com/你的账号/你的项目</a><a href="https://github.com/你的账号/你的项目名" target="_blank" rel="noopener">名</a>称   设置远程仓库地址 <strong>第一次创建需要</strong></p>
+<p>git push -u origin master 将本地的库推送到master分支 （就是推送到服务器）<strong>第一次创建需要</strong></p>
+<p>git remote -v                      查看远程仓库地址</p>
+<p>git remote rm origin           删除远程仓库地址</p>
+<p><strong>git push</strong>                                日常提交指令</p>
+<p>git clone <a href="https://github.com/账号/项目名称" target="_blank" rel="noopener">https://github.com/账号/项目名称</a></p>
+</blockquote>
+<h2 id="分支操作"><a href="#分支操作" class="headerlink" title="分支操作"></a>分支操作</h2><blockquote>
+<p>查看分支：git branch</p>
+<p>创建分支：git branch  name</p>
+<p>切换分支：git checkout name</p>
+<p>创建并切换分支：git checkout -b name</p>
+<p>合并某分支到当前分支：git merge name</p>
+<p>删除分支：git branch -d name</p>
+</blockquote>
+<p><strong>合并分支（工作流程）</strong></p>
+<blockquote>
+<p>1、先建一个分支                  git branch 分支名</p>
+<p>2、切换到新建的分支          git checkout 分支名</p>
+<p>3、提交分支上的代码          git add .    git commit -m “提交注释”</p>
+<p>4、切换至主分支上              git checkout master</p>
+<p>5、然后合并分支                  git merge 分支名字</p>
+<p>6、合并完以后就push         最好先pull一次  然后 git push</p>
+<p>7、切换到自己的分支          git merge 线上分支名称</p>
+</blockquote>
+]]></content>
+      <categories>
+        <category>项目相关</category>
+      </categories>
+      <tags>
+        <tag>笔记</tag>
+        <tag>Git</tag>
+        <tag>工具</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>Sass</title>
     <url>/2019/10/31/Sass/</url>
     <content><![CDATA[<h2 id="Sass是什么"><a href="#Sass是什么" class="headerlink" title="Sass是什么"></a>Sass是什么</h2><blockquote>
