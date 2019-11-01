@@ -39,11 +39,12 @@
 <p><strong>git commit -m ‘</strong>一段注释’  提交到本地仓库</p>
 <p><strong>git status</strong>                              查看仓库状态 </p>
 <p>git reflog                                查看日志</p>
+<p>git reset –hard HEAD^        退回到上个版本 </p>
 <p>git remote add origin <a href="https://github.com/你的账号/你的项目名" target="_blank" rel="noopener">https: // github.com/你的账号/你的项目</a><a href="https://github.com/你的账号/你的项目名" target="_blank" rel="noopener">名</a>称  <strong>第一次创建需要</strong></p>
 <p>git push -u origin master 将本地的库推送到master分支                  <strong>第一次创建需要</strong></p>
 <p>git remote -v                      查看远程仓库地址</p>
 <p>git remote rm origin           删除远程仓库地址</p>
-<p><strong>git push</strong>                                日常提交指令</p>
+<p><strong>git push</strong>                                日常提交指令（master）</p>
 <p>git clone <a href="https://github.com/账号/项目名称" target="_blank" rel="noopener">https://github.com/账号/项目名称</a></p>
 </blockquote>
 <h2 id="分支操作"><a href="#分支操作" class="headerlink" title="分支操作"></a>分支操作</h2><blockquote>
@@ -53,6 +54,9 @@
 <p>创建并切换分支：git checkout -b name</p>
 <p>合并某分支到当前分支：git merge name</p>
 <p>删除分支：git branch -d name</p>
+<p><strong>提交分支</strong>：git push origin name</p>
+<p><strong>拉取远程分支</strong>：git fetch origin name</p>
+<p><strong>更新远程分支</strong>：git pull origin name</p>
 </blockquote>
 <p><strong>合并分支（工作流程）</strong></p>
 <blockquote>
@@ -62,9 +66,9 @@
 <p>4、切换至主分支上              git checkout master</p>
 <p>5、然后合并分支                  git merge 分支名字</p>
 <p>6、合并完以后就push         最好先pull一次  然后 git push</p>
-<p>7、切换到自己的分支          git merge 线上分支名称</p>
 </blockquote>
-]]></content>
+<h2 id="忽略文件"><a href="#忽略文件" class="headerlink" title="忽略文件"></a>忽略文件</h2><p>新建文件：.gitignore</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line"># .gitignore 忽略文件列表</span><br><span class="line">.DS_Store</span><br><span class="line">node_modules/</span><br><span class="line"></span><br><span class="line"># Editor directories and files</span><br><span class="line">.idea</span><br><span class="line">.vscode</span><br><span class="line">*.suo</span><br><span class="line">*.ntvs*</span><br><span class="line">*.njsproj</span><br><span class="line">*.sln</span><br></pre></td></tr></table></figure>]]></content>
       <categories>
         <category>项目相关</category>
       </categories>
