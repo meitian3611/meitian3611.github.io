@@ -1,6 +1,51 @@
 <?xml version="1.0" encoding="utf-8"?>
 <search>
   <entry>
+    <title>ES6基本使用</title>
+    <url>/2019/11/04/ES6/</url>
+    <content><![CDATA[<h2 id="let和const"><a href="#let和const" class="headerlink" title="let和const"></a>let和const</h2><blockquote>
+<p>let关键字，用来声明变量，它的用法类似于var。</p>
+</blockquote><p><strong>let不允许重复声明变量</strong></p><figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="keyword">var</span> a = <span class="number">1</span>;</span><br><span class="line"><span class="keyword">var</span> a = <span class="number">2</span>;</span><br><span class="line"><span class="built_in">console</span>.log(a); <span class="comment">//2</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">let</span> b = <span class="number">1</span>;</span><br><span class="line"><span class="keyword">let</span> b = <span class="number">2</span>;</span><br><span class="line"><span class="built_in">console</span>.log(b); <span class="comment">//Error</span></span><br></pre></td></tr></table></figure><a id="more"></a>
+
+
+
+<p><strong>let声明变量仅在块级作用域内有效</strong></p>
+<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="keyword">for</span> (<span class="keyword">var</span> i = <span class="number">0</span>; i &lt; <span class="number">10</span>; i++) &#123;</span><br><span class="line">    <span class="built_in">console</span>.log(i);</span><br><span class="line">&#125;;</span><br><span class="line">alert(i); <span class="comment">//10</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">for</span> (<span class="keyword">let</span> v = <span class="number">0</span>; v &lt; <span class="number">10</span>; v++) &#123;</span><br><span class="line">    <span class="built_in">console</span>.log(v);</span><br><span class="line">&#125;</span><br><span class="line">alert(v); <span class="comment">//Error</span></span><br></pre></td></tr></table></figure>
+
+<p><strong>不能通过let声明和形参相同的变量</strong></p>
+<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">test</span>(<span class="params">a</span>) </span>&#123;</span><br><span class="line">    <span class="keyword">let</span> a = <span class="number">123</span>;</span><br><span class="line">    <span class="built_in">console</span>.log(a); <span class="comment">//Error</span></span><br><span class="line">&#125;</span><br><span class="line">test(<span class="number">456</span>);</span><br></pre></td></tr></table></figure>
+
+<p><strong>let声明变量不会提升</strong></p>
+<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="built_in">console</span>.log(a);<span class="comment">//undefined</span></span><br><span class="line"><span class="keyword">var</span> a = <span class="number">10</span>;</span><br><span class="line"></span><br><span class="line"><span class="built_in">console</span>.log(a)<span class="comment">//Error</span></span><br><span class="line"><span class="keyword">let</span> a = <span class="number">10</span>;</span><br></pre></td></tr></table></figure>
+
+<p><strong>暂时性死区TDZ</strong></p>
+<blockquote>
+<p>ES6规定在某个区块中， 一旦用let或const声明一个变量，那么这个区块就变成块级作用域，用let或const声明的变量就“绑定”这个区域，不再受外部的影响。 在该变量声明之前不可以用，在语法上我们叫这种情况为：暂时性死区 (temporal dead zone，简称 TDZ)。</p>
+</blockquote>
+<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="keyword">let</span> v = <span class="number">1</span>;</span><br><span class="line"><span class="keyword">if</span> (<span class="literal">true</span>) &#123;</span><br><span class="line">    <span class="built_in">console</span>.log(v);</span><br><span class="line">    <span class="keyword">let</span> v = <span class="number">2</span>; <span class="comment">//不能和全局变量声明相同</span></span><br><span class="line">&#125;</span><br><span class="line"><span class="built_in">console</span>.log(v);</span><br></pre></td></tr></table></figure>
+
+<p>上面代码中，存在全局变量v，但是块级作用域内let又声明了一个局部变量v，导致后者绑定这个块级作用域，所以在let声明变量之前，使用v会报错。</p>
+<blockquote>
+<p>const关键字，用来声明一个只读的常量</p>
+</blockquote>
+<p><strong>const和let类似，但是，const常量一旦声明，常量将不能重新赋值</strong></p>
+<p>使用const来定义常量，为了便于区分，通常会使用大写字母</p>
+<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="keyword">const</span> ABC = <span class="number">20</span>;</span><br><span class="line"><span class="built_in">console</span>.log(ABC);</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line">ABC = <span class="number">30</span>;</span><br><span class="line"><span class="built_in">console</span>.log(ABC)<span class="comment">//Error</span></span><br></pre></td></tr></table></figure>
+
+<p><strong>从本质上来说，const并不是值不能被改变，而是指向的那个内存地址不能被改变</strong></p>
+]]></content>
+      <categories>
+        <category>web前端</category>
+      </categories>
+      <tags>
+        <tag>语法</tag>
+        <tag>知识点</tag>
+        <tag>es6</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>Git版本管理工具</title>
     <url>/2019/11/01/Git%E7%89%88%E6%9C%AC%E7%AE%A1%E7%90%86%E5%B7%A5%E5%85%B7/</url>
     <content><![CDATA[<blockquote>
@@ -75,8 +120,8 @@
         <category>项目相关</category>
       </categories>
       <tags>
-        <tag>Git</tag>
         <tag>笔记</tag>
+        <tag>Git</tag>
         <tag>工具</tag>
       </tags>
   </entry>
@@ -147,9 +192,9 @@
         <category>进阶提升</category>
       </categories>
       <tags>
-        <tag>知识点</tag>
         <tag>sass</tag>
         <tag>css扩展</tag>
+        <tag>知识点</tag>
       </tags>
   </entry>
   <entry>
@@ -249,8 +294,8 @@
         <category>项目相关</category>
       </categories>
       <tags>
-        <tag>笔记</tag>
         <tag>知识点</tag>
+        <tag>笔记</tag>
         <tag>gulp</tag>
       </tags>
   </entry>
@@ -382,8 +427,8 @@
         <category>nodeJS</category>
       </categories>
       <tags>
-        <tag>笔记</tag>
         <tag>知识点</tag>
+        <tag>笔记</tag>
         <tag>node</tag>
       </tags>
   </entry>
@@ -532,8 +577,8 @@
         <category>web前端</category>
       </categories>
       <tags>
-        <tag>笔记</tag>
         <tag>知识点</tag>
+        <tag>笔记</tag>
       </tags>
   </entry>
   <entry>
@@ -571,8 +616,8 @@
         <category>web前端</category>
       </categories>
       <tags>
-        <tag>笔记</tag>
         <tag>知识点</tag>
+        <tag>笔记</tag>
       </tags>
   </entry>
   <entry>
@@ -629,8 +674,8 @@
         <category>web前端</category>
       </categories>
       <tags>
-        <tag>笔记</tag>
         <tag>知识点</tag>
+        <tag>笔记</tag>
       </tags>
   </entry>
   <entry>
@@ -730,8 +775,8 @@
         <category>web前端</category>
       </categories>
       <tags>
-        <tag>笔记</tag>
         <tag>知识点</tag>
+        <tag>笔记</tag>
       </tags>
   </entry>
   <entry>
@@ -769,8 +814,8 @@
         <category>web前端</category>
       </categories>
       <tags>
-        <tag>笔记</tag>
         <tag>知识点</tag>
+        <tag>笔记</tag>
         <tag>Ajax</tag>
       </tags>
   </entry>
