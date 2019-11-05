@@ -3,38 +3,117 @@
   <entry>
     <title>ES6基本使用</title>
     <url>/2019/11/04/ES6/</url>
-    <content><![CDATA[<h2 id="let和const"><a href="#let和const" class="headerlink" title="let和const"></a>let和const</h2><blockquote>
-<p>let关键字，用来声明变量，它的用法类似于var。</p>
-</blockquote><p><strong>let不允许重复声明变量</strong></p><figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="keyword">var</span> a = <span class="number">1</span>;</span><br><span class="line"><span class="keyword">var</span> a = <span class="number">2</span>;</span><br><span class="line"><span class="built_in">console</span>.log(a); <span class="comment">//2</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">let</span> b = <span class="number">1</span>;</span><br><span class="line"><span class="keyword">let</span> b = <span class="number">2</span>;</span><br><span class="line"><span class="built_in">console</span>.log(b); <span class="comment">//Error</span></span><br></pre></td></tr></table></figure><a id="more"></a>
+    <content><![CDATA[<h2 id="let和const"><a href="#let和const" class="headerlink" title="let和const"></a>let和const</h2><ul>
+<li>let关键字，用来声明变量，它的用法类似于var。</li>
+</ul><h3 id="let不允许重复声明变量"><a href="#let不允许重复声明变量" class="headerlink" title="let不允许重复声明变量"></a>let不允许重复声明变量</h3><figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="keyword">var</span> a = <span class="number">1</span>;</span><br><span class="line"><span class="keyword">var</span> a = <span class="number">2</span>;</span><br><span class="line"><span class="built_in">console</span>.log(a); <span class="comment">//2</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">let</span> b = <span class="number">1</span>;</span><br><span class="line"><span class="keyword">let</span> b = <span class="number">2</span>;</span><br><span class="line"><span class="built_in">console</span>.log(b); <span class="comment">//Error</span></span><br></pre></td></tr></table></figure><a id="more"></a>
 
 
+<h3 id="let声明变量仅在块级作用域内有效"><a href="#let声明变量仅在块级作用域内有效" class="headerlink" title="let声明变量仅在块级作用域内有效"></a>let声明变量仅在块级作用域内有效</h3><figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="keyword">for</span> (<span class="keyword">var</span> i = <span class="number">0</span>; i &lt; <span class="number">10</span>; i++) &#123;</span><br><span class="line">    <span class="built_in">console</span>.log(i);</span><br><span class="line">&#125;;</span><br><span class="line">alert(i); <span class="comment">//10</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">for</span> (<span class="keyword">let</span> v = <span class="number">0</span>; v &lt; <span class="number">10</span>; v++) &#123;</span><br><span class="line">    <span class="built_in">console</span>.log(v);</span><br><span class="line">&#125;</span><br><span class="line">alert(v); <span class="comment">//Error</span></span><br></pre></td></tr></table></figure>
 
-<p><strong>let声明变量仅在块级作用域内有效</strong></p>
-<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="keyword">for</span> (<span class="keyword">var</span> i = <span class="number">0</span>; i &lt; <span class="number">10</span>; i++) &#123;</span><br><span class="line">    <span class="built_in">console</span>.log(i);</span><br><span class="line">&#125;;</span><br><span class="line">alert(i); <span class="comment">//10</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">for</span> (<span class="keyword">let</span> v = <span class="number">0</span>; v &lt; <span class="number">10</span>; v++) &#123;</span><br><span class="line">    <span class="built_in">console</span>.log(v);</span><br><span class="line">&#125;</span><br><span class="line">alert(v); <span class="comment">//Error</span></span><br></pre></td></tr></table></figure>
+<h3 id="不能通过let声明和形参相同的变量"><a href="#不能通过let声明和形参相同的变量" class="headerlink" title="不能通过let声明和形参相同的变量"></a>不能通过let声明和形参相同的变量</h3><figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">test</span>(<span class="params">a</span>) </span>&#123;</span><br><span class="line">    <span class="keyword">let</span> a = <span class="number">123</span>;</span><br><span class="line">    <span class="built_in">console</span>.log(a); <span class="comment">//Error</span></span><br><span class="line">&#125;</span><br><span class="line">test(<span class="number">456</span>);</span><br></pre></td></tr></table></figure>
 
-<p><strong>不能通过let声明和形参相同的变量</strong></p>
-<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">test</span>(<span class="params">a</span>) </span>&#123;</span><br><span class="line">    <span class="keyword">let</span> a = <span class="number">123</span>;</span><br><span class="line">    <span class="built_in">console</span>.log(a); <span class="comment">//Error</span></span><br><span class="line">&#125;</span><br><span class="line">test(<span class="number">456</span>);</span><br></pre></td></tr></table></figure>
+<h3 id="let声明变量不会提升"><a href="#let声明变量不会提升" class="headerlink" title="let声明变量不会提升"></a>let声明变量不会提升</h3><figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="built_in">console</span>.log(a);<span class="comment">//undefined</span></span><br><span class="line"><span class="keyword">var</span> a = <span class="number">10</span>;</span><br><span class="line"></span><br><span class="line"><span class="built_in">console</span>.log(a)<span class="comment">//Error</span></span><br><span class="line"><span class="keyword">let</span> a = <span class="number">10</span>;</span><br></pre></td></tr></table></figure>
 
-<p><strong>let声明变量不会提升</strong></p>
-<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="built_in">console</span>.log(a);<span class="comment">//undefined</span></span><br><span class="line"><span class="keyword">var</span> a = <span class="number">10</span>;</span><br><span class="line"></span><br><span class="line"><span class="built_in">console</span>.log(a)<span class="comment">//Error</span></span><br><span class="line"><span class="keyword">let</span> a = <span class="number">10</span>;</span><br></pre></td></tr></table></figure>
-
-<p><strong>暂时性死区TDZ</strong></p>
-<blockquote>
+<h3 id="暂时性死区TDZ"><a href="#暂时性死区TDZ" class="headerlink" title="暂时性死区TDZ"></a>暂时性死区TDZ</h3><blockquote>
 <p>ES6规定在某个区块中， 一旦用let或const声明一个变量，那么这个区块就变成块级作用域，用let或const声明的变量就“绑定”这个区域，不再受外部的影响。 在该变量声明之前不可以用，在语法上我们叫这种情况为：暂时性死区 (temporal dead zone，简称 TDZ)。</p>
 </blockquote>
 <figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="keyword">let</span> v = <span class="number">1</span>;</span><br><span class="line"><span class="keyword">if</span> (<span class="literal">true</span>) &#123;</span><br><span class="line">    <span class="built_in">console</span>.log(v);</span><br><span class="line">    <span class="keyword">let</span> v = <span class="number">2</span>; <span class="comment">//不能和全局变量声明相同</span></span><br><span class="line">&#125;</span><br><span class="line"><span class="built_in">console</span>.log(v);</span><br></pre></td></tr></table></figure>
 
 <p>上面代码中，存在全局变量v，但是块级作用域内let又声明了一个局部变量v，导致后者绑定这个块级作用域，所以在let声明变量之前，使用v会报错。</p>
-<blockquote>
-<p>const关键字，用来声明一个只读的常量</p>
-</blockquote>
-<p><strong>const和let类似，但是，const常量一旦声明，常量将不能重新赋值</strong></p>
+<h3 id="const关键字，用来声明一个只读的常量"><a href="#const关键字，用来声明一个只读的常量" class="headerlink" title="const关键字，用来声明一个只读的常量"></a>const关键字，用来声明一个只读的常量</h3><p>const和let类似，但是，const常量一旦声明，常量将不能重新赋值</p>
 <p>使用const来定义常量，为了便于区分，通常会使用大写字母</p>
 <figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="keyword">const</span> ABC = <span class="number">20</span>;</span><br><span class="line"><span class="built_in">console</span>.log(ABC);</span><br></pre></td></tr></table></figure>
 
 <figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line">ABC = <span class="number">30</span>;</span><br><span class="line"><span class="built_in">console</span>.log(ABC)<span class="comment">//Error</span></span><br></pre></td></tr></table></figure>
 
 <p><strong>从本质上来说，const并不是值不能被改变，而是指向的那个内存地址不能被改变</strong></p>
+<h2 id="箭头函数"><a href="#箭头函数" class="headerlink" title="箭头函数"></a>箭头函数</h2><figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line">box.onclick = <span class="function"><span class="keyword">function</span>(<span class="params"></span>)</span>&#123;</span><br><span class="line">    <span class="built_in">console</span>.log(<span class="keyword">this</span>)</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">//ES6</span></span><br><span class="line">box.onclick = <span class="function"><span class="params">()</span> =&gt;</span>&#123;</span><br><span class="line">    <span class="built_in">console</span>.log(<span class="keyword">this</span>)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p><strong>使用箭头函数比写原来的的function写法简洁许多（针对匿名函数使用）</strong></p>
+<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="keyword">var</span> box = <span class="function"><span class="keyword">function</span>(<span class="params">value</span>)</span>&#123;</span><br><span class="line">    <span class="keyword">return</span> value;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">//ES6</span></span><br><span class="line"><span class="keyword">let</span> box = <span class="function"><span class="params">value</span> =&gt;</span> value</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li><strong>箭头函数和传统函数的区别</strong></li>
+</ul>
+<h3 id="1，对this的关联，函数内部的指向"><a href="#1，对this的关联，函数内部的指向" class="headerlink" title="1，对this的关联，函数内部的指向"></a>1，对this的关联，函数内部的指向</h3><figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="keyword">var</span> name = <span class="string">'xh'</span>;</span><br><span class="line"><span class="keyword">var</span> obj = &#123;</span><br><span class="line">    name: <span class="string">'xm'</span>,</span><br><span class="line">    say: <span class="function"><span class="params">()</span> =&gt;</span> &#123;</span><br><span class="line">        alert(<span class="keyword">this</span>.name);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line">obj.say();<span class="comment">//xh</span></span><br></pre></td></tr></table></figure>
+
+<p>实际原因是箭头函数没有自己的this，</p>
+<p>他的this是继承外面的因此内部的this就是外层代码块的this</p>
+<h3 id="2，new不可用"><a href="#2，new不可用" class="headerlink" title="2，new不可用"></a>2，new不可用</h3><figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="keyword">var</span> test = <span class="function"><span class="keyword">function</span>(<span class="params"></span>)</span>&#123;&#125;</span><br><span class="line"><span class="keyword">var</span> obj = <span class="keyword">new</span> test();</span><br><span class="line"><span class="built_in">console</span>.log(obj);</span><br><span class="line"></span><br><span class="line"><span class="comment">//es6</span></span><br><span class="line"><span class="keyword">var</span> test = <span class="function"><span class="params">()</span> =&gt;</span> &#123;&#125;</span><br><span class="line"><span class="keyword">var</span> obj = <span class="keyword">new</span> test();<span class="comment">//Error</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="3，this不可变，this在函数体内整个执行环境为常量，不可改变this的指向"><a href="#3，this不可变，this在函数体内整个执行环境为常量，不可改变this的指向" class="headerlink" title="3，this不可变，this在函数体内整个执行环境为常量，不可改变this的指向"></a>3，this不可变，this在函数体内整个执行环境为常量，不可改变this的指向</h3><figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="keyword">var</span> obj1 = &#123;</span><br><span class="line">    name: <span class="string">'hello'</span>,</span><br><span class="line">    age: <span class="number">33</span></span><br><span class="line">&#125;</span><br><span class="line">setTimeout(<span class="function"><span class="params">()</span> =&gt;</span> &#123;</span><br><span class="line">    <span class="built_in">console</span>.log(<span class="keyword">this</span>);</span><br><span class="line">&#125;.bind(obj1),<span class="number">1000</span>); <span class="comment">//报错</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="4，没有arguments对象"><a href="#4，没有arguments对象" class="headerlink" title="4，没有arguments对象"></a>4，没有arguments对象</h3><figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">fn</span>(<span class="params"></span>)</span>&#123;</span><br><span class="line">    <span class="built_in">console</span>.log(<span class="built_in">arguments</span>[<span class="number">0</span>]);</span><br><span class="line">    <span class="built_in">console</span>.log(<span class="built_in">arguments</span>[<span class="number">1</span>]);</span><br><span class="line">&#125;</span><br><span class="line">fn(<span class="number">1</span>,<span class="number">2</span>);</span><br><span class="line"></span><br><span class="line"><span class="comment">//es6</span></span><br><span class="line"><span class="keyword">var</span> fn = <span class="function"><span class="params">()</span> =&gt;</span> &#123;</span><br><span class="line">    <span class="built_in">console</span>.log(<span class="built_in">arguments</span>[<span class="number">0</span>]); <span class="comment">//报错</span></span><br><span class="line">&#125;</span><br><span class="line">fn(<span class="number">3</span>);</span><br></pre></td></tr></table></figure>
+
+<h2 id="字符串模板"><a href="#字符串模板" class="headerlink" title="字符串模板"></a>字符串模板</h2><blockquote>
+<p>ES6中字符串模板使用反引号 <code></code> 表示，字符串模板中可以解析变量和函数，使用 ${ } 解析</p>
+</blockquote>
+<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="keyword">var</span> sname = <span class="string">"小明"</span>;</span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">fnAge</span>(<span class="params"></span>)</span>&#123;</span><br><span class="line">    <span class="keyword">return</span> <span class="number">18</span>;</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">var</span> str = <span class="string">`大家好，我叫<span class="subst">$&#123;sname&#125;</span>,我今年<span class="subst">$&#123;fnAge()&#125;</span>岁了`</span>;</span><br><span class="line">alert( str );</span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p>字符串模板非常有用，当我们要插入大段的html内容到文档中时，传统的写法非常麻烦</p>
+</blockquote>
+<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="keyword">var</span> box = <span class="built_in">document</span>.getElementById(<span class="string">'box'</span>);</span><br><span class="line"><span class="keyword">var</span> val1 = <span class="number">11</span>, val2 = <span class="number">22</span>, val3 = <span class="number">33</span>;</span><br><span class="line">box.innerHTML = <span class="string">`</span></span><br><span class="line"><span class="string">    &lt;ul&gt;</span></span><br><span class="line"><span class="string">        &lt;li&gt;<span class="subst">$&#123;val1&#125;</span>&lt;/li&gt;</span></span><br><span class="line"><span class="string">        &lt;li&gt;<span class="subst">$&#123;val2&#125;</span>&lt;/li&gt;</span></span><br><span class="line"><span class="string">        &lt;li&gt;<span class="subst">$&#123;val3&#125;</span>&lt;/li&gt;</span></span><br><span class="line"><span class="string">    &lt;/ul&gt;</span></span><br><span class="line"><span class="string">`</span>;</span><br></pre></td></tr></table></figure>
+
+<h2 id="解构赋值"><a href="#解构赋值" class="headerlink" title="解构赋值"></a>解构赋值</h2><blockquote>
+<p>ES6允许按照一定模式，从数组和对象中提取值，对变量进行赋值，这被称为解构赋值。</p>
+</blockquote>
+<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="keyword">var</span> x = <span class="number">10</span> , y = <span class="number">20</span> , z = <span class="number">30</span>;</span><br><span class="line"></span><br><span class="line"><span class="comment">//es6</span></span><br><span class="line"><span class="keyword">var</span>[x,y,z] = [<span class="number">10</span>,<span class="number">20</span>,<span class="number">30</span>];</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="keyword">var</span> cat = <span class="string">'ken'</span>;</span><br><span class="line"><span class="keyword">var</span> dog = <span class="string">'lili'</span>;</span><br><span class="line"><span class="keyword">var</span> zoo = &#123;<span class="attr">cat</span>: cat, <span class="attr">dog</span>: dog&#125;;</span><br><span class="line"><span class="built_in">console</span>.log(zoo);</span><br><span class="line"></span><br><span class="line"><span class="comment">//es6</span></span><br><span class="line"><span class="keyword">let</span> cat =<span class="string">'ken'</span>;</span><br><span class="line"><span class="keyword">let</span> dog =<span class="string">'xx'</span>;</span><br><span class="line"><span class="keyword">let</span> zoo = &#123;cat,dog&#125;</span><br><span class="line"><span class="built_in">console</span>.log(zoo)</span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p>解构赋值可以作用在函数的参数上面，让函数的参数值的传递顺序发生改变</p>
+</blockquote>
+<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">fn</span>(<span class="params">&#123;sname,age&#125;</span>)</span>&#123;</span><br><span class="line">    <span class="keyword">return</span> <span class="string">`大家好，我叫<span class="subst">$&#123;sname&#125;</span>,我今年<span class="subst">$&#123;age&#125;</span>了`</span>;</span><br><span class="line">&#125;</span><br><span class="line"><span class="built_in">console</span>.log(fn(&#123;<span class="attr">age</span>:<span class="number">20</span>,<span class="attr">sname</span>:<span class="string">'mike'</span>&#125;))</span><br></pre></td></tr></table></figure>
+
+<h2 id="Array-from"><a href="#Array-from" class="headerlink" title="Array.from()"></a>Array.from()</h2><blockquote>
+<p>将含有length属性，以数字为key的对象，类数组转换成真正的数组</p>
+<p>Array.from(obj,map函数);</p>
+</blockquote>
+<p><strong>将lis集合（类数组）转成 数组</strong></p>
+<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="keyword">var</span> lis = <span class="built_in">document</span>.getElementsByTagName(<span class="string">"li"</span>);</span><br><span class="line">lis = <span class="built_in">Array</span>.from(lis);</span><br><span class="line"><span class="built_in">console</span>.log( lis )</span><br><span class="line">lis.push(<span class="string">'abc'</span>);</span><br><span class="line"><span class="built_in">console</span>.log(lis);</span><br></pre></td></tr></table></figure>
+
+<p><strong>将对象转成 数组</strong></p>
+<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="keyword">var</span> obj = &#123;</span><br><span class="line">    <span class="string">"0"</span> : <span class="number">10</span> ,</span><br><span class="line">    <span class="string">"1"</span> : <span class="number">20</span> ,</span><br><span class="line">    <span class="string">"2"</span> : <span class="number">30</span> ,</span><br><span class="line">    <span class="string">"length"</span> : <span class="number">3</span></span><br><span class="line">&#125;;</span><br><span class="line"><span class="keyword">var</span> arr = <span class="built_in">Array</span>.from( obj );</span><br><span class="line"><span class="built_in">console</span>.log( arr );</span><br></pre></td></tr></table></figure>
+
+<h2 id="扩展运算符"><a href="#扩展运算符" class="headerlink" title="扩展运算符"></a>扩展运算符</h2><blockquote>
+<p>扩展运算符用三个点号表示，其功能是把数组或类数组对象（部署了iterator接口）展开成一系列用逗号隔开的参数序列</p>
+</blockquote>
+<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="built_in">console</span>.log(...[<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>]); <span class="comment">//123</span></span><br><span class="line"><span class="built_in">console</span>.log(<span class="number">1</span>, ...[<span class="number">2</span>, <span class="number">3</span>, <span class="number">4</span>], <span class="number">5</span>);<span class="comment">//12345</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">let</span> arr1 = [<span class="number">1</span>, <span class="number">2</span>];</span><br><span class="line"><span class="keyword">let</span> arr2 = [<span class="number">3</span>, <span class="number">4</span>, <span class="number">5</span>];       </span><br><span class="line">arr1.push(...arr2)</span><br><span class="line"><span class="built_in">console</span>.log(arr1);</span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p>rest运算符也是三个点，其功能与扩展运算符恰好相反，把逗号隔开的参数序列组合成一个数组</p>
+</blockquote>
+<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="keyword">var</span> arr = [<span class="number">1</span>,<span class="number">2</span>,<span class="number">3</span>];</span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">fn</span>(<span class="params">...args</span>) </span>&#123;<span class="comment">// rest运算符 组合数组</span></span><br><span class="line"><span class="built_in">console</span>.log(args);</span><br><span class="line">&#125;;</span><br><span class="line">fn(...arr);<span class="comment">// 扩展运算符 展开数组</span></span><br><span class="line"><span class="built_in">console</span>.log(...arr);<span class="comment">//123</span></span><br></pre></td></tr></table></figure>
+
+<h2 id="set函数"><a href="#set函数" class="headerlink" title="set函数"></a>set函数</h2><blockquote>
+<p>Set 是一个构造函数，用来生成 Set 数据结构，它类似于数组，但是成员的值都是唯一的、没有重复的， 初始化 Set 可以接受一个数组或类数组对象作为参数，也可以创建一个空的 Set</p>
+</blockquote>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">var s1 = new Set();</span><br><span class="line">var s2 = new Set([1, 2, 3]);</span><br><span class="line">console.log(s1);</span><br><span class="line">console.log(s2);</span><br></pre></td></tr></table></figure>
+
+<p>在 Set 中成员的值是唯一的，重复的值自动被过滤掉</p>
+<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="keyword">var</span> s1 = <span class="keyword">new</span> <span class="built_in">Set</span>([<span class="number">1</span>, <span class="number">2</span>, <span class="number">2</span>, <span class="number">3</span>, <span class="number">1</span>, <span class="number">4</span>]);</span><br><span class="line"><span class="built_in">console</span>.log(s1);<span class="comment">//1234</span></span><br></pre></td></tr></table></figure>
+
+<p>Set 的一些属性方法：</p>
+<p>size：返回成员总数</p>
+<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="keyword">var</span> <span class="keyword">set</span> = new Set([1,2]);</span><br><span class="line"><span class="keyword">set</span>.add(3);// 添加成员</span><br><span class="line">console.log(<span class="keyword">set</span>.size);// 3 成员总数</span><br><span class="line">console.log(<span class="keyword">set</span>);// Set(3) &#123;<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>&#125;</span><br></pre></td></tr></table></figure>
+
+<p>add(value)：添加某个值，返回Set结构本身</p>
+<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="keyword">set</span>.add([4,5]);// 添加成员</span><br><span class="line">console.log(<span class="keyword">set</span>.size);// 4 成员总数</span><br><span class="line">console.log(<span class="keyword">set</span>.has(2));// true 有该成员</span><br><span class="line">console.log(<span class="keyword">set</span>);// Set(4) &#123;<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>, [<span class="number">4</span>, <span class="number">5</span>]&#125;</span><br></pre></td></tr></table></figure>
+
+<p>delete(value)：删除某个值，返回一个布尔值，表示删除是否成功</p>
+<p>has(value)：返回一个布尔值，表示该值是否为Set的成员</p>
+<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="keyword">set</span>.delete(2);// 删除成员</span><br><span class="line">console.log(<span class="keyword">set</span>);// Set(3) &#123;<span class="number">1</span>, <span class="number">3</span>, [<span class="number">4</span>, <span class="number">5</span>]&#125;</span><br><span class="line"><span class="built_in">console</span>.log(<span class="keyword">set</span>.has(2));// false 没有该成员</span><br></pre></td></tr></table></figure>
+
+<p>clear()：清除所有成员，没有返回值</p>
+<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="keyword">set</span>.clear();// 清除所有成员</span><br><span class="line">console.log(<span class="keyword">set</span>);// Set(0) &#123;&#125;</span><br></pre></td></tr></table></figure>
+
+<p><strong>for/of 与 for/in</strong></p>
+<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="comment">//for/in：遍历键</span></span><br><span class="line"><span class="keyword">var</span> arr = [<span class="number">4</span>,<span class="number">5</span>,<span class="number">6</span>,<span class="number">7</span>];</span><br><span class="line"><span class="keyword">for</span> (<span class="keyword">var</span> key <span class="keyword">in</span> arr) &#123;</span><br><span class="line">    <span class="built_in">console</span>.log(key);<span class="comment">//0 1 2 3</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">var</span> str = <span class="string">'javascript'</span>;</span><br><span class="line"><span class="keyword">for</span> (<span class="keyword">var</span> val <span class="keyword">of</span> str) &#123;</span><br><span class="line">    <span class="built_in">console</span>.log(val);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="comment">//for/of：遍历值</span></span><br><span class="line"><span class="keyword">var</span> arr = [<span class="number">4</span>,<span class="number">5</span>,<span class="number">6</span>,<span class="number">7</span>];</span><br><span class="line"><span class="keyword">for</span> (<span class="keyword">var</span> val <span class="keyword">of</span> arr) &#123;</span><br><span class="line">    <span class="built_in">console</span>.log(val);<span class="comment">//4 5 6 7</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
 ]]></content>
       <categories>
         <category>web前端</category>
@@ -120,8 +199,8 @@
         <category>项目相关</category>
       </categories>
       <tags>
-        <tag>笔记</tag>
         <tag>Git</tag>
+        <tag>笔记</tag>
         <tag>工具</tag>
       </tags>
   </entry>
@@ -192,9 +271,9 @@
         <category>进阶提升</category>
       </categories>
       <tags>
+        <tag>知识点</tag>
         <tag>sass</tag>
         <tag>css扩展</tag>
-        <tag>知识点</tag>
       </tags>
   </entry>
   <entry>
@@ -920,8 +999,8 @@
         <category>技术文档</category>
       </categories>
       <tags>
-        <tag>常用</tag>
         <tag>语法</tag>
+        <tag>常用</tag>
         <tag>MarkDown</tag>
       </tags>
   </entry>
