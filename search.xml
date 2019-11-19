@@ -1,6 +1,111 @@
 <?xml version="1.0" encoding="utf-8"?>
 <search>
   <entry>
+    <title>Express框架</title>
+    <url>/2019/11/19/Express/</url>
+    <content><![CDATA[<h2 id="nodejs-express框架"><a href="#nodejs-express框架" class="headerlink" title="nodejs express框架"></a>nodejs express框架</h2><blockquote>
+<p> 基于 Node.js 平台，快速、开放、极简的 Web 开发框架 。 </p>
+</blockquote><h3 id="快速搭建express框架环境"><a href="#快速搭建express框架环境" class="headerlink" title="快速搭建express框架环境"></a>快速搭建express框架环境</h3><ol>
+<li>创建一个项目</li>
+<li>初始化 生成package.json    <code>npm init -y</code></li>
+<li>下载安装这个项目的依赖模块  <code>npm install --save express</code></li>
+<li>创建一个js文件，开始写代码</li>
+</ol><a id="more"></a>
+
+<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="comment">// 1. 引入 express</span></span><br><span class="line"><span class="keyword">const</span> express = <span class="built_in">require</span>(<span class="string">'express'</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment">// 2. 生成 express 的实例</span></span><br><span class="line"><span class="keyword">const</span> server = express()</span><br><span class="line"></span><br><span class="line"><span class="comment">// 3. 处理路由等等 (路由的概念，就是不同的url地址需要有不同的响应)</span></span><br><span class="line"></span><br><span class="line"><span class="comment">// http://localhost:8080    -&gt; hello express</span></span><br><span class="line">server.get(<span class="string">'/'</span>, (req, res) =&gt; &#123;</span><br><span class="line">  res.send(<span class="string">'hello express'</span>)</span><br><span class="line">&#125;)</span><br><span class="line"></span><br><span class="line"><span class="comment">// http://localhost:8080/login  -&gt; 登录</span></span><br><span class="line">server.get(<span class="string">'/login'</span>, (req, res) =&gt; &#123;</span><br><span class="line">  res.send(<span class="string">'登录页面'</span>)</span><br><span class="line">&#125;)</span><br><span class="line"></span><br><span class="line"><span class="comment">// 4. 监听端口</span></span><br><span class="line">server.listen(<span class="number">8080</span>)</span><br></pre></td></tr></table></figure>
+
+<h3 id="Request"><a href="#Request" class="headerlink" title="Request"></a>Request</h3><ul>
+<li><strong>req.query</strong>：获取URL的查询参数串 </li>
+<li><strong>req.body</strong>: 获取请求主体（post数据，需要设置中间件函数 json与urlencode） </li>
+</ul>
+<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="comment">//让代码支持 req.body 需要下面两行代码</span></span><br><span class="line">server.use(express.json())</span><br><span class="line">server.use(express.urlencoded(&#123; <span class="attr">extended</span>: <span class="literal">true</span> &#125;))</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li><strong>req.cookies</strong>：获取Cookies (需要使用 cookie-parser 中间件) </li>
+</ul>
+<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="comment">//引入</span></span><br><span class="line"><span class="keyword">const</span> express = <span class="built_in">require</span>(<span class="string">'express'</span>)</span><br><span class="line"><span class="keyword">const</span> server = express()</span><br><span class="line"><span class="keyword">const</span> cookieParser = <span class="built_in">require</span>(<span class="string">'cookie-parser'</span>)<span class="comment">//引入第三方中间件</span></span><br><span class="line"><span class="comment">//让代码支持req.cookie属性 需要使用cookie-parser 中间件</span></span><br><span class="line"><span class="comment">//1. 安装 cookie-parser 中间件</span></span><br><span class="line"><span class="comment">// 当前文件 npm install --save cookie-parser</span></span><br><span class="line"><span class="comment">//2. 在当前文件引入</span></span><br><span class="line"><span class="comment">//3. 使用express 实例的 use方法使用它</span></span><br><span class="line">server.use(cookieParser())</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li><strong>req.params</strong>：获取路由的动态参数</li>
+</ul>
+<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="comment">// http://localhost:8080/hello/张三</span></span><br><span class="line"><span class="comment">// http://localhost:8080/hello/李四</span></span><br><span class="line">server.get(<span class="string">'/hello/:name'</span>, (req, res) =&gt; &#123;</span><br><span class="line">    <span class="built_in">console</span>.log(req.params)</span><br><span class="line">    res.send(<span class="string">`欢迎 - <span class="subst">$&#123;req.params.name&#125;</span>`</span>)</span><br><span class="line">&#125;)</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>req.path：获取请求路径</li>
+<li>req.hostname / req.ip：获取主机名和IP地址  </li>
+<li>req.protocol：获取协议类型 </li>
+<li>req.get()：获取指定的HTTP请求头 </li>
+</ul>
+<h3 id="Response"><a href="#Response" class="headerlink" title="Response"></a>Response</h3><ul>
+<li>res.set()：设置HTTP头，传入object可以一次设置多个头 </li>
+<li>res.status()：设置HTTP状态码 </li>
+<li>res.send()：传送HTTP响应 </li>
+<li>res.redirect()：设置响应的Location HTTP头，并且设置状态码302 </li>
+<li>res.json()：传送JSON响应 </li>
+<li>res.cookie(name，value [，option])：设置Cookie </li>
+<li>res.clearCookie()：清除Cookie </li>
+<li>res.download()：传送指定路径的文件 </li>
+<li>res.sendFile(path [，options] [，fn])：传送指定路径的文件 -会自动根据文件extension设定Content-Type </li>
+</ul>
+<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="comment">//__dirname 获取当前文件路径</span></span><br><span class="line">server.get(<span class="string">'/hello.html'</span>, (req, res) =&gt; &#123;</span><br><span class="line">    res.sendFile(path.resolve(__dirname,<span class="string">'./hello.html'</span>)) <span class="comment">//必须是绝对路径</span></span><br><span class="line"> &#125;)</span><br></pre></td></tr></table></figure>
+
+
+
+<ul>
+<li>res.render(view [, locals] [, callback]) 渲染一个view </li>
+</ul>
+<h3 id="EJS模板引擎"><a href="#EJS模板引擎" class="headerlink" title="EJS模板引擎"></a>EJS模板引擎</h3><blockquote>
+<p>模板引擎的作用，就是将静态html页面给弄活。访问一个url地址，浏览器渲染出来的是html的内容。但是不是直接输出一个静态的html页面。而是后端在输出之前会将一个静态的html页面模板与数据先拼接。然后再输出。</p>
+</blockquote>
+<ol>
+<li><p>新建项目</p>
+</li>
+<li><p>项目初始化 npm init  -y</p>
+</li>
+<li><p>安装项目依赖</p>
+<ol>
+<li><p>express</p>
+</li>
+<li><p>ejs</p>
+</li>
+</ol>
+</li>
+</ol>
+<p>npm install –save express ejs</p>
+<ol start="4">
+<li><p>开始写代码</p>
+<ol>
+<li><p>需要通过 express 的实例的 set(‘view engine’, ‘xxx’) 来设置当前项目使用哪种模板引擎</p>
+<figure class="highlight js"><table><tr><td class="code"><pre><span class="line">server.set(<span class="string">'view engine'</span>, <span class="string">'ejs'</span>)</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>需要通过 express 的实例的 set(‘views’, ‘xxx’) 来设置当前项目中模板页面的存放路径</p>
+<figure class="highlight js"><table><tr><td class="code"><pre><span class="line">server.set(<span class="string">'views'</span>, path.resolve(__dirname, <span class="string">'./views'</span>))</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>后续需要渲染模板页面的地方，就可以使用 res.render() 来操作</p>
+<figure class="highlight js"><table><tr><td class="code"><pre><span class="line">server.get(<span class="string">'/hello/:name'</span>, (req, res) =&gt; &#123;</span><br><span class="line">    <span class="comment">//res.render('模板页面文字'，'需要传递到这个页面的数据')</span></span><br><span class="line">    res.render(<span class="string">'welcome'</span>, &#123;</span><br><span class="line">        name: req.params.name,</span><br><span class="line">        isLogin: <span class="literal">false</span>,<span class="comment">//是否登录</span></span><br><span class="line">        frusts: [</span><br><span class="line">            &#123; <span class="attr">name</span>: <span class="string">'xiaozhang'</span> &#125;,</span><br><span class="line">            &#123; <span class="attr">name</span>: <span class="string">'xiaowang'</span> &#125;,</span><br><span class="line">            &#123; <span class="attr">name</span>: <span class="string">'xiaohong'</span> &#125;</span><br><span class="line">        ]</span><br><span class="line">    &#125;)</span><br><span class="line">&#125;)</span><br></pre></td></tr></table></figure>
+
+</li>
+</ol>
+</li>
+</ol>
+<h3 id="EJS模板引擎常用标签"><a href="#EJS模板引擎常用标签" class="headerlink" title="EJS模板引擎常用标签"></a>EJS模板引擎常用标签</h3><ol>
+<li>&lt;% %&gt; 流程控制标签 </li>
+<li><strong>&lt;%= %&gt;</strong> 输出标签 (会对 HTML 代码转义) </li>
+<li><strong>&lt;%- %&gt;</strong> 输出标签 (不对 HTML 代码转义) </li>
+<li>&lt;%# %&gt; 注释标签 </li>
+</ol>
+<p>创建一个.ejs文件使用以下语法</p>
+<figure class="highlight html"><table><tr><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">body</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">h1</span>&gt;</span>欢迎，<span class="tag">&lt;<span class="name">%=</span> <span class="attr">name</span> %&gt;</span> <span class="tag">&lt;/<span class="name">h1</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">%</span> <span class="attr">if</span> (<span class="attr">isLogin</span>) &#123; %&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">button</span>&gt;</span>退出登录<span class="tag">&lt;/<span class="name">button</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">%</span> &#125; <span class="attr">else</span> &#123; %&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">button</span>&gt;</span>登录<span class="tag">&lt;/<span class="name">button</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">%</span> &#125; %&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">ul</span>&gt;</span></span><br><span class="line">    &lt;% for (var i = 0; i &lt; frusts.length; i++) &#123; %&gt;</span><br><span class="line">    <span class="tag">&lt;<span class="name">li</span>&gt;</span><span class="tag">&lt;<span class="name">%=</span> <span class="attr">frusts</span>[<span class="attr">i</span>]<span class="attr">.name</span> %&gt;</span><span class="tag">&lt;/<span class="name">li</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">%</span> &#125; %&gt;</span></span><br><span class="line">  <span class="tag">&lt;/<span class="name">ul</span>&gt;</span></span><br><span class="line">  <span class="comment">&lt;!-- include() 引入公用模板 --&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">%-</span> <span class="attr">include</span>('<span class="attr">.</span>/<span class="attr">common</span>/<span class="attr">footer.ejs</span>') %&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">body</span>&gt;</span></span><br></pre></td></tr></table></figure>]]></content>
+      <categories>
+        <category>nodejs</category>
+      </categories>
+      <tags>
+        <tag>node</tag>
+        <tag>框架</tag>
+        <tag>知识点</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>ES6基本使用</title>
     <url>/2019/11/04/ES6/</url>
     <content><![CDATA[<h2 id="let和const"><a href="#let和const" class="headerlink" title="let和const"></a>let和const</h2><ul>
@@ -143,8 +248,8 @@
         <category>web前端</category>
       </categories>
       <tags>
-        <tag>语法</tag>
         <tag>知识点</tag>
+        <tag>语法</tag>
         <tag>es6</tag>
       </tags>
   </entry>
@@ -397,8 +502,8 @@
         <category>项目相关</category>
       </categories>
       <tags>
-        <tag>笔记</tag>
         <tag>知识点</tag>
+        <tag>笔记</tag>
         <tag>gulp</tag>
       </tags>
   </entry>
@@ -530,9 +635,9 @@
         <category>nodeJS</category>
       </categories>
       <tags>
-        <tag>笔记</tag>
-        <tag>知识点</tag>
         <tag>node</tag>
+        <tag>知识点</tag>
+        <tag>笔记</tag>
       </tags>
   </entry>
   <entry>
@@ -680,8 +785,8 @@
         <category>web前端</category>
       </categories>
       <tags>
-        <tag>笔记</tag>
         <tag>知识点</tag>
+        <tag>笔记</tag>
       </tags>
   </entry>
   <entry>
@@ -719,8 +824,8 @@
         <category>web前端</category>
       </categories>
       <tags>
-        <tag>笔记</tag>
         <tag>知识点</tag>
+        <tag>笔记</tag>
       </tags>
   </entry>
   <entry>
@@ -777,8 +882,8 @@
         <category>web前端</category>
       </categories>
       <tags>
-        <tag>笔记</tag>
         <tag>知识点</tag>
+        <tag>笔记</tag>
       </tags>
   </entry>
   <entry>
@@ -878,8 +983,8 @@
         <category>web前端</category>
       </categories>
       <tags>
-        <tag>笔记</tag>
         <tag>知识点</tag>
+        <tag>笔记</tag>
       </tags>
   </entry>
   <entry>
@@ -917,8 +1022,8 @@
         <category>web前端</category>
       </categories>
       <tags>
-        <tag>笔记</tag>
         <tag>知识点</tag>
+        <tag>笔记</tag>
         <tag>Ajax</tag>
       </tags>
   </entry>
@@ -1023,8 +1128,8 @@
         <category>技术文档</category>
       </categories>
       <tags>
-        <tag>语法</tag>
         <tag>常用</tag>
+        <tag>语法</tag>
         <tag>MarkDown</tag>
       </tags>
   </entry>
@@ -1081,8 +1186,8 @@
         <category>技术文档</category>
       </categories>
       <tags>
-        <tag>hexo</tag>
         <tag>语法</tag>
+        <tag>hexo</tag>
         <tag>博客</tag>
       </tags>
   </entry>
