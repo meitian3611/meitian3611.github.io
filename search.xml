@@ -97,7 +97,7 @@
 <p>创建一个.ejs文件使用以下语法</p>
 <figure class="highlight html"><table><tr><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">body</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">h1</span>&gt;</span>欢迎，<span class="tag">&lt;<span class="name">%=</span> <span class="attr">name</span> %&gt;</span> <span class="tag">&lt;/<span class="name">h1</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">%</span> <span class="attr">if</span> (<span class="attr">isLogin</span>) &#123; %&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">button</span>&gt;</span>退出登录<span class="tag">&lt;/<span class="name">button</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">%</span> &#125; <span class="attr">else</span> &#123; %&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">button</span>&gt;</span>登录<span class="tag">&lt;/<span class="name">button</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">%</span> &#125; %&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">ul</span>&gt;</span></span><br><span class="line">    &lt;% for (var i = 0; i &lt; frusts.length; i++) &#123; %&gt;</span><br><span class="line">    <span class="tag">&lt;<span class="name">li</span>&gt;</span><span class="tag">&lt;<span class="name">%=</span> <span class="attr">frusts</span>[<span class="attr">i</span>]<span class="attr">.name</span> %&gt;</span><span class="tag">&lt;/<span class="name">li</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">%</span> &#125; %&gt;</span></span><br><span class="line">  <span class="tag">&lt;/<span class="name">ul</span>&gt;</span></span><br><span class="line">  <span class="comment">&lt;!-- include() 引入公用模板 --&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">%-</span> <span class="attr">include</span>('<span class="attr">.</span>/<span class="attr">common</span>/<span class="attr">footer.ejs</span>') %&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">body</span>&gt;</span></span><br></pre></td></tr></table></figure>]]></content>
       <categories>
-        <category>nodejs</category>
+        <category>nodeJS</category>
       </categories>
       <tags>
         <tag>node</tag>
@@ -1128,8 +1128,8 @@
         <category>技术文档</category>
       </categories>
       <tags>
-        <tag>常用</tag>
         <tag>语法</tag>
+        <tag>常用</tag>
         <tag>MarkDown</tag>
       </tags>
   </entry>
@@ -1186,8 +1186,8 @@
         <category>技术文档</category>
       </categories>
       <tags>
-        <tag>语法</tag>
         <tag>hexo</tag>
+        <tag>语法</tag>
         <tag>博客</tag>
       </tags>
   </entry>
