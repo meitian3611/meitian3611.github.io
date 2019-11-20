@@ -1,6 +1,205 @@
 <?xml version="1.0" encoding="utf-8"?>
 <search>
   <entry>
+    <title>mongoDB</title>
+    <url>/2019/11/20/mongoDB/</url>
+    <content><![CDATA[<h2 id="mongoDB"><a href="#mongoDB" class="headerlink" title="mongoDB"></a>mongoDB</h2><blockquote>
+<p> MongoDB 是一个基于分布式文件存储的数据库。由 C++ 语言编写。旨在为 WEB 应用提供可扩展的高性能数据存储解决方案。 </p>
+</blockquote><h2 id="MongoDB-集合"><a href="#MongoDB-集合" class="headerlink" title="MongoDB - 集合"></a>MongoDB - 集合</h2><ul>
+<li>集合就是MongoDB的文档集合。类型于关系型数据库中的<strong>表格</strong>。 </li>
+<li>集合存在于数据库中，集合没有固定的结构，这意味着你在对集合可以插入不同格式和类型的数据，但通常情况下我们插入集合的数据都会有一定的关联性。 </li>
+</ul><a id="more"></a>
+
+<p>示例：</p>
+<figure class="highlight js"><table><tr><td class="code"><pre><span class="line">&#123;<span class="string">"genres"</span>: [<span class="string">"犯罪"</span>, <span class="string">"剧情"</span>], <span class="string">"title"</span>: <span class="string">"肖申克的救赎"</span>&#125;</span><br><span class="line">&#123;<span class="string">"genres"</span>: [<span class="string">"搞笑"</span>, <span class="string">"无聊"</span>], <span class="string">"title"</span>: <span class="string">"李茶的姑妈"</span>&#125;</span><br><span class="line">&#123;<span class="string">"genres"</span>: [<span class="string">"好看"</span>], <span class="string">"title"</span>: <span class="string">"无双"</span>, <span class="string">"stars"</span>: <span class="number">9</span>&#125;</span><br></pre></td></tr></table></figure>
+
+<h2 id="MongoDB-数据库常用命令"><a href="#MongoDB-数据库常用命令" class="headerlink" title="MongoDB - 数据库常用命令"></a>MongoDB - 数据库常用命令</h2><ul>
+<li>创建/切换数据库</li>
+</ul>
+<figure class="highlight powershell"><table><tr><td class="code"><pre><span class="line">use [数据库名]</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>显示所有数据库</li>
+</ul>
+<figure class="highlight powershell"><table><tr><td class="code"><pre><span class="line">show dbs</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>查看当前所在数据库</li>
+</ul>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">db</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>显示当前DB状态</li>
+</ul>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">db.stats()</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>查看当前DB版本</li>
+</ul>
+<figure class="highlight powershell"><table><tr><td class="code"><pre><span class="line">db.version</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>删除当前数据库</li>
+</ul>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">db.dropDatabase</span><br></pre></td></tr></table></figure>
+
+<h2 id="MongoDB-集合常用命令-添加"><a href="#MongoDB-集合常用命令-添加" class="headerlink" title="MongoDB - 集合常用命令 - 添加"></a>MongoDB - 集合常用命令 - 添加</h2><ul>
+<li>save </li>
+<li>insertOne </li>
+<li>insertMany </li>
+</ul>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">db.users.save(&#123;name: '张三', age: 16&#125;);</span><br><span class="line"></span><br><span class="line">db.users.insertOne(&#123;name: '张三', age: 18&#125;);</span><br><span class="line"></span><br><span class="line">db.users.insertMany([&#123;name: '李四', age: 19&#125;, &#123;name: '王五', age: 20&#125;]);</span><br></pre></td></tr></table></figure>
+
+<h2 id="MongoDB-集合常用命令-修改"><a href="#MongoDB-集合常用命令-修改" class="headerlink" title="MongoDB - 集合常用命令 - 修改"></a>MongoDB - 集合常用命令 - 修改</h2><ul>
+<li><p>save 传入 _id 时，可作为更新操作。 </p>
+</li>
+<li><p>update </p>
+</li>
+<li><p>updateOne </p>
+</li>
+<li><p>updateMany </p>
+</li>
+</ul>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">db.users.update(&#123;age: 25&#125;, &#123;$set: &#123;name: 'changeName'&#125;&#125;);</span><br><span class="line">// update users set name = 'changeName' where age = 25;</span><br><span class="line">db.users.update(&#123;name: 'lisi'&#125;, &#123;$inc: &#123;age: 50&#125;&#125;);</span><br><span class="line">// update users set age = age + 50  where name = 'lisi';</span><br><span class="line">db.users.update(&#123;name: 'lisi'&#125;, &#123;$inc: &#123;age: 50&#125;, $set: &#123;name: 'hoho'&#125;&#125;);</span><br><span class="line">// update users set age = age + 50, name = 'hoho' where name = 'lisi';</span><br></pre></td></tr></table></figure>
+
+<h2 id="MongoDB-集合常用命令-删除"><a href="#MongoDB-集合常用命令-删除" class="headerlink" title="MongoDB - 集合常用命令 - 删除"></a>MongoDB - 集合常用命令 - 删除</h2><ul>
+<li>remove </li>
+<li>deleteOne </li>
+<li>deleteMany </li>
+</ul>
+<h2 id="MongoDB-集合常用命令-查询"><a href="#MongoDB-集合常用命令-查询" class="headerlink" title="MongoDB - 集合常用命令 - 查询"></a>MongoDB - 集合常用命令 - 查询</h2><ul>
+<li>查询所有记录</li>
+</ul>
+<figure class="highlight js"><table><tr><td class="code"><pre><span class="line">db.users.find()</span><br><span class="line"><span class="comment">// select * from users</span></span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>查询 age = 22 的记录 </li>
+</ul>
+<figure class="highlight js"><table><tr><td class="code"><pre><span class="line">db.users.find(&#123;<span class="string">'age'</span>: <span class="number">22</span>&#125;);</span><br><span class="line"><span class="comment">// select * from users where age = 22;</span></span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>查询 age &gt; 22 的记录 </li>
+</ul>
+<figure class="highlight js"><table><tr><td class="code"><pre><span class="line">db.users.find(&#123;<span class="string">'age'</span>: &#123;<span class="attr">$gt</span>: <span class="number">22</span>&#125;&#125;);</span><br><span class="line"><span class="comment">// select * from users where age &gt; 22;</span></span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>查询 age &lt; 22 的记录 </li>
+</ul>
+<figure class="highlight js"><table><tr><td class="code"><pre><span class="line">db.users.find(&#123;<span class="string">'age'</span>: &#123;<span class="attr">$lt</span>: <span class="number">22</span>&#125;&#125;);</span><br><span class="line"><span class="comment">// select * from users where age &lt; 22;</span></span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>查询 age &gt;= 22 的记录 </li>
+</ul>
+<figure class="highlight js"><table><tr><td class="code"><pre><span class="line">db.users.find(&#123;<span class="string">'age'</span>: &#123;<span class="attr">$gte</span>: <span class="number">22</span>&#125;&#125;);</span><br><span class="line"><span class="comment">// select * from users where age &gt;= 22;</span></span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>查询 age &lt;= 22 的记录 </li>
+</ul>
+<figure class="highlight js"><table><tr><td class="code"><pre><span class="line">db.users.find(&#123;<span class="string">'age'</span>: &#123;<span class="attr">$lte</span>: <span class="number">22</span>&#125;&#125;);</span><br><span class="line"><span class="comment">// select * from users where age &lt;= 22;</span></span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>查询 age != 22 的记录 </li>
+</ul>
+<figure class="highlight js"><table><tr><td class="code"><pre><span class="line">db.users.find(&#123;<span class="string">'age'</span>: &#123;<span class="attr">$ne</span>: <span class="number">22</span>&#125;&#125;);</span><br><span class="line"><span class="comment">// select * from users where age != 22;</span></span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>查询 age &gt;= 23 并且 age &lt;= 26 </li>
+</ul>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">db.users.find(&#123;'age': &#123;$gte: 23, $lte: 26&#125;&#125;);</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>查询 age &gt;= 23 或者 name == ‘张三’ </li>
+</ul>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">db.users.find(&#123;$or: [&#123;age: &#123;$gte: 23&#125;&#125;, &#123;name: '张三'&#125;]);</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>查询 name 中包含 mongo 的数据 </li>
+</ul>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">db.users.find(&#123;'name': /mongo/&#125;);</span><br><span class="line">// select * from users where name like %mongo%;</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>查询 name 中已 mongo 开头的数据 </li>
+</ul>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">db.users.find(&#123;'name': /^mongo/&#125;);</span><br><span class="line">// select * from users where name like 'mongo%';</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>查询 name 中已 mongo 结尾的数据 </li>
+</ul>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">db.users.find(&#123;'name': /mongo$/&#125;);</span><br><span class="line">// select * from users where name like 'mongo%';</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>查询 指定列 name 、age 的数据</li>
+</ul>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">db.users.find(&#123;&#125;, &#123;name: 1, age: 1&#125;);</span><br><span class="line">// select name, age from users;</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>查询 指定列 name 、age 并且 age &gt; 25 </li>
+</ul>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">db.users.find(&#123;age: &#123;$gt: 25&#125;&#125;, &#123;name: 1, age: 1&#125;);</span><br><span class="line">// select name, age from users where age &gt; 25;</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>升序 </li>
+</ul>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">db.users.find().sort(&#123;age: 1&#125;);</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>倒序 </li>
+</ul>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">db.users.find().sort(&#123;age: -1&#125;);</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>查询 name = zhangsan , age = 20 的数据 </li>
+</ul>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">db.users.find(&#123;name: '张三', age: 20&#125;);</span><br><span class="line">// select * from users where name='zhangsan' and age='20';</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>查询 前5条数据 </li>
+</ul>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">db.users.find().limit(5);</span><br><span class="line">// select top 5 * from users;</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>查询 10条以后的数据 </li>
+</ul>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">db.users.find().skip(10);</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>查询 在 5 - 10 之间的数据 </li>
+</ul>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">db.usres.find().skip(5).limit(5)</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>查询 第一条数据 </li>
+</ul>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">db.users.findOne();</span><br></pre></td></tr></table></figure>
+
+<h2 id="mongoose"><a href="#mongoose" class="headerlink" title="mongoose"></a>mongoose</h2><blockquote>
+<p> nodejs环境下对 mongodb 进行便捷操作的对象模型工具 </p>
+</blockquote>
+<p>安装</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">npm install mongoose --save</span><br></pre></td></tr></table></figure>
+
+<p>建立连接</p>
+<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="comment">// config/db.js   创建一个config文件夹下面的db.js文件</span></span><br><span class="line"><span class="keyword">const</span> mongoose = <span class="built_in">require</span>(<span class="string">'mongoose'</span>);</span><br><span class="line"><span class="comment">// 定义连接的地址，mz 是数据库的名字</span></span><br><span class="line"><span class="keyword">const</span> url = <span class="string">'mongodb://localhost:27017/mz'</span>;</span><br><span class="line"></span><br><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * 调用 connect 方法进行连接。</span></span><br><span class="line"><span class="comment"> * 1. 回调函数的方式</span></span><br><span class="line"><span class="comment"> * 2. promise 方式</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"></span><br><span class="line"><span class="comment">// mongoose.connect(url, &#123; useNewUrlParser: true &#125;, function(err) &#123;</span></span><br><span class="line"><span class="comment">//   if (err) &#123;</span></span><br><span class="line"><span class="comment">//     console.log('连接失败！', err.message);</span></span><br><span class="line"><span class="comment">//   &#125; else &#123;</span></span><br><span class="line"><span class="comment">//     console.log('连接成功~');</span></span><br><span class="line"><span class="comment">//   &#125;</span></span><br><span class="line"><span class="comment">// &#125;)</span></span><br><span class="line"></span><br><span class="line">mongoose</span><br><span class="line">  .connect(url, &#123; <span class="attr">useNewUrlParser</span>: <span class="literal">true</span> &#125;)</span><br><span class="line">  .then(<span class="function"><span class="params">()</span> =&gt;</span> &#123;</span><br><span class="line">    <span class="built_in">console</span>.log(<span class="string">'连接成功~'</span>);</span><br><span class="line">  &#125;)</span><br><span class="line">  .catch(<span class="function"><span class="params">err</span> =&gt;</span> &#123;</span><br><span class="line">    <span class="built_in">console</span>.log(<span class="string">'连接失败!'</span>, err.message);</span><br><span class="line">  &#125;)</span><br><span class="line"></span><br><span class="line"><span class="comment">// 最后将 mongoose 暴露出去</span></span><br><span class="line"><span class="built_in">module</span>.exports = mongoose;</span><br></pre></td></tr></table></figure>
+
+<h3 id="schema"><a href="#schema" class="headerlink" title="schema"></a>schema</h3><blockquote>
+<p> schema 是一种描述 mongodb 中 collection(集合) 结构的一种东西。 </p>
+</blockquote>
+<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="comment">// models/banner.js 创建一个models文件夹下面的banner.js</span></span><br><span class="line"><span class="comment">// 引入 db.js </span></span><br><span class="line"><span class="keyword">const</span> db = <span class="built_in">require</span>(<span class="string">'../config/db.js'</span>);</span><br><span class="line"></span><br><span class="line"><span class="comment">// 定义 schema</span></span><br><span class="line"><span class="keyword">const</span> schema = <span class="keyword">new</span> db.Schema(&#123;</span><br><span class="line">  name: <span class="built_in">String</span>,   <span class="comment">// banner 名字</span></span><br><span class="line">  imgUrl: <span class="built_in">String</span>, <span class="comment">// banner 图片地址</span></span><br><span class="line">  startTime: &#123;    <span class="comment">// banner 显示的开始时间</span></span><br><span class="line">    type: <span class="built_in">Number</span>,</span><br><span class="line">    <span class="keyword">default</span>() &#123;</span><br><span class="line">      <span class="keyword">return</span> <span class="keyword">new</span> <span class="built_in">Date</span>().getTime()</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;,</span><br><span class="line">  endTime: &#123;      <span class="comment">// banner 显示的结束时间</span></span><br><span class="line">    type: <span class="built_in">Number</span>,</span><br><span class="line">    <span class="keyword">default</span>() &#123;</span><br><span class="line">      <span class="keyword">return</span> <span class="keyword">new</span> <span class="built_in">Date</span>().getTime() + <span class="number">1</span> * <span class="number">24</span> * <span class="number">60</span> * <span class="number">60</span> * <span class="number">1000</span>; <span class="comment">// 当前时间加 1 天</span></span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;);</span><br><span class="line"></span><br><span class="line"><span class="comment">// 基于 schema 创建 model, 并暴露出去。</span></span><br><span class="line"><span class="built_in">module</span>.exports = db.model(<span class="string">'Banner'</span>, schema);</span><br></pre></td></tr></table></figure>
+
+<h3 id="model"><a href="#model" class="headerlink" title="model"></a>model</h3><blockquote>
+<p> 基于 Schema 编译来的构造函数。model 的实例代表着可以从数据库保存和读取的 documents。从数据库创建和读取 document 的所有操作都是 通过 model 进行的。 </p>
+</blockquote>
+<p> 上面 <strong>models/banner.js</strong> 文件最后暴露出去的就是 model </p>
+]]></content>
+      <categories>
+        <category>后端</category>
+      </categories>
+      <tags>
+        <tag>框架</tag>
+        <tag>数据库</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>Express框架</title>
     <url>/2019/11/19/Express/</url>
     <content><![CDATA[<h2 id="nodejs-express框架"><a href="#nodejs-express框架" class="headerlink" title="nodejs express框架"></a>nodejs express框架</h2><blockquote>
