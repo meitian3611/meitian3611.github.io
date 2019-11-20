@@ -73,44 +73,9 @@
 <figure class="highlight js"><table><tr><td class="code"><pre><span class="line">db.users.find()</span><br><span class="line"><span class="comment">// select * from users</span></span><br></pre></td></tr></table></figure>
 
 <ul>
-<li>查询 age = 22 的记录 </li>
+<li>查询筛选</li>
 </ul>
-<figure class="highlight js"><table><tr><td class="code"><pre><span class="line">db.users.find(&#123;<span class="string">'age'</span>: <span class="number">22</span>&#125;);</span><br><span class="line"><span class="comment">// select * from users where age = 22;</span></span><br></pre></td></tr></table></figure>
-
-<ul>
-<li>查询 age &gt; 22 的记录 </li>
-</ul>
-<figure class="highlight js"><table><tr><td class="code"><pre><span class="line">db.users.find(&#123;<span class="string">'age'</span>: &#123;<span class="attr">$gt</span>: <span class="number">22</span>&#125;&#125;);</span><br><span class="line"><span class="comment">// select * from users where age &gt; 22;</span></span><br></pre></td></tr></table></figure>
-
-<ul>
-<li>查询 age &lt; 22 的记录 </li>
-</ul>
-<figure class="highlight js"><table><tr><td class="code"><pre><span class="line">db.users.find(&#123;<span class="string">'age'</span>: &#123;<span class="attr">$lt</span>: <span class="number">22</span>&#125;&#125;);</span><br><span class="line"><span class="comment">// select * from users where age &lt; 22;</span></span><br></pre></td></tr></table></figure>
-
-<ul>
-<li>查询 age &gt;= 22 的记录 </li>
-</ul>
-<figure class="highlight js"><table><tr><td class="code"><pre><span class="line">db.users.find(&#123;<span class="string">'age'</span>: &#123;<span class="attr">$gte</span>: <span class="number">22</span>&#125;&#125;);</span><br><span class="line"><span class="comment">// select * from users where age &gt;= 22;</span></span><br></pre></td></tr></table></figure>
-
-<ul>
-<li>查询 age &lt;= 22 的记录 </li>
-</ul>
-<figure class="highlight js"><table><tr><td class="code"><pre><span class="line">db.users.find(&#123;<span class="string">'age'</span>: &#123;<span class="attr">$lte</span>: <span class="number">22</span>&#125;&#125;);</span><br><span class="line"><span class="comment">// select * from users where age &lt;= 22;</span></span><br></pre></td></tr></table></figure>
-
-<ul>
-<li>查询 age != 22 的记录 </li>
-</ul>
-<figure class="highlight js"><table><tr><td class="code"><pre><span class="line">db.users.find(&#123;<span class="string">'age'</span>: &#123;<span class="attr">$ne</span>: <span class="number">22</span>&#125;&#125;);</span><br><span class="line"><span class="comment">// select * from users where age != 22;</span></span><br></pre></td></tr></table></figure>
-
-<ul>
-<li>查询 age &gt;= 23 并且 age &lt;= 26 </li>
-</ul>
-<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">db.users.find(&#123;'age': &#123;$gte: 23, $lte: 26&#125;&#125;);</span><br></pre></td></tr></table></figure>
-
-<ul>
-<li>查询 age &gt;= 23 或者 name == ‘张三’ </li>
-</ul>
-<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">db.users.find(&#123;$or: [&#123;age: &#123;$gte: 23&#125;&#125;, &#123;name: '张三'&#125;]);</span><br></pre></td></tr></table></figure>
+<figure class="highlight js"><table><tr><td class="code"><pre><span class="line">db.users.find(&#123;<span class="string">'age'</span>: <span class="number">22</span>&#125;);					查询 age = <span class="number">22</span> 的记录 </span><br><span class="line"></span><br><span class="line">db.users.find(&#123;<span class="string">'age'</span>: &#123;<span class="attr">$gt</span>: <span class="number">22</span>&#125;&#125;);			查询 age &gt; <span class="number">22</span> 的记录 </span><br><span class="line"></span><br><span class="line">db.users.find(&#123;<span class="string">'age'</span>: &#123;<span class="attr">$lt</span>: <span class="number">22</span>&#125;&#125;);			查询 age &lt; <span class="number">22</span> 的记录 </span><br><span class="line"></span><br><span class="line">db.users.find(&#123;<span class="string">'age'</span>: &#123;<span class="attr">$gte</span>: <span class="number">22</span>&#125;&#125;);			查询 age &gt;= <span class="number">22</span> 的记录 </span><br><span class="line"></span><br><span class="line">db.users.find(&#123;<span class="string">'age'</span>: &#123;<span class="attr">$lte</span>: <span class="number">22</span>&#125;&#125;);			查询 age &lt;= <span class="number">22</span> 的记录 </span><br><span class="line"></span><br><span class="line">db.users.find(&#123;<span class="string">'age'</span>: &#123;<span class="attr">$ne</span>: <span class="number">22</span>&#125;&#125;);			查询 age != <span class="number">22</span> 的记录 </span><br><span class="line"></span><br><span class="line">db.users.find(&#123;<span class="string">'age'</span>: &#123;<span class="attr">$gte</span>: <span class="number">23</span>, <span class="attr">$lte</span>: <span class="number">26</span>&#125;&#125;);查询 age &gt;= <span class="number">23</span> 并且 age &lt;= <span class="number">26</span> </span><br><span class="line"></span><br><span class="line">db.users.find(&#123;<span class="attr">$or</span>: [&#123;<span class="attr">age</span>: &#123;<span class="attr">$gte</span>: <span class="number">23</span>&#125;&#125;, &#123;<span class="attr">name</span>: <span class="string">'张三'</span>&#125;]);查询 age &gt;= <span class="number">23</span> 或者 name == <span class="string">'张三'</span></span><br></pre></td></tr></table></figure>
 
 <ul>
 <li>查询 name 中包含 mongo 的数据 </li>
@@ -171,6 +136,31 @@
 <li>查询 第一条数据 </li>
 </ul>
 <figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">db.users.findOne();</span><br></pre></td></tr></table></figure>
+
+<h2 id="nodejs-操作-mongodb"><a href="#nodejs-操作-mongodb" class="headerlink" title="nodejs 操作 mongodb"></a>nodejs 操作 mongodb</h2><ol>
+<li>安装<strong>mongodb</strong>依赖 </li>
+</ol>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">npm install --save mongodb</span><br></pre></td></tr></table></figure>
+
+<ol start="2">
+<li>引入</li>
+</ol>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">const Mongodb = require('mongodb')</span><br></pre></td></tr></table></figure>
+
+<ol start="3">
+<li>构建 mongodb 的连接地址 </li>
+</ol>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">const url = 'mongodb://127.0.0.1:27017';</span><br></pre></td></tr></table></figure>
+
+<ol start="4">
+<li>连接</li>
+</ol>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">Mongodb.connect(url, function(err, client) &#123;</span><br><span class="line">    // 4.1 选择数据库</span><br><span class="line">    const db = client.db('数据库名称');</span><br><span class="line"></span><br><span class="line">    // 4.2 选择集合并操作</span><br><span class="line">    db.collection('集合名称').find();</span><br><span class="line">    ...</span><br><span class="line">db</span><br><span class="line">    // 4.3 记得关闭连接</span><br><span class="line">    client.close();</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
+
+<p><strong>查询</strong></p>
+<figure class="highlight js"><table><tr><td class="code"><pre><span class="line">查询全部</span><br><span class="line">.find()</span><br><span class="line"></span><br><span class="line">查询特定的数据</span><br><span class="line">.find(whereObj)</span><br><span class="line"></span><br><span class="line">排序</span><br><span class="line">.find().soft(softObj)</span><br><span class="line"></span><br><span class="line">查询指定条数</span><br><span class="line">.find().limit(count)</span><br><span class="line"></span><br><span class="line">跳过的条数</span><br><span class="line">.find().skip(count)</span><br></pre></td></tr></table></figure>
+
+
 
 <h2 id="mongoose"><a href="#mongoose" class="headerlink" title="mongoose"></a>mongoose</h2><blockquote>
 <p> nodejs环境下对 mongodb 进行便捷操作的对象模型工具 </p>
