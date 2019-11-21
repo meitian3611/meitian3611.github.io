@@ -1,6 +1,79 @@
 <?xml version="1.0" encoding="utf-8"?>
 <search>
   <entry>
+    <title>每日3道面试题</title>
+    <url>/2019/11/21/%E6%AF%8F%E6%97%A5%E4%B8%89%E9%81%93%E9%9D%A2%E8%AF%95%E9%A2%98/</url>
+    <content><![CDATA[<h1 id="每日3道面试题"><a href="#每日3道面试题" class="headerlink" title="每日3道面试题"></a>每日3道面试题</h1><h2 id="一，HTML，HTTP，web综合相关问题"><a href="#一，HTML，HTTP，web综合相关问题" class="headerlink" title="一，HTML，HTTP，web综合相关问题"></a>一，HTML，HTTP，web综合相关问题</h2><h3 id="1-如何进行性能优化"><a href="#1-如何进行性能优化" class="headerlink" title="1.如何进行性能优化"></a>1.如何进行性能优化</h3><p>在html方面，我们可以减少http请求，图片进行压缩，使用css精灵图，采用语义化标签</p><p>引入的css文件统一放在页面顶部，js文件统一放在页面底部 js中少使用全局变量</p><a id="more"></a>
+
+<h3 id="2-语义化的理解"><a href="#2-语义化的理解" class="headerlink" title="2.语义化的理解"></a>2.语义化的理解</h3><p>用正确的标签做正确的事情</p>
+<p>语义化可以使得页面内容更加的结构化，便于对浏览器，搜索引擎解析 优化seo</p>
+<p>使源码更易维护，便于理解</p>
+<h3 id="3-HTTP的几种请求方式"><a href="#3-HTTP的几种请求方式" class="headerlink" title="3.HTTP的几种请求方式"></a>3.HTTP的几种请求方式</h3><ul>
+<li>GET方法</li>
+</ul>
+<p>发送一个请求来取得服务器上的某一资源</p>
+<ul>
+<li>POST方法</li>
+</ul>
+<p>向url指定的资源提交数据或附加新的数据</p>
+<ul>
+<li>PUT</li>
+<li>HEAD 只会请求页面首部</li>
+<li>DELETE 删除服务器上面的某个资源</li>
+<li>OPTIONS</li>
+<li>CONNECT</li>
+</ul>
+<hr>
+<h3 id="4-对浏览器内核的理解"><a href="#4-对浏览器内核的理解" class="headerlink" title="4.对浏览器内核的理解"></a>4.对浏览器内核的理解</h3><p>浏览器内核主要分为两大部分：渲染引擎和 JS 引擎</p>
+<p>渲染引擎主要负责取得网页内容，加载css，计算网页显示方式，不同浏览器的内核不同，渲染出的页面效果也不相同</p>
+<p>JS引擎是解析和执行JavaScript来实现网页的动态效果</p>
+<p>内核普遍指向渲染引擎</p>
+<h3 id="5-cookie，seesionStorage-和-localStorage的区别"><a href="#5-cookie，seesionStorage-和-localStorage的区别" class="headerlink" title="5.cookie，seesionStorage 和 localStorage的区别"></a>5.cookie，seesionStorage 和 localStorage的区别</h3><ul>
+<li><p>cookie是储存在本地终端上的数据</p>
+<p>cookie会始终携带在同源的http请求中，在浏览器和服务器之间传递</p>
+</li>
+<li><p>seesionStorage 和 localStorage不会发送数据给服务器，仅在本地保存</p>
+</li>
+<li><p>存储大小：cookie数据大小不能超过4K，本地存储可以达到5M</p>
+</li>
+<li><p>时间：localStorage数据永久存在，除非主动删除</p>
+<pre><code>sessionStorage 浏览器窗口关闭后自动删除
+
+  cookie 可以设置有效时间</code></pre></li>
+</ul>
+<h3 id="6-Doctype作用-严格模式与混杂模式如何区分？它们有何意义"><a href="#6-Doctype作用-严格模式与混杂模式如何区分？它们有何意义" class="headerlink" title="6.Doctype作用? 严格模式与混杂模式如何区分？它们有何意义?"></a>6.Doctype作用? 严格模式与混杂模式如何区分？它们有何意义?</h3><ul>
+<li><code>&lt;!DOCTYPE&gt;</code> 声明位于文档中的最前面，处于<code>&lt;HTML&gt;</code> 标签之前。告知浏览器的解析器， 用什么文档类型 规范来解析这个文档 </li>
+<li>严格模式的排版和 <code>JS</code> 运作模式是 以该浏览器支持的最高标准运行</li>
+<li>在混杂模式中，页面以宽松的向低版本兼容的方式显示。模拟老式浏览器的行为以防止站点无法工作。 <code>DOCTYPE</code>不存在或格式不正确会导致文档以混杂模式呈现  </li>
+</ul>
+<hr>
+<h3 id="7-前端需要注意哪些SEO"><a href="#7-前端需要注意哪些SEO" class="headerlink" title="7.前端需要注意哪些SEO"></a>7.前端需要注意哪些SEO</h3><ul>
+<li>语义化HTML代码，使用W3C规范，使得搜索引擎更容易解析网页</li>
+<li>重要的HTML代码放在最前面，以便于搜索引擎从上到下抓取</li>
+<li>少用iframe，搜索引擎不会抓取iframe的内容</li>
+<li>非装饰图片都要加 alt</li>
+</ul>
+<h3 id="8-web标准和W3C标准是什么"><a href="#8-web标准和W3C标准是什么" class="headerlink" title="8.web标准和W3C标准是什么"></a>8.web标准和W3C标准是什么</h3><ul>
+<li>标签闭合，标签小写，不乱嵌套，使用外链css和js，结构行为样式分离</li>
+</ul>
+<h3 id="9-iframe有什么缺点"><a href="#9-iframe有什么缺点" class="headerlink" title="9.iframe有什么缺点"></a>9.iframe有什么缺点</h3><ul>
+<li>iframe会阻塞主页面的onload事件</li>
+<li>搜索引擎无法解析，不利于SEO</li>
+<li>iframe和主页面共享连接池，但浏览器对相同域会有限制，会影响页面的并行加载</li>
+<li>可以通过javascript动态给iframe添加src属性，解决问题</li>
+</ul>
+<hr>
+]]></content>
+      <categories>
+        <category>web面试</category>
+      </categories>
+      <tags>
+        <tag>面试</tag>
+        <tag>大纲</tag>
+        <tag>日常</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>mongoDB</title>
     <url>/2019/11/20/mongoDB/</url>
     <content><![CDATA[<h2 id="mongoDB"><a href="#mongoDB" class="headerlink" title="mongoDB"></a>mongoDB</h2><blockquote>
@@ -289,9 +362,9 @@
         <category>nodeJS</category>
       </categories>
       <tags>
+        <tag>知识点</tag>
         <tag>node</tag>
         <tag>框架</tag>
-        <tag>知识点</tag>
       </tags>
   </entry>
   <entry>
@@ -437,8 +510,8 @@
         <category>web前端</category>
       </categories>
       <tags>
-        <tag>知识点</tag>
         <tag>语法</tag>
+        <tag>知识点</tag>
         <tag>es6</tag>
       </tags>
   </entry>
@@ -691,8 +764,8 @@
         <category>项目相关</category>
       </categories>
       <tags>
-        <tag>知识点</tag>
         <tag>笔记</tag>
+        <tag>知识点</tag>
         <tag>gulp</tag>
       </tags>
   </entry>
@@ -824,9 +897,9 @@
         <category>nodeJS</category>
       </categories>
       <tags>
-        <tag>node</tag>
-        <tag>知识点</tag>
         <tag>笔记</tag>
+        <tag>知识点</tag>
+        <tag>node</tag>
       </tags>
   </entry>
   <entry>
@@ -974,8 +1047,8 @@
         <category>web前端</category>
       </categories>
       <tags>
-        <tag>知识点</tag>
         <tag>笔记</tag>
+        <tag>知识点</tag>
       </tags>
   </entry>
   <entry>
@@ -1013,8 +1086,8 @@
         <category>web前端</category>
       </categories>
       <tags>
-        <tag>知识点</tag>
         <tag>笔记</tag>
+        <tag>知识点</tag>
       </tags>
   </entry>
   <entry>
@@ -1071,8 +1144,8 @@
         <category>web前端</category>
       </categories>
       <tags>
-        <tag>知识点</tag>
         <tag>笔记</tag>
+        <tag>知识点</tag>
       </tags>
   </entry>
   <entry>
@@ -1172,8 +1245,8 @@
         <category>web前端</category>
       </categories>
       <tags>
-        <tag>知识点</tag>
         <tag>笔记</tag>
+        <tag>知识点</tag>
       </tags>
   </entry>
   <entry>
@@ -1211,8 +1284,8 @@
         <category>web前端</category>
       </categories>
       <tags>
-        <tag>知识点</tag>
         <tag>笔记</tag>
+        <tag>知识点</tag>
         <tag>Ajax</tag>
       </tags>
   </entry>
@@ -1317,8 +1390,8 @@
         <category>技术文档</category>
       </categories>
       <tags>
-        <tag>语法</tag>
         <tag>常用</tag>
+        <tag>语法</tag>
         <tag>MarkDown</tag>
       </tags>
   </entry>
@@ -1375,8 +1448,8 @@
         <category>技术文档</category>
       </categories>
       <tags>
-        <tag>hexo</tag>
         <tag>语法</tag>
+        <tag>hexo</tag>
         <tag>博客</tag>
       </tags>
   </entry>
