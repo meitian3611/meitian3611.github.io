@@ -1,76 +1,109 @@
 <?xml version="1.0" encoding="utf-8"?>
 <search>
   <entry>
-    <title>每日3道面试题</title>
-    <url>/2019/11/21/%E6%AF%8F%E6%97%A5%E4%B8%89%E9%81%93%E9%9D%A2%E8%AF%95%E9%A2%98/</url>
-    <content><![CDATA[<h2 id="一，HTML，HTTP，web综合相关问题"><a href="#一，HTML，HTTP，web综合相关问题" class="headerlink" title="一，HTML，HTTP，web综合相关问题"></a>一，HTML，HTTP，web综合相关问题</h2><h3 id="1-如何进行性能优化"><a href="#1-如何进行性能优化" class="headerlink" title="1.如何进行性能优化"></a>1.如何进行性能优化</h3><p>在html方面，我们可以减少http请求，图片进行压缩，使用css精灵图，采用语义化标签</p><p>引入的css文件统一放在页面顶部，js文件统一放在页面底部 js中少使用全局变量</p><a id="more"></a>
+    <title>Vue生命周期</title>
+    <url>/2019/12/03/Vue%E7%94%9F%E5%91%BD%E5%91%A8%E6%9C%9F/</url>
+    <content><![CDATA[<h2 id="Vue生命周期"><a href="#Vue生命周期" class="headerlink" title="Vue生命周期"></a>Vue生命周期</h2><blockquote>
+<p>一个vue的实例在它创建到销毁的一系列过程，就叫做生命周期</p>
+</blockquote><h2 id="钩子函数"><a href="#钩子函数" class="headerlink" title="钩子函数"></a>钩子函数</h2><blockquote>
+<p>在vue实例的生命周期中，某个特定的时刻会自动触发的函数，就叫做生命周期的钩子函数</p>
+</blockquote><p><strong>注意</strong>：</p><blockquote>
+<p>Ajax请求并不是要在特定的钩子函数才能请求，因为异步原因，在任意挂载阶段请求都可以</p>
+<p>Ajax最后都会在挂载阶段完成后请求成功   放在created钩子函数中可以更加的便于逻辑理解 </p>
+<p>更新阶段在页面数据进行变化，钩子函数才会执行</p>
+</blockquote><a id="more"></a>
 
-<h3 id="2-语义化的理解"><a href="#2-语义化的理解" class="headerlink" title="2.语义化的理解"></a>2.语义化的理解</h3><p>用正确的标签做正确的事情</p>
-<p>语义化可以使得页面内容更加的结构化，便于对浏览器，搜索引擎解析 优化seo</p>
-<p>使源码更易维护，便于理解</p>
-<h3 id="3-HTTP的几种请求方式"><a href="#3-HTTP的几种请求方式" class="headerlink" title="3.HTTP的几种请求方式"></a>3.HTTP的几种请求方式</h3><ul>
-<li>GET方法</li>
-</ul>
-<p>发送一个请求来取得服务器上的某一资源</p>
-<ul>
-<li>POST方法</li>
-</ul>
-<p>向url指定的资源提交数据或附加新的数据</p>
-<ul>
-<li>PUT</li>
-<li>HEAD 只会请求页面首部</li>
-<li>DELETE 删除服务器上面的某个资源</li>
-<li>OPTIONS</li>
-<li>CONNECT</li>
-</ul>
-<hr>
-<h3 id="4-对浏览器内核的理解"><a href="#4-对浏览器内核的理解" class="headerlink" title="4.对浏览器内核的理解"></a>4.对浏览器内核的理解</h3><p>浏览器内核主要分为两大部分：渲染引擎和 JS 引擎</p>
-<p>渲染引擎主要负责取得网页内容，加载css，计算网页显示方式，不同浏览器的内核不同，渲染出的页面效果也不相同</p>
-<p>JS引擎是解析和执行JavaScript来实现网页的动态效果</p>
-<p>内核普遍指向渲染引擎</p>
-<h3 id="5-cookie，seesionStorage-和-localStorage的区别"><a href="#5-cookie，seesionStorage-和-localStorage的区别" class="headerlink" title="5.cookie，seesionStorage 和 localStorage的区别"></a>5.cookie，seesionStorage 和 localStorage的区别</h3><ul>
-<li><p>cookie是储存在本地终端上的数据</p>
-<p>cookie会始终携带在同源的http请求中，在浏览器和服务器之间传递</p>
-</li>
-<li><p>seesionStorage 和 localStorage不会发送数据给服务器，仅在本地保存</p>
-</li>
-<li><p>存储大小：cookie数据大小不能超过4K，本地存储可以达到5M</p>
-</li>
-<li><p>时间：localStorage数据永久存在，除非主动删除</p>
-<pre><code>​            sessionStorage 浏览器窗口关闭后自动删除
 
-​             cookie 可以设置有效时间</code></pre></li>
-</ul>
-<h3 id="6-Doctype作用-严格模式与混杂模式如何区分？它们有何意义"><a href="#6-Doctype作用-严格模式与混杂模式如何区分？它们有何意义" class="headerlink" title="6.Doctype作用? 严格模式与混杂模式如何区分？它们有何意义?"></a>6.Doctype作用? 严格模式与混杂模式如何区分？它们有何意义?</h3><ul>
-<li><code>&lt;!DOCTYPE&gt;</code> 声明位于文档中的最前面，处于<code>&lt;HTML&gt;</code> 标签之前。告知浏览器的解析器， 用什么文档类型 规范来解析这个文档 </li>
-<li>严格模式的排版和 <code>JS</code> 运作模式是 以该浏览器支持的最高标准运行</li>
-<li>在混杂模式中，页面以宽松的向低版本兼容的方式显示。模拟老式浏览器的行为以防止站点无法工作。 <code>DOCTYPE</code>不存在或格式不正确会导致文档以混杂模式呈现  </li>
-</ul>
+
+<h2 id="分为三个阶段"><a href="#分为三个阶段" class="headerlink" title="分为三个阶段"></a>分为三个阶段</h2><h4 id="挂载阶段"><a href="#挂载阶段" class="headerlink" title="挂载阶段"></a>挂载阶段</h4><ol>
+<li>beforeCreate</li>
+<li>created</li>
+<li>beforeMount</li>
+<li>mounted</li>
+</ol>
+<h4 id="更新阶段"><a href="#更新阶段" class="headerlink" title="更新阶段"></a>更新阶段</h4><ol start="5">
+<li>beforeUpdate</li>
+<li>updated</li>
+</ol>
+<h4 id="销毁阶段"><a href="#销毁阶段" class="headerlink" title="销毁阶段"></a>销毁阶段</h4><ol start="7">
+<li>beforeDestroy</li>
+<li>destroyed</li>
+</ol>
 <hr>
-<h3 id="7-前端需要注意哪些SEO"><a href="#7-前端需要注意哪些SEO" class="headerlink" title="7.前端需要注意哪些SEO"></a>7.前端需要注意哪些SEO</h3><ul>
-<li>语义化HTML代码，使用W3C规范，使得搜索引擎更容易解析网页</li>
-<li>重要的HTML代码放在最前面，以便于搜索引擎从上到下抓取</li>
-<li>少用iframe，搜索引擎不会抓取iframe的内容</li>
-<li>非装饰图片都要加 alt</li>
+<ol>
+<li>beforeCreate                                                    实例创建之前                                                        </li>
+</ol>
+<ul>
+<li><p>拿不到数据与方法</p>
+</li>
+<li><p>拿不到真实的dom对象：this.$el</p>
+</li>
 </ul>
-<h3 id="8-web标准和W3C标准是什么"><a href="#8-web标准和W3C标准是什么" class="headerlink" title="8.web标准和W3C标准是什么"></a>8.web标准和W3C标准是什么</h3><ul>
-<li>标签闭合，标签小写，不乱嵌套，使用外链css和js，结构行为样式分离</li>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">&lt;template&gt; &lt;div&gt;   &lt;h1 id=&quot;box&quot;&gt;&#123;&#123; msg &#125;&#125;&lt;/h1&gt;   &lt;/div&gt;   &lt;/template&gt;</span><br><span class="line">&lt;script&gt;</span><br><span class="line">    export default &#123;</span><br><span class="line">    data() &#123;</span><br><span class="line">      return &#123;msg: &quot;Hello&quot;&#125;;</span><br><span class="line">    &#125;,   </span><br><span class="line">	beforeCreate() &#123;</span><br><span class="line">      	console.log(&quot;实例创建之前------------&quot;);</span><br><span class="line">      	console.log(this.msg); //数据 undefined</span><br><span class="line">      	console.log(this.$el); //DOM对象 undefined</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>
+
+<ol start="2">
+<li><strong>created</strong>                                                             实例创建完成</li>
+</ol>
+<ul>
+<li><p>拿不到真实的dom对象：this.$el</p>
+</li>
+<li><p>可以拿到数据和方法（Ajax请求）</p>
+</li>
+<li><p>调用方法，发送异步请求等等</p>
+</li>
 </ul>
-<h3 id="9-iframe有什么缺点"><a href="#9-iframe有什么缺点" class="headerlink" title="9.iframe有什么缺点"></a>9.iframe有什么缺点</h3><ul>
-<li>iframe会阻塞主页面的onload事件</li>
-<li>搜索引擎无法解析，不利于SEO</li>
-<li>iframe和主页面共享连接池，但浏览器对相同域会有限制，会影响页面的并行加载</li>
-<li>可以通过javascript动态给iframe添加src属性，解决问题</li>
+<figure class="highlight js"><table><tr><td class="code"><pre><span class="line">created() &#123;</span><br><span class="line">     <span class="built_in">console</span>.log(<span class="string">"实例创建完成------------"</span>);</span><br><span class="line">     <span class="built_in">console</span>.log(<span class="keyword">this</span>.msg); <span class="comment">// hello   可以获取数据和方法（发送ajax请求效率最高）</span></span><br><span class="line">     <span class="built_in">console</span>.log(<span class="keyword">this</span>.$el); <span class="comment">// undefined</span></span><br><span class="line">   &#125;</span><br></pre></td></tr></table></figure>
+
+<ol start="3">
+<li><p>beforeMount                                                    实例挂载之前</p>
+<ul>
+<li>拿不到真实的dom对象：this.$el</li>
 </ul>
-<hr>
+<figure class="highlight js"><table><tr><td class="code"><pre><span class="line">beforeMount() &#123;</span><br><span class="line">     <span class="built_in">console</span>.log(<span class="string">"实例挂载之前------------"</span>);</span><br><span class="line">     <span class="built_in">console</span>.log(<span class="keyword">this</span>.msg); <span class="comment">// hello</span></span><br><span class="line">     <span class="built_in">console</span>.log(<span class="keyword">this</span>.$el); <span class="comment">//undefined</span></span><br><span class="line">   &#125;</span><br></pre></td></tr></table></figure>
+</li>
+<li><p><strong>mounted</strong>                                                          实例挂载完成</p>
+<ul>
+<li><p>可以拿到真实的dom对象：this.$el  </p>
+</li>
+<li><p>调用方法，发送异步请求等等</p>
+</li>
+</ul>
+<figure class="highlight js"><table><tr><td class="code"><pre><span class="line">mounted() &#123;</span><br><span class="line">    <span class="built_in">console</span>.log(<span class="string">"实例挂载完成------------"</span>);</span><br><span class="line">    <span class="built_in">console</span>.log(<span class="keyword">this</span>.msg);</span><br><span class="line">    <span class="built_in">console</span>.log(<span class="keyword">this</span>.$el); <span class="comment">//&lt;div&gt;...&lt;/div&gt; 可以获取dom对象</span></span><br><span class="line">  &#125;</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>beforeUpdate                                                   实例更新之前</p>
+<ul>
+<li>获取当前数据的时候是旧数据</li>
+</ul>
+</li>
+<li><p><strong>updated</strong>                                                            实例更新完成</p>
+<ul>
+<li>数据更新完成，真实dom也更新完成</li>
+</ul>
+</li>
+<li><p><strong>beforeDestroy</strong>                                                 实例销毁之前</p>
+<ul>
+<li>清除定时器</li>
+</ul>
+</li>
+</ol>
+<ul>
+<li><p>清除全局绑定的滚动条事件</p>
+<ul>
+<li>清理工作</li>
+</ul>
+</li>
+</ul>
+<ol start="8">
+<li>destroyed                                                           实例销毁完成</li>
+</ol>
 ]]></content>
       <categories>
-        <category>web面试</category>
+        <category>Vue</category>
       </categories>
       <tags>
-        <tag>面试</tag>
-        <tag>大纲</tag>
-        <tag>日常</tag>
+        <tag>框架</tag>
+        <tag>知识点</tag>
+        <tag>笔记</tag>
       </tags>
   </entry>
   <entry>
@@ -362,9 +395,9 @@
         <category>nodeJS</category>
       </categories>
       <tags>
-        <tag>node</tag>
         <tag>框架</tag>
         <tag>知识点</tag>
+        <tag>node</tag>
       </tags>
   </entry>
   <entry>
@@ -510,8 +543,8 @@
         <category>web前端</category>
       </categories>
       <tags>
-        <tag>知识点</tag>
         <tag>语法</tag>
+        <tag>知识点</tag>
         <tag>es6</tag>
       </tags>
   </entry>
@@ -590,8 +623,8 @@
         <category>项目相关</category>
       </categories>
       <tags>
-        <tag>Git</tag>
         <tag>笔记</tag>
+        <tag>Git</tag>
         <tag>工具</tag>
       </tags>
   </entry>
@@ -897,9 +930,9 @@
         <category>nodeJS</category>
       </categories>
       <tags>
-        <tag>node</tag>
         <tag>知识点</tag>
         <tag>笔记</tag>
+        <tag>node</tag>
       </tags>
   </entry>
   <entry>
