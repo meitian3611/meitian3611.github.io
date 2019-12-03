@@ -31,19 +31,19 @@
 </ol>
 <hr>
 <ol>
-<li>beforeCreate                                                    实例创建之前                                                        </li>
-</ol>
+<li><p><strong>beforeCreate</strong>———实例创建之前                                                        </p>
 <ul>
 <li><p>拿不到数据与方法</p>
 </li>
 <li><p>拿不到真实的dom对象：this.$el</p>
 </li>
 </ul>
+</li>
+</ol>
 <figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">&lt;template&gt; &lt;div&gt;   &lt;h1 id=&quot;box&quot;&gt;&#123;&#123; msg &#125;&#125;&lt;/h1&gt;   &lt;/div&gt;   &lt;/template&gt;</span><br><span class="line">&lt;script&gt;</span><br><span class="line">    export default &#123;</span><br><span class="line">    data() &#123;</span><br><span class="line">      return &#123;msg: &quot;Hello&quot;&#125;;</span><br><span class="line">    &#125;,   </span><br><span class="line">	beforeCreate() &#123;</span><br><span class="line">      	console.log(&quot;实例创建之前------------&quot;);</span><br><span class="line">      	console.log(this.msg); //数据 undefined</span><br><span class="line">      	console.log(this.$el); //DOM对象 undefined</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>
 
 <ol start="2">
-<li><strong>created</strong>                                                             实例创建完成</li>
-</ol>
+<li><p><strong>created</strong>————–实例创建完成</p>
 <ul>
 <li><p>拿不到真实的dom对象：this.$el</p>
 </li>
@@ -52,16 +52,18 @@
 <li><p>调用方法，发送异步请求等等</p>
 </li>
 </ul>
+</li>
+</ol>
 <figure class="highlight js"><table><tr><td class="code"><pre><span class="line">created() &#123;</span><br><span class="line">     <span class="built_in">console</span>.log(<span class="string">"实例创建完成------------"</span>);</span><br><span class="line">     <span class="built_in">console</span>.log(<span class="keyword">this</span>.msg); <span class="comment">// hello   可以获取数据和方法（发送ajax请求效率最高）</span></span><br><span class="line">     <span class="built_in">console</span>.log(<span class="keyword">this</span>.$el); <span class="comment">// undefined</span></span><br><span class="line">   &#125;</span><br></pre></td></tr></table></figure>
 
 <ol start="3">
-<li><p>beforeMount                                                    实例挂载之前</p>
+<li><p><strong>beforeMount</strong>———-实例挂载之前</p>
 <ul>
 <li>拿不到真实的dom对象：this.$el</li>
 </ul>
 <figure class="highlight js"><table><tr><td class="code"><pre><span class="line">beforeMount() &#123;</span><br><span class="line">     <span class="built_in">console</span>.log(<span class="string">"实例挂载之前------------"</span>);</span><br><span class="line">     <span class="built_in">console</span>.log(<span class="keyword">this</span>.msg); <span class="comment">// hello</span></span><br><span class="line">     <span class="built_in">console</span>.log(<span class="keyword">this</span>.$el); <span class="comment">//undefined</span></span><br><span class="line">   &#125;</span><br></pre></td></tr></table></figure>
 </li>
-<li><p><strong>mounted</strong>                                                          实例挂载完成</p>
+<li><p><strong>mounted</strong>————-实例挂载完成</p>
 <ul>
 <li><p>可以拿到真实的dom对象：this.$el  </p>
 </li>
@@ -70,31 +72,27 @@
 </ul>
 <figure class="highlight js"><table><tr><td class="code"><pre><span class="line">mounted() &#123;</span><br><span class="line">    <span class="built_in">console</span>.log(<span class="string">"实例挂载完成------------"</span>);</span><br><span class="line">    <span class="built_in">console</span>.log(<span class="keyword">this</span>.msg);</span><br><span class="line">    <span class="built_in">console</span>.log(<span class="keyword">this</span>.$el); <span class="comment">//&lt;div&gt;...&lt;/div&gt; 可以获取dom对象</span></span><br><span class="line">  &#125;</span><br></pre></td></tr></table></figure>
 </li>
-<li><p>beforeUpdate                                                   实例更新之前</p>
+<li><p><strong>beforeUpdate</strong>———–实例更新之前</p>
 <ul>
 <li>获取当前数据的时候是旧数据</li>
 </ul>
 </li>
-<li><p><strong>updated</strong>                                                            实例更新完成</p>
+<li><p><strong>updated</strong>——————实例更新完成</p>
 <ul>
 <li>数据更新完成，真实dom也更新完成</li>
 </ul>
 </li>
-<li><p><strong>beforeDestroy</strong>                                                 实例销毁之前</p>
+<li><p><strong>beforeDestroy</strong>————-实例销毁之前</p>
 <ul>
-<li>清除定时器</li>
-</ul>
-</li>
-</ol>
-<ul>
-<li><p>清除全局绑定的滚动条事件</p>
-<ul>
+<li>清除定时器<ul>
+<li>清除全局绑定的滚动条事件</li>
 <li>清理工作</li>
 </ul>
 </li>
 </ul>
-<ol start="8">
-<li>destroyed                                                           实例销毁完成</li>
+</li>
+<li><p><strong>destroyed</strong>—————实例销毁完成</p>
+</li>
 </ol>
 ]]></content>
       <categories>
@@ -395,9 +393,9 @@
         <category>nodeJS</category>
       </categories>
       <tags>
+        <tag>node</tag>
         <tag>框架</tag>
         <tag>知识点</tag>
-        <tag>node</tag>
       </tags>
   </entry>
   <entry>
@@ -543,8 +541,8 @@
         <category>web前端</category>
       </categories>
       <tags>
-        <tag>语法</tag>
         <tag>知识点</tag>
+        <tag>语法</tag>
         <tag>es6</tag>
       </tags>
   </entry>
@@ -623,8 +621,8 @@
         <category>项目相关</category>
       </categories>
       <tags>
-        <tag>笔记</tag>
         <tag>Git</tag>
+        <tag>笔记</tag>
         <tag>工具</tag>
       </tags>
   </entry>
@@ -930,9 +928,9 @@
         <category>nodeJS</category>
       </categories>
       <tags>
+        <tag>node</tag>
         <tag>知识点</tag>
         <tag>笔记</tag>
-        <tag>node</tag>
       </tags>
   </entry>
   <entry>
