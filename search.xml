@@ -84,11 +84,8 @@
 </li>
 <li><p><strong>beforeDestroy</strong>————-实例销毁之前</p>
 <ul>
-<li>清除定时器<ul>
+<li>清除定时器</li>
 <li>清除全局绑定的滚动条事件</li>
-<li>清理工作</li>
-</ul>
-</li>
 </ul>
 </li>
 <li><p><strong>destroyed</strong>—————实例销毁完成</p>
