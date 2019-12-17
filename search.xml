@@ -1,6 +1,71 @@
 <?xml version="1.0" encoding="utf-8"?>
 <search>
   <entry>
+    <title>项目部署上线</title>
+    <url>/2019/12/17/%E4%BA%91%E6%9C%8D%E5%8A%A1%E5%99%A8%E6%90%AD%E5%BB%BA/</url>
+    <content><![CDATA[<blockquote>
+<p>项目上线就是将项目放在线上服务器进行运行</p>
+</blockquote><blockquote>
+<p>相信大家学完框架做了一些实战项目后，想要展示给大家是要将项目上线的</p>
+</blockquote><h2 id="服务器购买"><a href="#服务器购买" class="headerlink" title="服务器购买"></a>服务器购买</h2><ul>
+<li>服务器我是在腾讯云购买的    </li>
+<li>尽量选择 <strong>CentOS7.x</strong>版本购买</li>
+</ul><p><a href="https://cloud.tencent.com/" target="_blank" rel="noopener">进入官网</a></p><h2 id="nginx安装"><a href="#nginx安装" class="headerlink" title="nginx安装"></a>nginx安装</h2><p> <img src="https://i.loli.net/2019/12/17/2AOJlhzIdfi1k5r.png" alt="示例"></p><a id="more"></a>
+
+
+
+
+<blockquote>
+<p>首先点击登录进入Linux服务端开始操作命令 </p>
+</blockquote>
+<h3 id="安装-nginx-可以照着官网的步骤安装即可"><a href="#安装-nginx-可以照着官网的步骤安装即可" class="headerlink" title="安装 nginx 可以照着官网的步骤安装即可"></a>安装 nginx 可以照着官网的步骤安装即可</h3><p><a href="http://nginx.org/en/linux_packages.html#RHEL-CentOS" target="_blank" rel="noopener">文档链接</a></p>
+<h3 id="检验安装是否成功"><a href="#检验安装是否成功" class="headerlink" title="检验安装是否成功"></a>检验安装是否成功</h3><figure class="highlight nginx"><table><tr><td class="code"><pre><span class="line"><span class="attribute">nginx</span> -v</span><br></pre></td></tr></table></figure>
+
+<h3 id="启动-nginx"><a href="#启动-nginx" class="headerlink" title="启动 nginx"></a>启动 nginx</h3><figure class="highlight"><table><tr><td class="code"><pre><span class="line">nginx</span><br></pre></td></tr></table></figure>
+
+<h3 id="在浏览器输入服务器的公网-IP-地址-正常输出为下面页面"><a href="#在浏览器输入服务器的公网-IP-地址-正常输出为下面页面" class="headerlink" title="在浏览器输入服务器的公网 IP 地址 正常输出为下面页面"></a>在浏览器输入服务器的公网 IP 地址 正常输出为下面页面</h3><p><img src="https://cdn.nlark.com/yuque/0/2019/png/382590/1562170125986-f6b342a9-e1ff-4824-8766-7461a91e0229.png" alt></p>
+<h3 id="nginx-的默认-web-根目录"><a href="#nginx-的默认-web-根目录" class="headerlink" title="nginx 的默认 web 根目录"></a>nginx 的默认 web 根目录</h3><figure class="highlight"><table><tr><td class="code"><pre><span class="line">/usr/share/nginx/html</span><br></pre></td></tr></table></figure>
+
+<h2 id="项目上线"><a href="#项目上线" class="headerlink" title="项目上线"></a>项目上线</h2><h3 id="安装FTP客户端"><a href="#安装FTP客户端" class="headerlink" title="安装FTP客户端"></a>安装FTP客户端</h3><p><a href="https://www.filezilla.cn/" target="_blank" rel="noopener">下载链接</a></p>
+<p><img src="https://i.loli.net/2019/12/17/JPXul5fvqgFpcnQ.png" alt="示例"></p>
+<blockquote>
+<p> 输入自己的 IP 地址 以及密码即可，端口号一般都是22</p>
+</blockquote>
+<h4 id="上传Vue项目至服务器并运行"><a href="#上传Vue项目至服务器并运行" class="headerlink" title="上传Vue项目至服务器并运行"></a>上传Vue项目至服务器并运行</h4><ol>
+<li>npm run build 生成一个dist文件夹</li>
+<li>将dist里面的文件全部上传至服务器 nginx web根目录下</li>
+</ol>
+<blockquote>
+<p>PS：并不是将dist整个文件夹上传，而是选中dist文件夹下面的所有文件进行上传</p>
+</blockquote>
+<h2 id="安装-node"><a href="#安装-node" class="headerlink" title="安装 node"></a>安装 node</h2><blockquote>
+<p>node 是很多项目所必备的一样东西，在服务器上面也是必不可少的</p>
+</blockquote>
+<ol>
+<li>选择目录： <code>cd/usr/local</code></li>
+<li>下载Node包：<code>wget http://npm.taobao.org/mirrors/node/v12.13.1/node-v12.13.1-linux-x64.tar.xz</code></li>
+<li>解压xz：<code>xz -d node-v12.13.1-linux-x64.tar.xz</code></li>
+<li>解压tar：<code>tar -xvf node-v12.13.1-linux-x64.tar</code></li>
+<li>删除无用的tar文件：<code>rm -rf node-v12.13.1-linux-x64.tar</code></li>
+<li>修改文件名字：<code>mv node-v12.13.1-linux-x64 node</code></li>
+<li>配置环境变量，是node npm npx 命令可以在服务器全局使用<ol>
+<li>编辑文件 <code>vim/etc/profile</code>，在文件的最后一行添加内容 <code>export PATH=$PATH:/usr/local/node/bin</code></li>
+<li>使配置生效：<code>source/etc/profile</code></li>
+<li>最后在任意目录下检验 <code>node -v</code>是否全局使用</li>
+</ol>
+</li>
+</ol>
+]]></content>
+      <categories>
+        <category>项目相关</category>
+      </categories>
+      <tags>
+        <tag>笔记</tag>
+        <tag>服务器</tag>
+        <tag>项目流程</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>Webpack</title>
     <url>/2019/12/17/Webpack/</url>
     <content><![CDATA[<h2 id="webpack"><a href="#webpack" class="headerlink" title="webpack"></a>webpack</h2><blockquote>
