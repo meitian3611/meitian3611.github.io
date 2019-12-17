@@ -1,6 +1,131 @@
 <?xml version="1.0" encoding="utf-8"?>
 <search>
   <entry>
+    <title>Webpack</title>
+    <url>/2019/12/17/Webpack/</url>
+    <content><![CDATA[<h2 id="webpack"><a href="#webpack" class="headerlink" title="webpack"></a>webpack</h2><blockquote>
+<p>现代化前端最流行的一款 构建打包工具</p>
+</blockquote><h3 id="webpack-打包构建原理"><a href="#webpack-打包构建原理" class="headerlink" title="webpack 打包构建原理"></a>webpack 打包构建原理</h3><blockquote>
+<p>基于某个入口文件，分析这个文件中的依赖，接着继续向下寻找依赖所属的依赖</p>
+<p>循环往复，直到没有依赖为止，最后进行打包处理</p>
+</blockquote><h3 id="webpack-核心"><a href="#webpack-核心" class="headerlink" title="webpack 核心"></a>webpack 核心</h3><a id="more"></a>
+
+<ol>
+<li>entry（入口）</li>
+<li>output（出口）</li>
+<li>loader（转换器）</li>
+</ol>
+<blockquote>
+<p> webpack 将依赖都看成是一个一个的模块。但是默认情况只能识别 js与json 两种格式的模块。如果想要打包图片、样式等资源的话，就需要相应的loader转换器来进行转换操作，转换之后webpack才能识别。</p>
+</blockquote>
+<ol start="4">
+<li>plugins（插件）</li>
+</ol>
+<blockquote>
+<p>有一些操作转换器也实现不了，这时就可以交给插件来实现。比如说要将某个文件直接复制到出口文件里面等操作。</p>
+</blockquote>
+<ol start="5">
+<li>mode（打包模式 4.x 版本之后提供）开发 | 生产</li>
+</ol>
+<h3 id="webpack简易搭建流程"><a href="#webpack简易搭建流程" class="headerlink" title="webpack简易搭建流程"></a>webpack简易搭建流程</h3><blockquote>
+<p>新建文件  <code>mkdir webpack-demo</code></p>
+</blockquote>
+<blockquote>
+<p>初始化  <code>npm init -y</code></p>
+</blockquote>
+<blockquote>
+<p>安装开发依赖  <code>npm install -D webpack webpack-cli</code></p>
+</blockquote>
+<blockquote>
+<p>三种运行方式:</p>
+<ul>
+<li><code>./node_modules/.bin/webpack</code></li>
+<li><code>npx webpack</code></li>
+<li><code>npm run build</code>（ 在 package.json 文件中修改运行命令即可 ）</li>
+</ul>
+<figure class="highlight"><table><tr><td class="code"><pre><span class="line">"scripts": &#123;</span><br><span class="line"> "build": "webpack"</span><br><span class="line">&#125;,</span><br></pre></td></tr></table></figure>
+</blockquote>
+<p>更多详细操作流程可以查看 <a href="https://www.webpackjs.com/guides/installation/" target="_blank" rel="noopener">官 网</a></p>
+<h4 id="入口-amp-出口"><a href="#入口-amp-出口" class="headerlink" title="入口 &amp; 出口"></a>入口 &amp; 出口</h4><figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="built_in">module</span>.exports = &#123;</span><br><span class="line">  <span class="comment">// 入口</span></span><br><span class="line">  entry: <span class="string">"./src/index.js"</span>,</span><br><span class="line">  <span class="comment">// 出口</span></span><br><span class="line">  output: &#123;</span><br><span class="line">    filename: <span class="string">"main.js"</span>,</span><br><span class="line">    path: path.resolve(__dirname, <span class="string">"dist"</span>)</span><br><span class="line">  &#125;,</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<hr>
+<h3 id="常用插件"><a href="#常用插件" class="headerlink" title="常用插件"></a>常用插件</h3><h4 id="自动生成-dist-index-html"><a href="#自动生成-dist-index-html" class="headerlink" title="自动生成 dist /  index.html"></a>自动生成 dist /  index.html</h4><ol>
+<li>安装插件</li>
+</ol>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">npm install --save-dev html-webpack-plugin</span><br></pre></td></tr></table></figure>
+
+<ol start="2">
+<li>配置插件 — webpack.config.js</li>
+</ol>
+<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="keyword">const</span> path = <span class="built_in">require</span>(<span class="string">"path"</span>)</span><br><span class="line"><span class="keyword">const</span> HtmlWebpackPlugin = <span class="built_in">require</span>(<span class="string">"html-webpack-plugin"</span>) <span class="comment">// 引入</span></span><br><span class="line">plugins: [</span><br><span class="line">  <span class="keyword">new</span> HtmlWebpackPlugin(&#123;</span><br><span class="line">    <span class="comment">// 可以传递一个template选项，来控制使用哪个模板页面来生成</span></span><br><span class="line">    template: path.resolve(__dirname, <span class="string">'./public/index.html'</span>)</span><br><span class="line">  &#125;)</span><br><span class="line">]</span><br></pre></td></tr></table></figure>
+
+<h4 id="将public文件夹内容全部拷贝至-dist-出口文件夹"><a href="#将public文件夹内容全部拷贝至-dist-出口文件夹" class="headerlink" title="将public文件夹内容全部拷贝至 dist 出口文件夹"></a>将public文件夹内容全部拷贝至 dist 出口文件夹</h4><ol>
+<li>安装插件</li>
+</ol>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">npm install --save-dev copy-webpack-plugin</span><br></pre></td></tr></table></figure>
+
+<ol start="2">
+<li>配置插件 —  webpack.config.js</li>
+</ol>
+<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="keyword">const</span> CopyWebpackPlugin = <span class="built_in">require</span>(<span class="string">"copy-webpack-plugin"</span>) <span class="comment">// 引入</span></span><br><span class="line">plugins: [</span><br><span class="line">  <span class="keyword">new</span> CopyWebpackPlugin([</span><br><span class="line">    &#123;</span><br><span class="line">      <span class="keyword">from</span>: path.resolve(__dirname, <span class="string">'./public'</span>)</span><br><span class="line">    &#125;</span><br><span class="line">  ])</span><br><span class="line">]</span><br></pre></td></tr></table></figure>
+
+<h3 id="常用转换器"><a href="#常用转换器" class="headerlink" title="常用转换器"></a>常用转换器</h3><h4 id="引入css样式"><a href="#引入css样式" class="headerlink" title="引入css样式"></a>引入css样式</h4><blockquote>
+<p>需要两个转换器：style-loader | css-loader</p>
+</blockquote>
+<blockquote>
+<p>css-loader: 将css文件转换成 webpack 能够识别的模块文件</p>
+</blockquote>
+<blockquote>
+<p>style-loader: 将css写入到html页面的style标签中</p>
+</blockquote>
+<ol>
+<li>安装转换器</li>
+</ol>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">npm install -D style-loader css-loader</span><br></pre></td></tr></table></figure>
+
+<ol start="2">
+<li>配置转换器规则  —  webpack.config.js</li>
+</ol>
+<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="built_in">module</span>: &#123;</span><br><span class="line">   <span class="comment">// 填写转换器的配置，规则</span></span><br><span class="line">   rules: [</span><br><span class="line">     &#123;</span><br><span class="line">       test: <span class="regexp">/\.css$/</span>,</span><br><span class="line">       <span class="comment">// 多个转换器使用时，需要按照倒序的写法</span></span><br><span class="line">       use: [<span class="string">'style-loader'</span>, <span class="string">'css-loader'</span>]</span><br><span class="line">     &#125;</span><br><span class="line">   ]</span><br><span class="line"> &#125;,</span><br></pre></td></tr></table></figure>
+
+<h4 id="引入scss样式"><a href="#引入scss样式" class="headerlink" title="引入scss样式"></a>引入scss样式</h4><blockquote>
+<p>除了上面两个转换器，还需要额外安装两个转换器</p>
+</blockquote>
+<ol>
+<li>安装转换器</li>
+</ol>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">npm install -D sass-loader node-sass</span><br></pre></td></tr></table></figure>
+
+<ol start="2">
+<li>配置路由器规则   —   webpack.config.js</li>
+</ol>
+<figure class="highlight js"><table><tr><td class="code"><pre><span class="line">&#123;</span><br><span class="line">  test: <span class="regexp">/\.(scss|sass)$/</span>,</span><br><span class="line">  use: [<span class="string">"style-loader"</span>, <span class="string">"css-loader"</span>, <span class="string">"sass-loader"</span>]</span><br><span class="line">&#125;,</span><br></pre></td></tr></table></figure>
+
+<p><strong>引入图片</strong></p>
+<blockquote>
+<p>图片也需要使用模块的方式将其引入</p>
+</blockquote>
+<ol>
+<li>安装转换器</li>
+</ol>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">npm install -D url-loader</span><br></pre></td></tr></table></figure>
+
+<ol start="2">
+<li>配置并引入   —   src/ index.js</li>
+</ol>
+<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="keyword">import</span> Icon <span class="keyword">from</span> <span class="string">'./assets/1.jpg'</span> <span class="comment">// 引入图片</span></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">component</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">  <span class="keyword">var</span> element = <span class="built_in">document</span>.createElement(<span class="string">"div"</span>)</span><br><span class="line">  <span class="keyword">var</span> myIcon = <span class="keyword">new</span> Image()</span><br><span class="line">  myIcon.src = Icon</span><br><span class="line">  element.appendChild(myIcon)</span><br><span class="line">  <span class="keyword">return</span> element</span><br><span class="line">&#125;</span><br><span class="line"><span class="built_in">document</span>.body.appendChild(component())</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="comment">// -- webpack.config.js</span></span><br><span class="line">&#123;</span><br><span class="line">    test: <span class="regexp">/\.(png|jpg|gif)$/</span>,</span><br><span class="line">    use: [<span class="string">"file-loader"</span>]</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>]]></content>
+      <categories>
+        <category>项目相关</category>
+      </categories>
+      <tags>
+        <tag>知识点</tag>
+        <tag>构建工具</tag>
+        <tag>项目必备</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>Vue生命周期</title>
     <url>/2019/12/03/Vue%E7%94%9F%E5%91%BD%E5%91%A8%E6%9C%9F/</url>
     <content><![CDATA[<h2 id="Vue生命周期"><a href="#Vue生命周期" class="headerlink" title="Vue生命周期"></a>Vue生命周期</h2><blockquote>
@@ -96,9 +221,9 @@
         <category>Vue</category>
       </categories>
       <tags>
+        <tag>笔记</tag>
         <tag>框架</tag>
         <tag>知识点</tag>
-        <tag>笔记</tag>
       </tags>
   </entry>
   <entry>
@@ -792,8 +917,8 @@
         <category>项目相关</category>
       </categories>
       <tags>
-        <tag>知识点</tag>
         <tag>笔记</tag>
+        <tag>知识点</tag>
         <tag>gulp</tag>
       </tags>
   </entry>
@@ -925,9 +1050,9 @@
         <category>nodeJS</category>
       </categories>
       <tags>
+        <tag>笔记</tag>
         <tag>node</tag>
         <tag>知识点</tag>
-        <tag>笔记</tag>
       </tags>
   </entry>
   <entry>
@@ -1075,8 +1200,8 @@
         <category>web前端</category>
       </categories>
       <tags>
-        <tag>知识点</tag>
         <tag>笔记</tag>
+        <tag>知识点</tag>
       </tags>
   </entry>
   <entry>
@@ -1114,8 +1239,8 @@
         <category>web前端</category>
       </categories>
       <tags>
-        <tag>知识点</tag>
         <tag>笔记</tag>
+        <tag>知识点</tag>
       </tags>
   </entry>
   <entry>
@@ -1172,8 +1297,8 @@
         <category>web前端</category>
       </categories>
       <tags>
-        <tag>知识点</tag>
         <tag>笔记</tag>
+        <tag>知识点</tag>
       </tags>
   </entry>
   <entry>
@@ -1273,8 +1398,8 @@
         <category>web前端</category>
       </categories>
       <tags>
-        <tag>知识点</tag>
         <tag>笔记</tag>
+        <tag>知识点</tag>
       </tags>
   </entry>
   <entry>
@@ -1312,8 +1437,8 @@
         <category>web前端</category>
       </categories>
       <tags>
-        <tag>知识点</tag>
         <tag>笔记</tag>
+        <tag>知识点</tag>
         <tag>Ajax</tag>
       </tags>
   </entry>
@@ -1418,8 +1543,8 @@
         <category>技术文档</category>
       </categories>
       <tags>
-        <tag>语法</tag>
         <tag>常用</tag>
+        <tag>语法</tag>
         <tag>MarkDown</tag>
       </tags>
   </entry>
@@ -1476,8 +1601,8 @@
         <category>技术文档</category>
       </categories>
       <tags>
-        <tag>hexo</tag>
         <tag>语法</tag>
+        <tag>hexo</tag>
         <tag>博客</tag>
       </tags>
   </entry>
