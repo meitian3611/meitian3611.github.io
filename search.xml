@@ -52,8 +52,8 @@
         <category>React</category>
       </categories>
       <tags>
-        <tag>知识点</tag>
         <tag>笔记</tag>
+        <tag>知识点</tag>
         <tag>脚手架</tag>
       </tags>
   </entry>
@@ -66,7 +66,7 @@
 
 
 
-<h2 id="类方式组件"><a href="#类方式组件" class="headerlink" title="类方式组件"></a>类方式组件</h2><figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="keyword">import</span> React, &#123; Component &#125; <span class="keyword">from</span> <span class="string">'react'</span> <span class="comment">// 引入组件</span></span><br><span class="line"><span class="keyword">import</span> ReactDOM <span class="keyword">from</span> <span class="string">'react-dom'</span></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Hello</span> <span class="keyword">extends</span> <span class="title">Component</span> </span>&#123;</span><br><span class="line">    <span class="comment">// 接收传递的信息</span></span><br><span class="line">    <span class="keyword">constructor</span>(props) &#123;</span><br><span class="line">        <span class="comment">// 提供了构造函数，就必须要在最前面调用super()</span></span><br><span class="line">        <span class="keyword">super</span>()</span><br><span class="line">        <span class="comment">// 初始化 state</span></span><br><span class="line">        <span class="keyword">this</span>.state = &#123;</span><br><span class="line">            msg: <span class="string">'我是state'</span></span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    onClick () &#123;</span><br><span class="line">        <span class="keyword">this</span>.setState(&#123;</span><br><span class="line">            msg; <span class="string">'我已经被 button 修改了'</span></span><br><span class="line">        &#125;)</span><br><span class="line">    &#125;</span><br><span class="line">    render () &#123;</span><br><span class="line">        <span class="keyword">return</span> (</span><br><span class="line">        &lt;div&gt;</span><br><span class="line">            &lt;h1&gt;hello 我是&#123;name&#125;&lt;<span class="regexp">/h1&gt;    &#123;/</span>**接收调用者的传值并发送给props *<span class="regexp">/&#125;</span></span><br><span class="line"><span class="regexp">    		&lt;p&gt;&#123;msg&#125;&lt;/</span>p&gt;</span><br><span class="line">			&#123;<span class="comment">/**通过 bind 返回一个新的函数改变 this的指向 */</span>&#125;</span><br><span class="line">		&lt;button onClick=&#123;<span class="keyword">this</span>.onClick.bind(<span class="keyword">this</span>)&#125;&gt;点击修改msg&lt;<span class="regexp">/button&gt;		</span></span><br><span class="line"><span class="regexp">	)</span></span><br><span class="line"><span class="regexp">  &#125;</span></span><br><span class="line"><span class="regexp">&#125;</span></span><br><span class="line"><span class="regexp">/</span><span class="regexp">/ 组件的调用并传值</span></span><br><span class="line"><span class="regexp">ReactDom.render(</span></span><br><span class="line"><span class="regexp">  &lt;div&gt;</span></span><br><span class="line"><span class="regexp">    &lt;Hello name="类组件"&gt;&lt;/</span>Hello&gt;</span><br><span class="line">  &lt;<span class="regexp">/div&gt;,</span></span><br><span class="line"><span class="regexp">  document.getElementById('root')</span></span><br><span class="line"><span class="regexp">)</span></span><br></pre></td></tr></table></figure>
+<h2 id="类方式组件"><a href="#类方式组件" class="headerlink" title="类方式组件"></a>类方式组件</h2><figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="keyword">import</span> React, &#123; Component &#125; <span class="keyword">from</span> <span class="string">'react'</span> <span class="comment">// 引入组件</span></span><br><span class="line"><span class="keyword">import</span> ReactDOM <span class="keyword">from</span> <span class="string">'react-dom'</span></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Hello</span> <span class="keyword">extends</span> <span class="title">Component</span> </span>&#123;</span><br><span class="line">    <span class="comment">// 接收传递的信息</span></span><br><span class="line">    <span class="keyword">constructor</span>(props) &#123;</span><br><span class="line">        <span class="comment">// 提供了构造函数，就必须要在最前面调用super()</span></span><br><span class="line">        <span class="keyword">super</span>()</span><br><span class="line">        <span class="comment">// 初始化 state</span></span><br><span class="line">        <span class="keyword">this</span>.state = &#123;</span><br><span class="line">            msg: <span class="string">'我是state'</span></span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    onClick () &#123;</span><br><span class="line">        <span class="keyword">this</span>.setState(&#123;</span><br><span class="line">            msg; <span class="string">'我已经被 button 修改了'</span></span><br><span class="line">        &#125;)</span><br><span class="line">    &#125;</span><br><span class="line">    render () &#123;</span><br><span class="line">        <span class="keyword">return</span> (</span><br><span class="line">        &lt;div&gt;</span><br><span class="line">            &lt;h1&gt;hello 我是&#123;name&#125;&lt;<span class="regexp">/h1&gt;    &#123;/</span>**接收调用者的传值并发送给props *<span class="regexp">/&#125;</span></span><br><span class="line"><span class="regexp">    		&lt;p&gt;&#123;msg&#125;&lt;/</span>p&gt;</span><br><span class="line">			&#123;<span class="comment">/**通过 bind 返回一个新的函数改变 this的指向 */</span>&#125;</span><br><span class="line">		&lt;button onClick=&#123;<span class="keyword">this</span>.onClick.bind(<span class="keyword">this</span>)&#125;&gt;点击修改msg&lt;<span class="regexp">/button&gt;		</span></span><br><span class="line"><span class="regexp">	)</span></span><br><span class="line"><span class="regexp">  &#125;</span></span><br><span class="line"><span class="regexp">&#125;</span></span><br><span class="line"><span class="regexp">/</span><span class="regexp">/ 组件的调用并传值</span></span><br><span class="line"><span class="regexp">ReactDOM.render(</span></span><br><span class="line"><span class="regexp">  &lt;div&gt;</span></span><br><span class="line"><span class="regexp">    &lt;Hello name="类组件"&gt;&lt;/</span>Hello&gt;</span><br><span class="line">  &lt;<span class="regexp">/div&gt;,</span></span><br><span class="line"><span class="regexp">  document.getElementById('root')</span></span><br><span class="line"><span class="regexp">)</span></span><br></pre></td></tr></table></figure>
 
 <blockquote>
 <p>需要注意几点：</p>
@@ -83,8 +83,8 @@
         <category>React</category>
       </categories>
       <tags>
-        <tag>知识点</tag>
         <tag>笔记</tag>
+        <tag>知识点</tag>
         <tag>组件</tag>
       </tags>
   </entry>
@@ -448,9 +448,9 @@
         <category>Vue</category>
       </categories>
       <tags>
+        <tag>笔记</tag>
         <tag>框架</tag>
         <tag>知识点</tag>
-        <tag>笔记</tag>
       </tags>
   </entry>
   <entry>
@@ -1144,8 +1144,8 @@
         <category>项目相关</category>
       </categories>
       <tags>
-        <tag>知识点</tag>
         <tag>笔记</tag>
+        <tag>知识点</tag>
         <tag>gulp</tag>
       </tags>
   </entry>
@@ -1277,9 +1277,9 @@
         <category>nodeJS</category>
       </categories>
       <tags>
+        <tag>笔记</tag>
         <tag>node</tag>
         <tag>知识点</tag>
-        <tag>笔记</tag>
       </tags>
   </entry>
   <entry>
@@ -1427,8 +1427,8 @@
         <category>web前端</category>
       </categories>
       <tags>
-        <tag>知识点</tag>
         <tag>笔记</tag>
+        <tag>知识点</tag>
       </tags>
   </entry>
   <entry>
@@ -1466,8 +1466,8 @@
         <category>web前端</category>
       </categories>
       <tags>
-        <tag>知识点</tag>
         <tag>笔记</tag>
+        <tag>知识点</tag>
       </tags>
   </entry>
   <entry>
@@ -1524,8 +1524,8 @@
         <category>web前端</category>
       </categories>
       <tags>
-        <tag>知识点</tag>
         <tag>笔记</tag>
+        <tag>知识点</tag>
       </tags>
   </entry>
   <entry>
@@ -1625,8 +1625,8 @@
         <category>web前端</category>
       </categories>
       <tags>
-        <tag>知识点</tag>
         <tag>笔记</tag>
+        <tag>知识点</tag>
       </tags>
   </entry>
   <entry>
@@ -1664,8 +1664,8 @@
         <category>web前端</category>
       </categories>
       <tags>
-        <tag>知识点</tag>
         <tag>笔记</tag>
+        <tag>知识点</tag>
         <tag>Ajax</tag>
       </tags>
   </entry>
