@@ -212,6 +212,89 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/12/19/React%E7%94%9F%E5%91%BD%E5%91%A8%E6%9C%9F/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="https://pic1.zhimg.com/v2-0a2b112762d84f53ce576a24a8b895ed_b.jpg">
+      <meta itemprop="name" content="淡然">
+      <meta itemprop="description" content="一个正在学习前端的萌新">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="淡然的博客">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          
+            <a href="/2019/12/19/React%E7%94%9F%E5%91%BD%E5%91%A8%E6%9C%9F/" class="post-title-link" itemprop="url">React生命周期</a>
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+              
+
+              <time title="创建时间：2019-12-19 21:23:54 / 修改时间：21:26:02" itemprop="dateCreated datePublished" datetime="2019-12-19T21:23:54+08:00">2019-12-19</time>
+            </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/React/" itemprop="url" rel="index">
+                    <span itemprop="name">React</span>
+                  </a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h2 id="生命周期的三个阶段"><a href="#生命周期的三个阶段" class="headerlink" title="生命周期的三个阶段"></a>生命周期的三个阶段</h2><h3 id="1-挂载阶段"><a href="#1-挂载阶段" class="headerlink" title="1. 挂载阶段"></a>1. 挂载阶段</h3><h4 id="constructor-构造函数"><a href="#constructor-构造函数" class="headerlink" title="constructor 构造函数"></a>constructor 构造函数</h4><pre><code>1. 一次生命周期中，只会触发一次
+2. 一般是用来 state 的初始化
+3. 使用它来做提前的 事件处理函数 this 绑定问题</code></pre><h4 id="render-函数"><a href="#render-函数" class="headerlink" title="render 函数"></a>render 函数</h4><pre><code>1. 一次生命周期中，可以触发多次
+2. 主要是用来返回 组件的模板内容
+3. 只要 state，prop 发生变化，那么这个函数默认情况下一定会重新执行
+4. 如果调用了 forceUpdate() 那么 render一定会重新执行
+5. 不能在这发生Ajax|Axios请求</code></pre>
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/2019/12/19/React%E7%94%9F%E5%91%BD%E5%91%A8%E6%9C%9F/#more" rel="contents">
+                阅读全文 &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+        
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="zh-CN">
     <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/12/18/React%E8%84%9A%E6%89%8B%E6%9E%B6%E5%92%8CJSX%E8%AF%AD%E6%B3%95/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -318,10 +401,16 @@
                 <i class="fa fa-calendar-o"></i>
               </span>
               <span class="post-meta-item-text">发表于</span>
-              
 
-              <time title="创建时间：2019-12-18 20:40:02 / 修改时间：21:13:13" itemprop="dateCreated datePublished" datetime="2019-12-18T20:40:02+08:00">2019-12-18</time>
+              <time title="创建时间：2019-12-18 20:40:02" itemprop="dateCreated datePublished" datetime="2019-12-18T20:40:02+08:00">2019-12-18</time>
             </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2019-12-19 21:22:41" itemprop="dateModified" datetime="2019-12-19T21:22:41+08:00">2019-12-19</time>
+              </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
                 <i class="fa fa-folder-o"></i>
@@ -347,7 +436,9 @@
       
           <h2 id="虚拟DOM"><a href="#虚拟DOM" class="headerlink" title="虚拟DOM"></a>虚拟DOM</h2><blockquote>
 <p>React 的 高效主要是体现在DOM上，在渲染新的元素的时候生成新的虚拟DOM元素和上次的虚拟DOM进行比较（diff算法）得出最小的修改点，然后用最小的代价进行DOM修改</p>
-</blockquote><p><img src="https://www.reactjscn.com/granular-dom-updates-c158617ed7cc0eac8f58330e49e48224.gif" alt="示例"></p><h2 id="函数式组件"><a href="#函数式组件" class="headerlink" title="函数式组件"></a>函数式组件</h2><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> React <span class="keyword">from</span> <span class="string">'react'</span></span><br><span class="line"><span class="keyword">import</span> ReactDom <span class="keyword">from</span> <span class="string">'react-dom'</span></span><br><span class="line"><span class="comment">// 定义组件</span></span><br><span class="line"><span class="keyword">const</span> Hello = <span class="function"><span class="params">()</span> =&gt;</span> &#123;</span><br><span class="line">  <span class="keyword">return</span> (</span><br><span class="line">    &lt; div &gt;</span><br><span class="line">      &lt;h1&gt; hello 我是一个组件&lt;<span class="regexp">/h1&gt;</span></span><br><span class="line"><span class="regexp">      &lt;World&gt;&lt;/</span>World&gt;</span><br><span class="line">    &lt;<span class="regexp">/div &gt;</span></span><br><span class="line"><span class="regexp">  )</span></span><br><span class="line"><span class="regexp">&#125;</span></span><br><span class="line"><span class="regexp">const World = () =&gt; &#123;</span></span><br><span class="line"><span class="regexp">  return (</span></span><br><span class="line"><span class="regexp">    &lt;div&gt;</span></span><br><span class="line"><span class="regexp">      &lt;h1&gt;我是一个子组件&lt;/</span>h1&gt;</span><br><span class="line">    &lt;<span class="regexp">/div&gt;</span></span><br><span class="line"><span class="regexp">  )</span></span><br><span class="line"><span class="regexp">&#125;</span></span><br><span class="line"><span class="regexp">/</span><span class="regexp">/ 利用组件进行页面渲染</span></span><br><span class="line"><span class="regexp">ReactDom.render(</span></span><br><span class="line"><span class="regexp">  &lt;div&gt;</span></span><br><span class="line"><span class="regexp">    &lt;Hello&gt;&lt;/</span>Hello&gt;</span><br><span class="line">  &lt;<span class="regexp">/div&gt;,</span></span><br><span class="line"><span class="regexp">  document.getElementById('root')</span></span><br><span class="line"><span class="regexp">)</span></span><br></pre></td></tr></table></figure>
+</blockquote><p><img src="https://www.reactjscn.com/granular-dom-updates-c158617ed7cc0eac8f58330e49e48224.gif" alt="示例"></p><h2 id="函数组件（无状态组件）"><a href="#函数组件（无状态组件）" class="headerlink" title="函数组件（无状态组件）"></a>函数组件（无状态组件）</h2><blockquote>
+<p>有无状态是指有无 state 数据（这个 state 数据，可以看成是 vue 中的 data）</p>
+</blockquote>
           <!--noindex-->
             <div class="post-button">
               <a class="btn" href="/2019/12/18/React%E8%99%9A%E6%8B%9FDOM%E5%92%8C%E7%BB%84%E4%BB%B6/#more" rel="contents">
@@ -1003,86 +1094,6 @@
   
   
 
-        
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/11/01/Git%E7%89%88%E6%9C%AC%E7%AE%A1%E7%90%86%E5%B7%A5%E5%85%B7/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="https://pic1.zhimg.com/v2-0a2b112762d84f53ce576a24a8b895ed_b.jpg">
-      <meta itemprop="name" content="淡然">
-      <meta itemprop="description" content="一个正在学习前端的萌新">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="淡然的博客">
-    </span>
-      <header class="post-header">
-        <h1 class="post-title" itemprop="name headline">
-          
-            <a href="/2019/11/01/Git%E7%89%88%E6%9C%AC%E7%AE%A1%E7%90%86%E5%B7%A5%E5%85%B7/" class="post-title-link" itemprop="url">Git版本管理工具</a>
-        </h1>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-              
-
-              <time title="创建时间：2019-11-01 10:19:30 / 修改时间：16:37:49" itemprop="dateCreated datePublished" datetime="2019-11-01T10:19:30+08:00">2019-11-01</time>
-            </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              <span class="post-meta-item-text">分类于</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/%E9%A1%B9%E7%9B%AE%E7%9B%B8%E5%85%B3/" itemprop="url" rel="index">
-                    <span itemprop="name">项目相关</span>
-                  </a>
-                </span>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <blockquote>
-<p> Git是目前世界上最先进的分布式版本控制系统。</p>
-<p>GIT为分布式版本控制系统根本没有“中央服务器”，每个人的电脑上都是一个完整的版本库适合分布式开发，强调个体公共服务器压力和数据量都不会太大速度快灵活可以离线工作操作复杂，代码保密性差</p>
-</blockquote>
-          <!--noindex-->
-            <div class="post-button">
-              <a class="btn" href="/2019/11/01/Git%E7%89%88%E6%9C%AC%E7%AE%A1%E7%90%86%E5%B7%A5%E5%85%B7/#more" rel="contents">
-                阅读全文 &raquo;
-              </a>
-            </div>
-          <!--/noindex-->
-        
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
   </div>
 
   
@@ -1133,7 +1144,7 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">21</span>
+          <span class="site-state-item-count">22</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>

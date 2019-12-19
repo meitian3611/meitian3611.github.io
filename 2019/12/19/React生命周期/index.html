@@ -51,18 +51,20 @@
   };
 </script>
 
-  <meta name="description" content="Git是目前世界上最先进的分布式版本控制系统。 GIT为分布式版本控制系统根本没有“中央服务器”，每个人的电脑上都是一个完整的版本库适合分布式开发，强调个体公共服务器压力和数据量都不会太大速度快灵活可以离线工作操作复杂，代码保密性差">
-<meta name="keywords" content="笔记,Git,工具">
+  <meta name="description" content="生命周期的三个阶段1. 挂载阶段constructor 构造函数1. 一次生命周期中，只会触发一次 2. 一般是用来 state 的初始化 3. 使用它来做提前的 事件处理函数 this 绑定问题render 函数1. 一次生命周期中，可以触发多次 2. 主要是用来返回 组件的模板内容 3. 只要 state，prop 发生变化，那么这个函数默认情况下一定会重新执行 4. 如果调用了 forceU">
+<meta name="keywords" content="框架,笔记,常用">
 <meta property="og:type" content="article">
-<meta property="og:title" content="Git版本管理工具">
-<meta property="og:url" content="http:&#x2F;&#x2F;yoursite.com&#x2F;2019&#x2F;11&#x2F;01&#x2F;Git%E7%89%88%E6%9C%AC%E7%AE%A1%E7%90%86%E5%B7%A5%E5%85%B7&#x2F;index.html">
+<meta property="og:title" content="React生命周期">
+<meta property="og:url" content="http:&#x2F;&#x2F;yoursite.com&#x2F;2019&#x2F;12&#x2F;19&#x2F;React%E7%94%9F%E5%91%BD%E5%91%A8%E6%9C%9F&#x2F;index.html">
 <meta property="og:site_name" content="淡然的博客">
-<meta property="og:description" content="Git是目前世界上最先进的分布式版本控制系统。 GIT为分布式版本控制系统根本没有“中央服务器”，每个人的电脑上都是一个完整的版本库适合分布式开发，强调个体公共服务器压力和数据量都不会太大速度快灵活可以离线工作操作复杂，代码保密性差">
+<meta property="og:description" content="生命周期的三个阶段1. 挂载阶段constructor 构造函数1. 一次生命周期中，只会触发一次 2. 一般是用来 state 的初始化 3. 使用它来做提前的 事件处理函数 this 绑定问题render 函数1. 一次生命周期中，可以触发多次 2. 主要是用来返回 组件的模板内容 3. 只要 state，prop 发生变化，那么这个函数默认情况下一定会重新执行 4. 如果调用了 forceU">
 <meta property="og:locale" content="zh-CN">
-<meta property="og:updated_time" content="2019-11-01T08:37:49.027Z">
+<meta property="og:image" content="https:&#x2F;&#x2F;i.loli.net&#x2F;2019&#x2F;12&#x2F;19&#x2F;wUjPnxB8DZfWcSY.png">
+<meta property="og:updated_time" content="2019-12-19T13:26:02.964Z">
 <meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https:&#x2F;&#x2F;i.loli.net&#x2F;2019&#x2F;12&#x2F;19&#x2F;wUjPnxB8DZfWcSY.png">
 
-<link rel="canonical" href="http://yoursite.com/2019/11/01/Git%E7%89%88%E6%9C%AC%E7%AE%A1%E7%90%86%E5%B7%A5%E5%85%B7/">
+<link rel="canonical" href="http://yoursite.com/2019/12/19/React%E7%94%9F%E5%91%BD%E5%91%A8%E6%9C%9F/">
 
 
 <script id="page-configurations">
@@ -76,7 +78,7 @@
   };
 </script>
 
-  <title>Git版本管理工具 | 淡然的博客</title>
+  <title>React生命周期 | 淡然的博客</title>
   
 
 
@@ -214,7 +216,7 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block " lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/11/01/Git%E7%89%88%E6%9C%AC%E7%AE%A1%E7%90%86%E5%B7%A5%E5%85%B7/">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/12/19/React%E7%94%9F%E5%91%BD%E5%91%A8%E6%9C%9F/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="https://pic1.zhimg.com/v2-0a2b112762d84f53ce576a24a8b895ed_b.jpg">
@@ -227,7 +229,7 @@
     </span>
       <header class="post-header">
         <h1 class="post-title" itemprop="name headline">
-          Git版本管理工具
+          React生命周期
         </h1>
 
         <div class="post-meta">
@@ -238,7 +240,7 @@
               <span class="post-meta-item-text">发表于</span>
               
 
-              <time title="创建时间：2019-11-01 10:19:30 / 修改时间：16:37:49" itemprop="dateCreated datePublished" datetime="2019-11-01T10:19:30+08:00">2019-11-01</time>
+              <time title="创建时间：2019-12-19 21:23:54 / 修改时间：21:26:02" itemprop="dateCreated datePublished" datetime="2019-12-19T21:23:54+08:00">2019-12-19</time>
             </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -246,8 +248,8 @@
               </span>
               <span class="post-meta-item-text">分类于</span>
                 <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/%E9%A1%B9%E7%9B%AE%E7%9B%B8%E5%85%B3/" itemprop="url" rel="index">
-                    <span itemprop="name">项目相关</span>
+                  <a href="/categories/React/" itemprop="url" rel="index">
+                    <span itemprop="name">React</span>
                   </a>
                 </span>
             </span>
@@ -270,73 +272,17 @@
     <div class="post-body" itemprop="articleBody">
 
       
-        <blockquote>
-<p> Git是目前世界上最先进的分布式版本控制系统。</p>
-<p>GIT为分布式版本控制系统根本没有“中央服务器”，每个人的电脑上都是一个完整的版本库适合分布式开发，强调个体公共服务器压力和数据量都不会太大速度快灵活可以离线工作操作复杂，代码保密性差</p>
-</blockquote><a id="more"></a>
-<h2 id="操作流程"><a href="#操作流程" class="headerlink" title="操作流程"></a>操作流程</h2><h3 id="一，初始化"><a href="#一，初始化" class="headerlink" title="一，初始化"></a>一，初始化</h3><p>命令  <code>git init</code></p>
-<p>显示成功后去相应的文件夹中查看是不是多了一个.git隐藏文件</p>
-<p>这个文件夹就是你的版本库了，把项目放在文件夹下。</p>
-<h3 id="二，提交到本地暂存"><a href="#二，提交到本地暂存" class="headerlink" title="二，提交到本地暂存"></a>二，提交到本地暂存</h3><p><strong>*提交之前需要记住先刷新原有代码！！</strong></p>
-<p>命令 <strong>git pull</strong>   刷新再提交  这一步很重要！</p>
-<p>命令 git add ‘文件名’        </p>
-<p>​         git add -u   提交所有被修改(modified)和被删除(deleted)文件，不包括新文件(new)        </p>
-<p>​         git add .      提交所有新文件(new)和被修改(modified)文件，不包括被删除(deleted)文件        </p>
-<p>​         git add -A   提交所有变化</p>
-<h3 id="三，提交到本地仓库"><a href="#三，提交到本地仓库" class="headerlink" title="三，提交到本地仓库"></a>三，提交到本地仓库</h3><p>命令  git commit -m ‘一段注释内容’</p>
-<h3 id="四，查看仓库状态"><a href="#四，查看仓库状态" class="headerlink" title="四，查看仓库状态"></a>四，查看仓库状态</h3><p>命令  git status  用于显示工作目录和暂存区的状态。</p>
-<p><strong>查看修改内容</strong></p>
-<p>命令  git diff 你的文件名</p>
-<p>将更改后的东西提交上去，和之前一样。先add 然后再commit</p>
-<h3 id="五，版本回退"><a href="#五，版本回退" class="headerlink" title="五，版本回退"></a>五，版本回退</h3><p><strong>查看提交日志</strong></p>
-<p>命令  <code>git log</code> <code>git reflog</code></p>
-<p><strong>回退版本</strong></p>
-<p>命令   <code>git reset --hard HEAD^</code> 退回到上个版本 </p>
-<p>如果需要退回好多版本就在后面加上 ^ 例： <code>git reset --hard HEAD^^</code>退回两个版本。</p>
-<p><code>git reset --hard 191e0c7</code>  回退到指定版本然后去查看readme.txt是否成功退回。</p>
-<h3 id="六，提交远程仓库"><a href="#六，提交远程仓库" class="headerlink" title="六，提交远程仓库"></a>六，提交远程仓库</h3><p>命令1. git remote add origin <a href="https://github.com/你的账号/你的项目名" target="_blank" rel="noopener">https: // github.com/你的账号/你的项目</a><a href="https://github.com/你的账号/你的项目名" target="_blank" rel="noopener">名</a>称   设置远程仓库地址<br>命令2. git push -u origin master 将本地的库推送到master分支 （就是推送到服务器上）</p>
-<p><code>git remote -v</code>  查看远程仓库地址</p>
-<p><code>git remote rm origin</code>  删除远程仓库地址</p>
-<p>第一次需要这么操作，以后就是直接 <strong>git push</strong>就行</p>
-<hr>
-<h2 id="操作指令总结"><a href="#操作指令总结" class="headerlink" title="操作指令总结"></a>操作指令总结</h2><blockquote>
-<p><strong>git init</strong>                                  项目文件初始化</p>
-<p><strong>git pull</strong>                                  提交前的刷新操作，新建仓库可以忽略</p>
-<p><strong>git add -A</strong>                             提交到暂存仓库</p>
-<p><strong>git commit -m ‘</strong>一段注释’  提交到本地仓库</p>
-<p><strong>git status</strong>                              查看仓库状态 </p>
-<p>git reflog                                查看日志</p>
-<p>git reset –hard HEAD^        退回到上个版本 </p>
-<p>git remote add origin <a href="https://github.com/你的账号/你的项目名" target="_blank" rel="noopener">https: // github.com/你的账号/你的项目</a><a href="https://github.com/你的账号/你的项目名" target="_blank" rel="noopener">名</a>称  <strong>第一次创建需要</strong></p>
-<p>git push -u origin master 将本地的库推送到master分支                  <strong>第一次创建需要</strong></p>
-<p>git remote -v                      查看远程仓库地址</p>
-<p>git remote rm origin           删除远程仓库地址</p>
-<p><strong>git push</strong>                                日常提交指令（master）</p>
-<p>git clone <a href="https://github.com/账号/项目名称" target="_blank" rel="noopener">https://github.com/账号/项目名称</a></p>
-</blockquote>
-<h2 id="分支操作"><a href="#分支操作" class="headerlink" title="分支操作"></a>分支操作</h2><blockquote>
-<p>查看分支：git branch</p>
-<p>创建分支：git branch  name</p>
-<p>切换分支：git checkout name</p>
-<p>创建并切换分支：git checkout -b name</p>
-<p>合并某分支到当前分支：git merge name</p>
-<p>删除分支：git branch -d name</p>
-<p><strong>提交分支</strong>：git push origin name</p>
-<p><strong>拉取远程分支</strong>：git fetch origin name</p>
-<p><strong>更新远程分支</strong>：git pull origin name</p>
-</blockquote>
-<p><strong>合并分支（工作流程）</strong></p>
-<blockquote>
-<p>1、先建一个分支                  git branch 分支名</p>
-<p>2、切换到新建的分支          git checkout 分支名</p>
-<p>3、提交分支上的代码          git add .    git commit -m “提交注释”</p>
-<p>4、切换至主分支上              git checkout master</p>
-<p>5、然后合并分支                  git merge 分支名字</p>
-<p>6、合并完以后就push         最好先pull一次  然后 git push</p>
-</blockquote>
-<h2 id="忽略文件"><a href="#忽略文件" class="headerlink" title="忽略文件"></a>忽略文件</h2><p>新建文件：.gitignore.</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"># .gitignore 忽略文件列表</span><br><span class="line">.DS_Store</span><br><span class="line">node_modules/</span><br></pre></td></tr></table></figure>
-
+        <h2 id="生命周期的三个阶段"><a href="#生命周期的三个阶段" class="headerlink" title="生命周期的三个阶段"></a>生命周期的三个阶段</h2><h3 id="1-挂载阶段"><a href="#1-挂载阶段" class="headerlink" title="1. 挂载阶段"></a>1. 挂载阶段</h3><h4 id="constructor-构造函数"><a href="#constructor-构造函数" class="headerlink" title="constructor 构造函数"></a>constructor 构造函数</h4><pre><code>1. 一次生命周期中，只会触发一次
+2. 一般是用来 state 的初始化
+3. 使用它来做提前的 事件处理函数 this 绑定问题</code></pre><h4 id="render-函数"><a href="#render-函数" class="headerlink" title="render 函数"></a>render 函数</h4><pre><code>1. 一次生命周期中，可以触发多次
+2. 主要是用来返回 组件的模板内容
+3. 只要 state，prop 发生变化，那么这个函数默认情况下一定会重新执行
+4. 如果调用了 forceUpdate() 那么 render一定会重新执行
+5. 不能在这发生Ajax|Axios请求</code></pre><a id="more"></a><h4 id="componentWillMount-挂载之前（过期）"><a href="#componentWillMount-挂载之前（过期）" class="headerlink" title="componentWillMount 挂载之前（过期）"></a>componentWillMount 挂载之前（过期）</h4><h4 id="static-getDerivedStateFromProps-props-state-替代挂载之前-派生state数据"><a href="#static-getDerivedStateFromProps-props-state-替代挂载之前-派生state数据" class="headerlink" title="static getDerivedStateFromProps(props, state)替代挂载之前   派生state数据"></a>static getDerivedStateFromProps(props, state)替代挂载之前   派生state数据</h4><pre><code>1. 触发在 render函数之前，挂载与更新阶段都会触发
+2. 必须返回对象或者null。返回的如果是对象的话，会和state对象合并一份新的state。如果是null的话就不做处理</code></pre><h4 id="componentDidMount-挂载完成"><a href="#componentDidMount-挂载完成" class="headerlink" title="componentDidMount 挂载完成"></a>componentDidMount 挂载完成</h4><pre><code>1. 可以进行Ajax数据请求
+2. 可以得到真实的DOM对象</code></pre><h3 id="2-更新阶段（五个步骤）"><a href="#2-更新阶段（五个步骤）" class="headerlink" title="2. 更新阶段（五个步骤）"></a>2. 更新阶段（五个步骤）</h3><h4 id="01-—-static-getDerivedStateFromProps-props-state-派生state数据"><a href="#01-—-static-getDerivedStateFromProps-props-state-派生state数据" class="headerlink" title="01 — static getDerivedStateFromProps(props, state) 派生state数据"></a>01 — static getDerivedStateFromProps(props, state) 派生state数据</h4><h4 id="02-—-shouldComponentUpdate-nextProps-nextState-判断是否应该更新"><a href="#02-—-shouldComponentUpdate-nextProps-nextState-判断是否应该更新" class="headerlink" title="02 — shouldComponentUpdate(nextProps, nextState)  判断是否应该更新"></a>02 — shouldComponentUpdate(nextProps, nextState)  判断是否应该更新</h4><pre><code>1. 比较重要，是实现性能优化的一个点
+2. 必须提供返回值，返回一个布尔类型的值，为true，继续流程，为 false，流程结束</code></pre><h4 id="03-—-render函数"><a href="#03-—-render函数" class="headerlink" title="03 —  render函数"></a>03 —  render函数</h4><h4 id="componentWillUpdate-更新之前（过期）"><a href="#componentWillUpdate-更新之前（过期）" class="headerlink" title="componentWillUpdate() 更新之前（过期）"></a>componentWillUpdate() 更新之前（过期）</h4><h4 id="04-—-getSnapshotBeforeUpdate-prevProps-prevState-替代更新之前"><a href="#04-—-getSnapshotBeforeUpdate-prevProps-prevState-替代更新之前" class="headerlink" title="04 — getSnapshotBeforeUpdate(prevProps, prevState) 替代更新之前"></a>04 — getSnapshotBeforeUpdate(prevProps, prevState) 替代更新之前</h4><pre><code>1. 更新之前
+2. 必须有返回值或者null 返回值的内容会给到componentDidUpdate 的第三个参数</code></pre><h4 id="05-—-componentDidUpdate-prevProps-prevState-snapshot-更新完成"><a href="#05-—-componentDidUpdate-prevProps-prevState-snapshot-更新完成" class="headerlink" title="05 — componentDidUpdate(prevProps, prevState, snapshot) 更新完成"></a>05 — componentDidUpdate(prevProps, prevState, snapshot) 更新完成</h4><pre><code>更新完成，并且真实DOM也更新完成</code></pre><h3 id="3-销毁阶段"><a href="#3-销毁阶段" class="headerlink" title="3. 销毁阶段"></a>3. 销毁阶段</h3><h4 id="componentWillUnmount-销毁之前"><a href="#componentWillUnmount-销毁之前" class="headerlink" title="componentWillUnmount 销毁之前"></a>componentWillUnmount 销毁之前</h4><pre><code>1. 做一些清理工作</code></pre><p><img src="https://i.loli.net/2019/12/19/wUjPnxB8DZfWcSY.png" alt="TIM截图20191219174707.png"><br>   <a href="http://projects.wojtekmaj.pl/react-lifecycle-methods-diagram/" target="_blank" rel="noopener">原图链接</a></p>
 
     </div>
 
@@ -346,26 +292,23 @@
 
       <footer class="post-footer">
           <div class="post-tags">
+              <a href="/tags/%E6%A1%86%E6%9E%B6/" rel="tag"><i class="fa fa-tag"></i> 框架</a>
               <a href="/tags/%E7%AC%94%E8%AE%B0/" rel="tag"><i class="fa fa-tag"></i> 笔记</a>
-              <a href="/tags/Git/" rel="tag"><i class="fa fa-tag"></i> Git</a>
-              <a href="/tags/%E5%B7%A5%E5%85%B7/" rel="tag"><i class="fa fa-tag"></i> 工具</a>
+              <a href="/tags/%E5%B8%B8%E7%94%A8/" rel="tag"><i class="fa fa-tag"></i> 常用</a>
           </div>
 
         
 
           <div class="post-nav">
             <div class="post-nav-next post-nav-item">
-                <a href="/2019/10/31/Sass/" rel="next" title="Sass">
-                  <i class="fa fa-chevron-left"></i> Sass
+                <a href="/2019/12/18/React%E8%84%9A%E6%89%8B%E6%9E%B6%E5%92%8CJSX%E8%AF%AD%E6%B3%95/" rel="next" title="React脚手架和JSX语法">
+                  <i class="fa fa-chevron-left"></i> React脚手架和JSX语法
                 </a>
             </div>
 
             <span class="post-nav-divider"></span>
 
             <div class="post-nav-prev post-nav-item">
-                <a href="/2019/11/04/ES6/" rel="prev" title="ES6基本使用">
-                  ES6基本使用 <i class="fa fa-chevron-right"></i>
-                </a>
             </div>
           </div>
       </footer>
@@ -404,7 +347,7 @@
 
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
-          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#操作流程"><span class="nav-number">1.</span> <span class="nav-text">操作流程</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#一，初始化"><span class="nav-number">1.1.</span> <span class="nav-text">一，初始化</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#二，提交到本地暂存"><span class="nav-number">1.2.</span> <span class="nav-text">二，提交到本地暂存</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#三，提交到本地仓库"><span class="nav-number">1.3.</span> <span class="nav-text">三，提交到本地仓库</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#四，查看仓库状态"><span class="nav-number">1.4.</span> <span class="nav-text">四，查看仓库状态</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#五，版本回退"><span class="nav-number">1.5.</span> <span class="nav-text">五，版本回退</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#六，提交远程仓库"><span class="nav-number">1.6.</span> <span class="nav-text">六，提交远程仓库</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#操作指令总结"><span class="nav-number">2.</span> <span class="nav-text">操作指令总结</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#分支操作"><span class="nav-number">3.</span> <span class="nav-text">分支操作</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#忽略文件"><span class="nav-number">4.</span> <span class="nav-text">忽略文件</span></a></li></ol></div>
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#生命周期的三个阶段"><span class="nav-number">1.</span> <span class="nav-text">生命周期的三个阶段</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-挂载阶段"><span class="nav-number">1.1.</span> <span class="nav-text">1. 挂载阶段</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#constructor-构造函数"><span class="nav-number">1.1.1.</span> <span class="nav-text">constructor 构造函数</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#render-函数"><span class="nav-number">1.1.2.</span> <span class="nav-text">render 函数</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#componentWillMount-挂载之前（过期）"><span class="nav-number">1.1.3.</span> <span class="nav-text">componentWillMount 挂载之前（过期）</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#static-getDerivedStateFromProps-props-state-替代挂载之前-派生state数据"><span class="nav-number">1.1.4.</span> <span class="nav-text">static getDerivedStateFromProps(props, state)替代挂载之前   派生state数据</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#componentDidMount-挂载完成"><span class="nav-number">1.1.5.</span> <span class="nav-text">componentDidMount 挂载完成</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-更新阶段（五个步骤）"><span class="nav-number">1.2.</span> <span class="nav-text">2. 更新阶段（五个步骤）</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#01-—-static-getDerivedStateFromProps-props-state-派生state数据"><span class="nav-number">1.2.1.</span> <span class="nav-text">01 — static getDerivedStateFromProps(props, state) 派生state数据</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#02-—-shouldComponentUpdate-nextProps-nextState-判断是否应该更新"><span class="nav-number">1.2.2.</span> <span class="nav-text">02 — shouldComponentUpdate(nextProps, nextState)  判断是否应该更新</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#03-—-render函数"><span class="nav-number">1.2.3.</span> <span class="nav-text">03 —  render函数</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#componentWillUpdate-更新之前（过期）"><span class="nav-number">1.2.4.</span> <span class="nav-text">componentWillUpdate() 更新之前（过期）</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#04-—-getSnapshotBeforeUpdate-prevProps-prevState-替代更新之前"><span class="nav-number">1.2.5.</span> <span class="nav-text">04 — getSnapshotBeforeUpdate(prevProps, prevState) 替代更新之前</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#05-—-componentDidUpdate-prevProps-prevState-snapshot-更新完成"><span class="nav-number">1.2.6.</span> <span class="nav-text">05 — componentDidUpdate(prevProps, prevState, snapshot) 更新完成</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-销毁阶段"><span class="nav-number">1.3.</span> <span class="nav-text">3. 销毁阶段</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#componentWillUnmount-销毁之前"><span class="nav-number">1.3.1.</span> <span class="nav-text">componentWillUnmount 销毁之前</span></a></li></ol></li></ol></li></ol></div>
       </div>
       <!--/noindex-->
 

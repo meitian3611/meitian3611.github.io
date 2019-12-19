@@ -51,17 +51,17 @@
   };
 </script>
 
-  <meta name="description" content="虚拟DOM React 的 高效主要是体现在DOM上，在渲染新的元素的时候生成新的虚拟DOM元素和上次的虚拟DOM进行比较（diff算法）得出最小的修改点，然后用最小的代价进行DOM修改 函数式组件12345678910111213141516171819202122232425import React from &amp;apos;react&amp;apos;import ReactDom from &amp;apos;react-dom&amp;apos;&#x2F;&#x2F;">
-<meta name="keywords" content="笔记,知识点,组件">
+  <meta name="description" content="虚拟DOM React 的 高效主要是体现在DOM上，在渲染新的元素的时候生成新的虚拟DOM元素和上次的虚拟DOM进行比较（diff算法）得出最小的修改点，然后用最小的代价进行DOM修改 函数组件（无状态组件） 有无状态是指有无 state 数据（这个 state 数据，可以看成是 vue 中的 data）">
+<meta name="keywords" content="知识点,笔记,组件">
 <meta property="og:type" content="article">
 <meta property="og:title" content="React虚拟DOM和组件">
 <meta property="og:url" content="http:&#x2F;&#x2F;yoursite.com&#x2F;2019&#x2F;12&#x2F;18&#x2F;React%E8%99%9A%E6%8B%9FDOM%E5%92%8C%E7%BB%84%E4%BB%B6&#x2F;index.html">
 <meta property="og:site_name" content="淡然的博客">
-<meta property="og:description" content="虚拟DOM React 的 高效主要是体现在DOM上，在渲染新的元素的时候生成新的虚拟DOM元素和上次的虚拟DOM进行比较（diff算法）得出最小的修改点，然后用最小的代价进行DOM修改 函数式组件12345678910111213141516171819202122232425import React from &amp;apos;react&amp;apos;import ReactDom from &amp;apos;react-dom&amp;apos;&#x2F;&#x2F;">
+<meta property="og:description" content="虚拟DOM React 的 高效主要是体现在DOM上，在渲染新的元素的时候生成新的虚拟DOM元素和上次的虚拟DOM进行比较（diff算法）得出最小的修改点，然后用最小的代价进行DOM修改 函数组件（无状态组件） 有无状态是指有无 state 数据（这个 state 数据，可以看成是 vue 中的 data）">
 <meta property="og:locale" content="zh-CN">
 <meta property="og:image" content="https:&#x2F;&#x2F;www.reactjscn.com&#x2F;granular-dom-updates-c158617ed7cc0eac8f58330e49e48224.gif">
 <meta property="og:image" content="https:&#x2F;&#x2F;i.loli.net&#x2F;2019&#x2F;12&#x2F;18&#x2F;G3c2SU84FkyuC1D.png">
-<meta property="og:updated_time" content="2019-12-18T13:13:13.751Z">
+<meta property="og:updated_time" content="2019-12-19T13:22:41.653Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:image" content="https:&#x2F;&#x2F;www.reactjscn.com&#x2F;granular-dom-updates-c158617ed7cc0eac8f58330e49e48224.gif">
 
@@ -239,10 +239,16 @@
                 <i class="fa fa-calendar-o"></i>
               </span>
               <span class="post-meta-item-text">发表于</span>
-              
 
-              <time title="创建时间：2019-12-18 20:40:02 / 修改时间：21:13:13" itemprop="dateCreated datePublished" datetime="2019-12-18T20:40:02+08:00">2019-12-18</time>
+              <time title="创建时间：2019-12-18 20:40:02" itemprop="dateCreated datePublished" datetime="2019-12-18T20:40:02+08:00">2019-12-18</time>
             </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2019-12-19 21:22:41" itemprop="dateModified" datetime="2019-12-19T21:22:41+08:00">2019-12-19</time>
+              </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
                 <i class="fa fa-folder-o"></i>
@@ -275,11 +281,32 @@
       
         <h2 id="虚拟DOM"><a href="#虚拟DOM" class="headerlink" title="虚拟DOM"></a>虚拟DOM</h2><blockquote>
 <p>React 的 高效主要是体现在DOM上，在渲染新的元素的时候生成新的虚拟DOM元素和上次的虚拟DOM进行比较（diff算法）得出最小的修改点，然后用最小的代价进行DOM修改</p>
-</blockquote><p><img src="https://www.reactjscn.com/granular-dom-updates-c158617ed7cc0eac8f58330e49e48224.gif" alt="示例"></p><h2 id="函数式组件"><a href="#函数式组件" class="headerlink" title="函数式组件"></a>函数式组件</h2><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> React <span class="keyword">from</span> <span class="string">'react'</span></span><br><span class="line"><span class="keyword">import</span> ReactDom <span class="keyword">from</span> <span class="string">'react-dom'</span></span><br><span class="line"><span class="comment">// 定义组件</span></span><br><span class="line"><span class="keyword">const</span> Hello = <span class="function"><span class="params">()</span> =&gt;</span> &#123;</span><br><span class="line">  <span class="keyword">return</span> (</span><br><span class="line">    &lt; div &gt;</span><br><span class="line">      &lt;h1&gt; hello 我是一个组件&lt;<span class="regexp">/h1&gt;</span></span><br><span class="line"><span class="regexp">      &lt;World&gt;&lt;/</span>World&gt;</span><br><span class="line">    &lt;<span class="regexp">/div &gt;</span></span><br><span class="line"><span class="regexp">  )</span></span><br><span class="line"><span class="regexp">&#125;</span></span><br><span class="line"><span class="regexp">const World = () =&gt; &#123;</span></span><br><span class="line"><span class="regexp">  return (</span></span><br><span class="line"><span class="regexp">    &lt;div&gt;</span></span><br><span class="line"><span class="regexp">      &lt;h1&gt;我是一个子组件&lt;/</span>h1&gt;</span><br><span class="line">    &lt;<span class="regexp">/div&gt;</span></span><br><span class="line"><span class="regexp">  )</span></span><br><span class="line"><span class="regexp">&#125;</span></span><br><span class="line"><span class="regexp">/</span><span class="regexp">/ 利用组件进行页面渲染</span></span><br><span class="line"><span class="regexp">ReactDom.render(</span></span><br><span class="line"><span class="regexp">  &lt;div&gt;</span></span><br><span class="line"><span class="regexp">    &lt;Hello&gt;&lt;/</span>Hello&gt;</span><br><span class="line">  &lt;<span class="regexp">/div&gt;,</span></span><br><span class="line"><span class="regexp">  document.getElementById('root')</span></span><br><span class="line"><span class="regexp">)</span></span><br></pre></td></tr></table></figure><a id="more"></a>
+</blockquote><p><img src="https://www.reactjscn.com/granular-dom-updates-c158617ed7cc0eac8f58330e49e48224.gif" alt="示例"></p><h2 id="函数组件（无状态组件）"><a href="#函数组件（无状态组件）" class="headerlink" title="函数组件（无状态组件）"></a>函数组件（无状态组件）</h2><blockquote>
+<p>有无状态是指有无 state 数据（这个 state 数据，可以看成是 vue 中的 data）</p>
+</blockquote><a id="more"></a>
 
 
+<blockquote>
+<p>函数组件的 props 数据发生变化，会引起 函数组件的重新调用</p>
+</blockquote>
+<ol>
+<li>函数名就是组件的名字首字母需要大写</li>
+<li>函数体需要返回一段 JSX 代码 这段代码就是组件的模板的内容</li>
+<li>函数接收一个 props 的参数，是一个对象，存放的是调用这个组件时在组件标签上定义的属性</li>
+</ol>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> React <span class="keyword">from</span> <span class="string">'react'</span></span><br><span class="line"><span class="keyword">import</span> ReactDom <span class="keyword">from</span> <span class="string">'react-dom'</span></span><br><span class="line"><span class="comment">// 定义组件</span></span><br><span class="line"><span class="keyword">const</span> Hello = <span class="function"><span class="params">()</span> =&gt;</span> &#123;</span><br><span class="line">  <span class="keyword">return</span> (</span><br><span class="line">    &lt; div &gt;</span><br><span class="line">      &lt;h1&gt; hello 我是一个组件&lt;<span class="regexp">/h1&gt;</span></span><br><span class="line"><span class="regexp">      &lt;World&gt;&lt;/</span>World&gt;</span><br><span class="line">    &lt;<span class="regexp">/div &gt;</span></span><br><span class="line"><span class="regexp">  )</span></span><br><span class="line"><span class="regexp">&#125;</span></span><br><span class="line"><span class="regexp">const World = () =&gt; &#123;</span></span><br><span class="line"><span class="regexp">  return (</span></span><br><span class="line"><span class="regexp">    &lt;div&gt;</span></span><br><span class="line"><span class="regexp">      &lt;h1&gt;我是一个子组件&lt;/</span>h1&gt;</span><br><span class="line">    &lt;<span class="regexp">/div&gt;</span></span><br><span class="line"><span class="regexp">  )</span></span><br><span class="line"><span class="regexp">&#125;</span></span><br><span class="line"><span class="regexp">/</span><span class="regexp">/ 利用组件进行页面渲染</span></span><br><span class="line"><span class="regexp">ReactDom.render(</span></span><br><span class="line"><span class="regexp">  &lt;div&gt;</span></span><br><span class="line"><span class="regexp">    &lt;Hello&gt;&lt;/</span>Hello&gt;</span><br><span class="line">  &lt;<span class="regexp">/div&gt;,</span></span><br><span class="line"><span class="regexp">  document.getElementById('root')</span></span><br><span class="line"><span class="regexp">)</span></span><br></pre></td></tr></table></figure>
 
-<h2 id="类方式组件"><a href="#类方式组件" class="headerlink" title="类方式组件"></a>类方式组件</h2><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> React, &#123; Component &#125; <span class="keyword">from</span> <span class="string">'react'</span> <span class="comment">// 引入组件</span></span><br><span class="line"><span class="keyword">import</span> ReactDOM <span class="keyword">from</span> <span class="string">'react-dom'</span></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Hello</span> <span class="keyword">extends</span> <span class="title">Component</span> </span>&#123;</span><br><span class="line">    <span class="comment">// 接收传递的信息</span></span><br><span class="line">    <span class="keyword">constructor</span>(props) &#123;</span><br><span class="line">        <span class="comment">// 提供了构造函数，就必须要在最前面调用super()</span></span><br><span class="line">        <span class="keyword">super</span>()</span><br><span class="line">        <span class="comment">// 初始化 state</span></span><br><span class="line">        <span class="keyword">this</span>.state = &#123;</span><br><span class="line">            msg: <span class="string">'我是state'</span></span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    onClick () &#123;</span><br><span class="line">        <span class="keyword">this</span>.setState(&#123;</span><br><span class="line">            msg; <span class="string">'我已经被 button 修改了'</span></span><br><span class="line">        &#125;)</span><br><span class="line">    &#125;</span><br><span class="line">    render () &#123;</span><br><span class="line">        <span class="keyword">return</span> (</span><br><span class="line">        &lt;div&gt;</span><br><span class="line">            &lt;h1&gt;hello 我是&#123;name&#125;&lt;<span class="regexp">/h1&gt;    &#123;/</span>**接收调用者的传值并发送给props *<span class="regexp">/&#125;</span></span><br><span class="line"><span class="regexp">    		&lt;p&gt;&#123;msg&#125;&lt;/</span>p&gt;</span><br><span class="line">			&#123;<span class="comment">/**通过 bind 返回一个新的函数改变 this的指向 */</span>&#125;</span><br><span class="line">		&lt;button onClick=&#123;<span class="keyword">this</span>.onClick.bind(<span class="keyword">this</span>)&#125;&gt;点击修改msg&lt;<span class="regexp">/button&gt;		</span></span><br><span class="line"><span class="regexp">	)</span></span><br><span class="line"><span class="regexp">  &#125;</span></span><br><span class="line"><span class="regexp">&#125;</span></span><br><span class="line"><span class="regexp">/</span><span class="regexp">/ 组件的调用并传值</span></span><br><span class="line"><span class="regexp">ReactDOM.render(</span></span><br><span class="line"><span class="regexp">  &lt;div&gt;</span></span><br><span class="line"><span class="regexp">    &lt;Hello name="类组件"&gt;&lt;/</span>Hello&gt;</span><br><span class="line">  &lt;<span class="regexp">/div&gt;,</span></span><br><span class="line"><span class="regexp">  document.getElementById('root')</span></span><br><span class="line"><span class="regexp">)</span></span><br></pre></td></tr></table></figure>
+<h2 id="类组件（有状态组件）"><a href="#类组件（有状态组件）" class="headerlink" title="类组件（有状态组件）"></a>类组件（有状态组件）</h2><blockquote>
+<p>类组件的 state 或者 props 数据发生变化，会引起 类组件的 render 方法重新调用，也就是更新页面</p>
+</blockquote>
+<ol>
+<li>类的名字就是组件的名字，首字母需要大写</li>
+<li>类组件必须继承 React.Component 这个基础组件</li>
+<li>类组件必须要提供一个 render 函数，render 函数的返回值就是组件的模板内容</li>
+<li>类实例的 props 属性，就是 props 数据</li>
+<li>在构造函数中，初始化 state</li>
+</ol>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> React, &#123; Component &#125; <span class="keyword">from</span> <span class="string">'react'</span> <span class="comment">// 引入组件</span></span><br><span class="line"><span class="keyword">import</span> ReactDOM <span class="keyword">from</span> <span class="string">'react-dom'</span></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Hello</span> <span class="keyword">extends</span> <span class="title">Component</span> </span>&#123;</span><br><span class="line">    <span class="comment">// 接收传递的信息</span></span><br><span class="line">    <span class="keyword">constructor</span>(props) &#123;</span><br><span class="line">        <span class="comment">// 提供了构造函数，就必须要在最前面调用super()</span></span><br><span class="line">        <span class="keyword">super</span>()</span><br><span class="line">        <span class="comment">// 初始化 state</span></span><br><span class="line">        <span class="keyword">this</span>.state = &#123;</span><br><span class="line">            msg: <span class="string">'我是state'</span></span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    onClick () &#123;</span><br><span class="line">        <span class="keyword">this</span>.setState(&#123;</span><br><span class="line">            msg; <span class="string">'我已经被 button 修改了'</span></span><br><span class="line">        &#125;)</span><br><span class="line">    &#125;</span><br><span class="line">    render () &#123;</span><br><span class="line">        <span class="keyword">return</span> (</span><br><span class="line">        &lt;div&gt;</span><br><span class="line">            &lt;h1&gt;hello 我是&#123;name&#125;&lt;<span class="regexp">/h1&gt;    &#123;/</span>**接收调用者的传值并发送给props *<span class="regexp">/&#125;</span></span><br><span class="line"><span class="regexp">    		&lt;p&gt;&#123;msg&#125;&lt;/</span>p&gt;</span><br><span class="line">			&#123;<span class="comment">/**通过 bind 返回一个新的函数改变 this的指向 */</span>&#125;</span><br><span class="line">		&lt;button onClick=&#123;<span class="keyword">this</span>.onClick.bind(<span class="keyword">this</span>)&#125;&gt;点击修改msg&lt;<span class="regexp">/button&gt;		</span></span><br><span class="line"><span class="regexp">	)</span></span><br><span class="line"><span class="regexp">  &#125;</span></span><br><span class="line"><span class="regexp">&#125;</span></span><br><span class="line"><span class="regexp">/</span><span class="regexp">/ 组件的调用并传值</span></span><br><span class="line"><span class="regexp">ReactDOM.render(</span></span><br><span class="line"><span class="regexp">  &lt;div&gt;</span></span><br><span class="line"><span class="regexp">    &lt;Hello name="类组件"&gt;&lt;/</span>Hello&gt;</span><br><span class="line">  &lt;<span class="regexp">/div&gt;,</span></span><br><span class="line"><span class="regexp">  document.getElementById('root')</span></span><br><span class="line"><span class="regexp">)</span></span><br></pre></td></tr></table></figure>
 
 <blockquote>
 <p>需要注意几点：</p>
@@ -291,6 +318,11 @@
 </ol>
 </blockquote>
 <p><img src="https://i.loli.net/2019/12/18/G3c2SU84FkyuC1D.png" alt="示例"></p>
+<h2 id="React-组件-与-Vue-组件的不同之处"><a href="#React-组件-与-Vue-组件的不同之处" class="headerlink" title="React 组件 与 Vue 组件的不同之处"></a>React 组件 与 Vue 组件的不同之处</h2><ol>
+<li>Vue 有全局组件的概念，而 React 没有，任何文件需要使用哪个组件，就需要在这个文件中引入这个组件。</li>
+<li>Vue 组件需要注册，Vue.component() 全局注册，或者 components 来局部注册 而 React 组件不需要注册</li>
+<li>Vue 组件不需要考虑大小写。而 React 组件的首字母一定要大写</li>
+</ol>
 
     </div>
 
@@ -300,8 +332,8 @@
 
       <footer class="post-footer">
           <div class="post-tags">
-              <a href="/tags/%E7%AC%94%E8%AE%B0/" rel="tag"><i class="fa fa-tag"></i> 笔记</a>
               <a href="/tags/%E7%9F%A5%E8%AF%86%E7%82%B9/" rel="tag"><i class="fa fa-tag"></i> 知识点</a>
+              <a href="/tags/%E7%AC%94%E8%AE%B0/" rel="tag"><i class="fa fa-tag"></i> 笔记</a>
               <a href="/tags/%E7%BB%84%E4%BB%B6/" rel="tag"><i class="fa fa-tag"></i> 组件</a>
           </div>
 
@@ -358,7 +390,7 @@
 
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
-          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#虚拟DOM"><span class="nav-number">1.</span> <span class="nav-text">虚拟DOM</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#函数式组件"><span class="nav-number">2.</span> <span class="nav-text">函数式组件</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#类方式组件"><span class="nav-number">3.</span> <span class="nav-text">类方式组件</span></a></li></ol></div>
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#虚拟DOM"><span class="nav-number">1.</span> <span class="nav-text">虚拟DOM</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#函数组件（无状态组件）"><span class="nav-number">2.</span> <span class="nav-text">函数组件（无状态组件）</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#类组件（有状态组件）"><span class="nav-number">3.</span> <span class="nav-text">类组件（有状态组件）</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#React-组件-与-Vue-组件的不同之处"><span class="nav-number">4.</span> <span class="nav-text">React 组件 与 Vue 组件的不同之处</span></a></li></ol></div>
       </div>
       <!--/noindex-->
 
@@ -374,7 +406,7 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">21</span>
+          <span class="site-state-item-count">22</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
