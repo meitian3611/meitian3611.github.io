@@ -51,18 +51,18 @@
   };
 </script>
 
-  <meta name="description" content="React搭建 脚手架的使用 创建项目 npx create-react-app 项目名字   ||    yarn create react-app 项目的名字 开发 npm start  ||  yarn start">
-<meta name="keywords" content="知识点,笔记,脚手架">
+  <meta name="description" content="this指向问题 在ES6模块化代码中，全局this的默认指向是undefined   1234567891011render () &amp;#123;    return (      &amp;lt;div&amp;gt;        &amp;lt;h1&amp;gt;Hello&amp;lt;&#x2F;h1&amp;gt;        &amp;lt;button onClick=&amp;#123; this.handleClick &amp;#125;&amp;gt;点我&amp;">
+<meta name="keywords" content="框架,知识点,笔记">
 <meta property="og:type" content="article">
-<meta property="og:title" content="React脚手架和JSX语法">
-<meta property="og:url" content="http:&#x2F;&#x2F;yoursite.com&#x2F;2019&#x2F;12&#x2F;18&#x2F;React%E8%84%9A%E6%89%8B%E6%9E%B6%E5%92%8CJSX%E8%AF%AD%E6%B3%95&#x2F;index.html">
+<meta property="og:title" content="this指向和render性能优化">
+<meta property="og:url" content="http:&#x2F;&#x2F;yoursite.com&#x2F;2019&#x2F;12&#x2F;20&#x2F;this%E6%8C%87%E5%90%91%E5%92%8Crender%E9%97%AE%E9%A2%98&#x2F;index.html">
 <meta property="og:site_name" content="淡然的博客">
-<meta property="og:description" content="React搭建 脚手架的使用 创建项目 npx create-react-app 项目名字   ||    yarn create react-app 项目的名字 开发 npm start  ||  yarn start">
+<meta property="og:description" content="this指向问题 在ES6模块化代码中，全局this的默认指向是undefined   1234567891011render () &amp;#123;    return (      &amp;lt;div&amp;gt;        &amp;lt;h1&amp;gt;Hello&amp;lt;&#x2F;h1&amp;gt;        &amp;lt;button onClick=&amp;#123; this.handleClick &amp;#125;&amp;gt;点我&amp;">
 <meta property="og:locale" content="zh-CN">
-<meta property="og:updated_time" content="2019-12-18T13:06:02.850Z">
+<meta property="og:updated_time" content="2019-12-20T09:57:21.185Z">
 <meta name="twitter:card" content="summary">
 
-<link rel="canonical" href="http://yoursite.com/2019/12/18/React%E8%84%9A%E6%89%8B%E6%9E%B6%E5%92%8CJSX%E8%AF%AD%E6%B3%95/">
+<link rel="canonical" href="http://yoursite.com/2019/12/20/this%E6%8C%87%E5%90%91%E5%92%8Crender%E9%97%AE%E9%A2%98/">
 
 
 <script id="page-configurations">
@@ -76,7 +76,7 @@
   };
 </script>
 
-  <title>React脚手架和JSX语法 | 淡然的博客</title>
+  <title>this指向和render性能优化 | 淡然的博客</title>
   
 
 
@@ -214,7 +214,7 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block " lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/12/18/React%E8%84%9A%E6%89%8B%E6%9E%B6%E5%92%8CJSX%E8%AF%AD%E6%B3%95/">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/12/20/this%E6%8C%87%E5%90%91%E5%92%8Crender%E9%97%AE%E9%A2%98/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="https://pic1.zhimg.com/v2-0a2b112762d84f53ce576a24a8b895ed_b.jpg">
@@ -227,7 +227,7 @@
     </span>
       <header class="post-header">
         <h1 class="post-title" itemprop="name headline">
-          React脚手架和JSX语法
+          this指向和render性能优化
         </h1>
 
         <div class="post-meta">
@@ -238,7 +238,7 @@
               <span class="post-meta-item-text">发表于</span>
               
 
-              <time title="创建时间：2019-12-18 20:41:35 / 修改时间：21:06:02" itemprop="dateCreated datePublished" datetime="2019-12-18T20:41:35+08:00">2019-12-18</time>
+              <time title="创建时间：2019-12-20 17:52:52 / 修改时间：17:57:21" itemprop="dateCreated datePublished" datetime="2019-12-20T17:52:52+08:00">2019-12-20</time>
             </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -270,50 +270,39 @@
     <div class="post-body" itemprop="articleBody">
 
       
-        <h2 id="React搭建"><a href="#React搭建" class="headerlink" title="React搭建"></a>React搭建</h2><blockquote>
-<p>脚手架的使用</p>
-</blockquote><h3 id="创建项目"><a href="#创建项目" class="headerlink" title="创建项目"></a>创建项目</h3><blockquote>
-<p>npx create-react-app 项目名字   ||    yarn create react-app 项目的名字</p>
-</blockquote><h3 id="开发"><a href="#开发" class="headerlink" title="开发"></a>开发</h3><blockquote>
-<p>npm start  ||  yarn start   </p>
-</blockquote><a id="more"></a>
+        <h2 id="this指向问题"><a href="#this指向问题" class="headerlink" title="this指向问题"></a>this指向问题</h2><blockquote>
+<p>在ES6模块化代码中，全局this的默认指向是undefined  </p>
+</blockquote><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">render () &#123;</span><br><span class="line">    <span class="keyword">return</span> (</span><br><span class="line">      &lt;div&gt;</span><br><span class="line">        &lt;h1&gt;Hello&lt;<span class="regexp">/h1&gt;</span></span><br><span class="line"><span class="regexp">        &lt;button onClick=&#123; this.handleClick &#125;&gt;点我&lt;/</span>button&gt;</span><br><span class="line">      &lt;<span class="regexp">/div&gt;</span></span><br><span class="line"><span class="regexp">    )</span></span><br><span class="line"><span class="regexp">  &#125;</span></span><br><span class="line"><span class="regexp">handleClick () &#123;</span></span><br><span class="line"><span class="regexp">    console.log(this) /</span><span class="regexp">/ 输出Undefined</span></span><br><span class="line"><span class="regexp">  &#125;</span></span><br></pre></td></tr></table></figure><a id="more"></a>
 
 
-<h3 id="打包上线"><a href="#打包上线" class="headerlink" title="打包上线"></a>打包上线</h3><blockquote>
-<p>npm run build || yarn build</p>
-</blockquote>
-<h3 id="测试"><a href="#测试" class="headerlink" title="测试"></a>测试</h3><blockquote>
-<p>npm run test || yarn test</p>
-</blockquote>
-<h3 id="封印解除"><a href="#封印解除" class="headerlink" title="封印解除"></a>封印解除</h3><blockquote>
-<p>npm run eject || yarn eject  可以修改webpack配置</p>
-</blockquote>
-<h2 id="JSX语法"><a href="#JSX语法" class="headerlink" title="JSX语法"></a>JSX语法</h2><blockquote>
-<p> SX 将 HTML 语法直接加入到 JavaScript 代码中，再通过翻译器转换成 <strong>纯JavaScript</strong> 。在实际开发中，JSX 在产品打包阶段都已经编译成 纯JavaScript 了，不会带来副作用，反而让代码更加直观并易于维护。</p>
+<blockquote>
+<p>onClick 并不是onclick原生点击事件，它只是一个写在虚拟DOM中的一个属性</p>
 </blockquote>
 <blockquote>
-<p> JSX 的官方定义是 <strong>类XML语法的ECMAScript扩展</strong>。它完美地利用了 JavaScript 自带的语法和特性。并使用大家熟悉的HTML语法来创建虚拟元素。  </p>
+<p>所以，为了解决这类的问题，提出了 4 种解决方案</p>
 </blockquote>
-<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 引入 react</span></span><br><span class="line"><span class="keyword">import</span> React, &#123; Fragment &#125; <span class="keyword">from</span> <span class="string">"react"</span></span><br><span class="line"><span class="comment">// 引入 ReactDom</span></span><br><span class="line"><span class="keyword">import</span> ReactDom <span class="keyword">from</span> <span class="string">"react-dom"</span></span><br><span class="line"><span class="comment">// 需要使用 ReactDom.render() 渲染挂载点</span></span><br><span class="line"><span class="keyword">const</span> msg = <span class="string">"msg的使用"</span></span><br><span class="line">ReactDom.render(</span><br><span class="line">  &lt;Fragment&gt;</span><br><span class="line">    &lt;h1 className=<span class="string">"abc"</span> style=&#123;&#123; <span class="attr">color</span>: <span class="string">"blue"</span> &#125;&#125;&gt;</span><br><span class="line">      &#123;msg&#125;</span><br><span class="line">    &lt;<span class="regexp">/h1&gt;</span></span><br><span class="line"><span class="regexp">    &lt;p title=&#123;msg&#125;&gt;&#123;msg&#125;&lt;/</span>p&gt;</span><br><span class="line">  &lt;<span class="regexp">/Fragment&gt;,</span></span><br><span class="line"><span class="regexp">  document.getElementById("root")</span></span><br><span class="line"><span class="regexp">)</span></span><br></pre></td></tr></table></figure>
+<h3 id="一-，直接在表达式后面使用-bind-返回一个新的函数-改变-this的指向"><a href="#一-，直接在表达式后面使用-bind-返回一个新的函数-改变-this的指向" class="headerlink" title="一 ，直接在表达式后面使用 bind()返回一个新的函数 改变 this的指向"></a>一 ，直接在表达式后面使用 bind()返回一个新的函数 改变 this的指向</h3><figure class="highlight jsx"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&lt;button onClick=&#123; <span class="keyword">this</span>.handleClick.bind(<span class="keyword">this</span>) &#125;&gt;点我&lt;<span class="regexp">/button&gt;</span></span><br></pre></td></tr></table></figure>
 
-<h2 id="jsx的特征"><a href="#jsx的特征" class="headerlink" title="jsx的特征"></a>jsx的特征</h2><p> 单个根元素</p>
-<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&lt;Fragment&gt;<span class="xml"><span class="tag">&lt;/<span class="name">Fragment</span>&gt;</span></span></span><br></pre></td></tr></table></figure>
+<h3 id="二，在构造函数中提前进行-bind-操作"><a href="#二，在构造函数中提前进行-bind-操作" class="headerlink" title="二，在构造函数中提前进行 bind 操作"></a>二，在构造函数中提前进行 bind 操作</h3><figure class="highlight jsx"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">constructor</span> () &#123;</span><br><span class="line">    <span class="keyword">super</span>()</span><br><span class="line">    <span class="keyword">this</span>.handleClick = <span class="keyword">this</span>.handleClick.bind(<span class="keyword">this</span>)</span><br><span class="line">&#125;</span><br><span class="line">render () &#123;</span><br><span class="line">    <span class="keyword">return</span> (</span><br><span class="line">      &lt;div&gt;</span><br><span class="line">        &lt;h1&gt;Hello&lt;<span class="regexp">/h1&gt;</span></span><br><span class="line"><span class="regexp">        &lt;button onClick=&#123; this.handleClick &#125;&gt;点我&lt;/</span>button&gt;</span><br><span class="line">      &lt;<span class="regexp">/div&gt;</span></span><br><span class="line"><span class="regexp">    )</span></span><br><span class="line"><span class="regexp">  &#125;</span></span><br></pre></td></tr></table></figure>
 
-<p> 单标签必须闭合，比如 </p>
-<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&lt;br /&gt; <span class="xml"><span class="tag">&lt;<span class="name">img</span> /&gt;</span> <span class="tag">&lt;<span class="name">input</span> /&gt;</span></span></span><br></pre></td></tr></table></figure>
+<h3 id="三，使用箭头函数来作为事件处理函数，然后在箭头函数中调用最终的函数"><a href="#三，使用箭头函数来作为事件处理函数，然后在箭头函数中调用最终的函数" class="headerlink" title="三，使用箭头函数来作为事件处理函数，然后在箭头函数中调用最终的函数"></a>三，使用箭头函数来作为事件处理函数，然后在箭头函数中调用最终的函数</h3><figure class="highlight jsx"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">&lt;button onClick=&#123; () =&gt; &#123;</span><br><span class="line">        <span class="keyword">this</span>.handleClick()</span><br><span class="line">    &#125; &#125;&gt;点我&lt;<span class="regexp">/button&gt;</span></span><br></pre></td></tr></table></figure>
 
-<p> img标签必须要含有 alt 属性<br> 普通标签都是小写字母，组件标签首字母需要大写<br> class 需要写成 className </p>
-<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&lt;p className=<span class="string">"abc"</span>&gt;<span class="xml"><span class="tag">&lt;/<span class="name">p</span>&gt;</span></span></span><br></pre></td></tr></table></figure>
+<h3 id="四，使用-public-class-filed-新语法。并将函数写成箭头函数的形式"><a href="#四，使用-public-class-filed-新语法。并将函数写成箭头函数的形式" class="headerlink" title="四，使用 public class filed 新语法。并将函数写成箭头函数的形式"></a>四，使用 public class filed 新语法。并将函数写成箭头函数的形式</h3><figure class="highlight jsx"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">render () &#123;</span><br><span class="line">  <span class="keyword">return</span> (</span><br><span class="line">    &lt;div&gt;</span><br><span class="line">      &lt;h1&gt;Hello&lt;<span class="regexp">/h1&gt;</span></span><br><span class="line"><span class="regexp">      &lt;button onClick=&#123; this.handleClick &#125;&gt;点我&lt;/</span>button&gt;</span><br><span class="line">    &lt;<span class="regexp">/div&gt;</span></span><br><span class="line"><span class="regexp">  )</span></span><br><span class="line"><span class="regexp">&#125;</span></span><br><span class="line"><span class="regexp">handleClick = () =&gt; &#123;</span></span><br><span class="line"><span class="regexp">  console.log(this)</span></span><br><span class="line"><span class="regexp">&#125;</span></span><br></pre></td></tr></table></figure>
 
-<p> for 需要 写成 htmlFor</p>
-<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&lt;label htmlFor=<span class="string">"id"</span>&gt;hello&lt;<span class="regexp">/label&gt;</span></span><br></pre></td></tr></table></figure>
+<h2 id="render性能优化问题"><a href="#render性能优化问题" class="headerlink" title="render性能优化问题"></a>render性能优化问题</h2><blockquote>
+<p>父组件一旦render 子组件一定会render</p>
+</blockquote>
+<blockquote>
+<p>为了节省性能,父组件render的时候,子组件没有更新必要的时候,就应该让子组件不render</p>
+</blockquote>
+<h3 id="解决方法"><a href="#解决方法" class="headerlink" title="解决方法"></a>解决方法</h3><p>让子组件继承 PureComponent 基础组件</p>
+<figure class="highlight jsx"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Hello</span> <span class="keyword">extends</span> <span class="title">React</span>.<span class="title">PureComponent</span> </span>&#123;&#125;</span><br></pre></td></tr></table></figure>
 
-<p> style属性要写成对象的形式</p>
-<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&lt;p style=&#123;&#123;<span class="attr">color</span>: <span class="string">'red'</span>&#125;&#125;&gt; hello &lt;<span class="regexp">/p&gt;</span></span><br></pre></td></tr></table></figure>
-
-<p><strong>jsx就是个语法糖，其实就是 React.createElement()方法的调用</strong></p>
-<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">ReactDOM.render(</span><br><span class="line">  &lt;Fragment&gt;</span><br><span class="line">    &lt;div&gt;<span class="number">123</span>&lt;<span class="regexp">/div&gt;</span></span><br><span class="line"><span class="regexp">  &lt;/</span>Fragment&gt;,</span><br><span class="line">  <span class="built_in">document</span>.getElementById(<span class="string">'root'</span>)</span><br><span class="line">)</span><br></pre></td></tr></table></figure>
-
+<p>使用这种性能优化后,推荐使用下面两种 this 指向问题的解决方案</p>
+<ol>
+<li>在构造函数进行this指向的处理</li>
+<li>public class filed 新语法的方式</li>
+</ol>
 
     </div>
 
@@ -323,26 +312,23 @@
 
       <footer class="post-footer">
           <div class="post-tags">
+              <a href="/tags/%E6%A1%86%E6%9E%B6/" rel="tag"><i class="fa fa-tag"></i> 框架</a>
               <a href="/tags/%E7%9F%A5%E8%AF%86%E7%82%B9/" rel="tag"><i class="fa fa-tag"></i> 知识点</a>
               <a href="/tags/%E7%AC%94%E8%AE%B0/" rel="tag"><i class="fa fa-tag"></i> 笔记</a>
-              <a href="/tags/%E8%84%9A%E6%89%8B%E6%9E%B6/" rel="tag"><i class="fa fa-tag"></i> 脚手架</a>
           </div>
 
         
 
           <div class="post-nav">
             <div class="post-nav-next post-nav-item">
-                <a href="/2019/12/18/React%E8%99%9A%E6%8B%9FDOM%E5%92%8C%E7%BB%84%E4%BB%B6/" rel="next" title="React虚拟DOM和组件">
-                  <i class="fa fa-chevron-left"></i> React虚拟DOM和组件
+                <a href="/2019/12/19/React%E7%94%9F%E5%91%BD%E5%91%A8%E6%9C%9F/" rel="next" title="React生命周期">
+                  <i class="fa fa-chevron-left"></i> React生命周期
                 </a>
             </div>
 
             <span class="post-nav-divider"></span>
 
             <div class="post-nav-prev post-nav-item">
-                <a href="/2019/12/19/React%E7%94%9F%E5%91%BD%E5%91%A8%E6%9C%9F/" rel="prev" title="React生命周期">
-                  React生命周期 <i class="fa fa-chevron-right"></i>
-                </a>
             </div>
           </div>
       </footer>
@@ -381,7 +367,7 @@
 
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
-          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#React搭建"><span class="nav-number">1.</span> <span class="nav-text">React搭建</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#创建项目"><span class="nav-number">1.1.</span> <span class="nav-text">创建项目</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#开发"><span class="nav-number">1.2.</span> <span class="nav-text">开发</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#打包上线"><span class="nav-number">1.3.</span> <span class="nav-text">打包上线</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#测试"><span class="nav-number">1.4.</span> <span class="nav-text">测试</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#封印解除"><span class="nav-number">1.5.</span> <span class="nav-text">封印解除</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#JSX语法"><span class="nav-number">2.</span> <span class="nav-text">JSX语法</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#jsx的特征"><span class="nav-number">3.</span> <span class="nav-text">jsx的特征</span></a></li></ol></div>
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#this指向问题"><span class="nav-number">1.</span> <span class="nav-text">this指向问题</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#一-，直接在表达式后面使用-bind-返回一个新的函数-改变-this的指向"><span class="nav-number">1.1.</span> <span class="nav-text">一 ，直接在表达式后面使用 bind()返回一个新的函数 改变 this的指向</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#二，在构造函数中提前进行-bind-操作"><span class="nav-number">1.2.</span> <span class="nav-text">二，在构造函数中提前进行 bind 操作</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#三，使用箭头函数来作为事件处理函数，然后在箭头函数中调用最终的函数"><span class="nav-number">1.3.</span> <span class="nav-text">三，使用箭头函数来作为事件处理函数，然后在箭头函数中调用最终的函数</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#四，使用-public-class-filed-新语法。并将函数写成箭头函数的形式"><span class="nav-number">1.4.</span> <span class="nav-text">四，使用 public class filed 新语法。并将函数写成箭头函数的形式</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#render性能优化问题"><span class="nav-number">2.</span> <span class="nav-text">render性能优化问题</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#解决方法"><span class="nav-number">2.1.</span> <span class="nav-text">解决方法</span></a></li></ol></li></ol></div>
       </div>
       <!--/noindex-->
 

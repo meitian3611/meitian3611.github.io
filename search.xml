@@ -1,6 +1,52 @@
 <?xml version="1.0" encoding="utf-8"?>
 <search>
   <entry>
+    <title>this指向和render性能优化</title>
+    <url>/2019/12/20/this%E6%8C%87%E5%90%91%E5%92%8Crender%E9%97%AE%E9%A2%98/</url>
+    <content><![CDATA[<h2 id="this指向问题"><a href="#this指向问题" class="headerlink" title="this指向问题"></a>this指向问题</h2><blockquote>
+<p>在ES6模块化代码中，全局this的默认指向是undefined  </p>
+</blockquote><figure class="highlight js"><table><tr><td class="code"><pre><span class="line">render () &#123;</span><br><span class="line">    <span class="keyword">return</span> (</span><br><span class="line">      &lt;div&gt;</span><br><span class="line">        &lt;h1&gt;Hello&lt;<span class="regexp">/h1&gt;</span></span><br><span class="line"><span class="regexp">        &lt;button onClick=&#123; this.handleClick &#125;&gt;点我&lt;/</span>button&gt;</span><br><span class="line">      &lt;<span class="regexp">/div&gt;</span></span><br><span class="line"><span class="regexp">    )</span></span><br><span class="line"><span class="regexp">  &#125;</span></span><br><span class="line"><span class="regexp">handleClick () &#123;</span></span><br><span class="line"><span class="regexp">    console.log(this) /</span><span class="regexp">/ 输出Undefined</span></span><br><span class="line"><span class="regexp">  &#125;</span></span><br></pre></td></tr></table></figure><a id="more"></a>
+
+
+<blockquote>
+<p>onClick 并不是onclick原生点击事件，它只是一个写在虚拟DOM中的一个属性</p>
+</blockquote>
+<blockquote>
+<p>所以，为了解决这类的问题，提出了 4 种解决方案</p>
+</blockquote>
+<h3 id="一-，直接在表达式后面使用-bind-返回一个新的函数-改变-this的指向"><a href="#一-，直接在表达式后面使用-bind-返回一个新的函数-改变-this的指向" class="headerlink" title="一 ，直接在表达式后面使用 bind()返回一个新的函数 改变 this的指向"></a>一 ，直接在表达式后面使用 bind()返回一个新的函数 改变 this的指向</h3><figure class="highlight jsx"><table><tr><td class="code"><pre><span class="line">&lt;button onClick=&#123; <span class="keyword">this</span>.handleClick.bind(<span class="keyword">this</span>) &#125;&gt;点我&lt;<span class="regexp">/button&gt;</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="二，在构造函数中提前进行-bind-操作"><a href="#二，在构造函数中提前进行-bind-操作" class="headerlink" title="二，在构造函数中提前进行 bind 操作"></a>二，在构造函数中提前进行 bind 操作</h3><figure class="highlight jsx"><table><tr><td class="code"><pre><span class="line"><span class="keyword">constructor</span> () &#123;</span><br><span class="line">    <span class="keyword">super</span>()</span><br><span class="line">    <span class="keyword">this</span>.handleClick = <span class="keyword">this</span>.handleClick.bind(<span class="keyword">this</span>)</span><br><span class="line">&#125;</span><br><span class="line">render () &#123;</span><br><span class="line">    <span class="keyword">return</span> (</span><br><span class="line">      &lt;div&gt;</span><br><span class="line">        &lt;h1&gt;Hello&lt;<span class="regexp">/h1&gt;</span></span><br><span class="line"><span class="regexp">        &lt;button onClick=&#123; this.handleClick &#125;&gt;点我&lt;/</span>button&gt;</span><br><span class="line">      &lt;<span class="regexp">/div&gt;</span></span><br><span class="line"><span class="regexp">    )</span></span><br><span class="line"><span class="regexp">  &#125;</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="三，使用箭头函数来作为事件处理函数，然后在箭头函数中调用最终的函数"><a href="#三，使用箭头函数来作为事件处理函数，然后在箭头函数中调用最终的函数" class="headerlink" title="三，使用箭头函数来作为事件处理函数，然后在箭头函数中调用最终的函数"></a>三，使用箭头函数来作为事件处理函数，然后在箭头函数中调用最终的函数</h3><figure class="highlight jsx"><table><tr><td class="code"><pre><span class="line">&lt;button onClick=&#123; () =&gt; &#123;</span><br><span class="line">        <span class="keyword">this</span>.handleClick()</span><br><span class="line">    &#125; &#125;&gt;点我&lt;<span class="regexp">/button&gt;</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="四，使用-public-class-filed-新语法。并将函数写成箭头函数的形式"><a href="#四，使用-public-class-filed-新语法。并将函数写成箭头函数的形式" class="headerlink" title="四，使用 public class filed 新语法。并将函数写成箭头函数的形式"></a>四，使用 public class filed 新语法。并将函数写成箭头函数的形式</h3><figure class="highlight jsx"><table><tr><td class="code"><pre><span class="line">render () &#123;</span><br><span class="line">  <span class="keyword">return</span> (</span><br><span class="line">    &lt;div&gt;</span><br><span class="line">      &lt;h1&gt;Hello&lt;<span class="regexp">/h1&gt;</span></span><br><span class="line"><span class="regexp">      &lt;button onClick=&#123; this.handleClick &#125;&gt;点我&lt;/</span>button&gt;</span><br><span class="line">    &lt;<span class="regexp">/div&gt;</span></span><br><span class="line"><span class="regexp">  )</span></span><br><span class="line"><span class="regexp">&#125;</span></span><br><span class="line"><span class="regexp">handleClick = () =&gt; &#123;</span></span><br><span class="line"><span class="regexp">  console.log(this)</span></span><br><span class="line"><span class="regexp">&#125;</span></span><br></pre></td></tr></table></figure>
+
+<h2 id="render性能优化问题"><a href="#render性能优化问题" class="headerlink" title="render性能优化问题"></a>render性能优化问题</h2><blockquote>
+<p>父组件一旦render 子组件一定会render</p>
+</blockquote>
+<blockquote>
+<p>为了节省性能,父组件render的时候,子组件没有更新必要的时候,就应该让子组件不render</p>
+</blockquote>
+<h3 id="解决方法"><a href="#解决方法" class="headerlink" title="解决方法"></a>解决方法</h3><p>让子组件继承 PureComponent 基础组件</p>
+<figure class="highlight jsx"><table><tr><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Hello</span> <span class="keyword">extends</span> <span class="title">React</span>.<span class="title">PureComponent</span> </span>&#123;&#125;</span><br></pre></td></tr></table></figure>
+
+<p>使用这种性能优化后,推荐使用下面两种 this 指向问题的解决方案</p>
+<ol>
+<li>在构造函数进行this指向的处理</li>
+<li>public class filed 新语法的方式</li>
+</ol>
+]]></content>
+      <categories>
+        <category>React</category>
+      </categories>
+      <tags>
+        <tag>框架</tag>
+        <tag>知识点</tag>
+        <tag>笔记</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>React生命周期</title>
     <url>/2019/12/19/React%E7%94%9F%E5%91%BD%E5%91%A8%E6%9C%9F/</url>
     <content><![CDATA[<h2 id="生命周期的三个阶段"><a href="#生命周期的三个阶段" class="headerlink" title="生命周期的三个阶段"></a>生命周期的三个阶段</h2><h3 id="1-挂载阶段"><a href="#1-挂载阶段" class="headerlink" title="1. 挂载阶段"></a>1. 挂载阶段</h3><h4 id="constructor-构造函数"><a href="#constructor-构造函数" class="headerlink" title="constructor 构造函数"></a>constructor 构造函数</h4><pre><code>1. 一次生命周期中，只会触发一次
