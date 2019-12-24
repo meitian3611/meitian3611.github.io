@@ -1,6 +1,47 @@
 <?xml version="1.0" encoding="utf-8"?>
 <search>
   <entry>
+    <title>Hook</title>
+    <url>/2019/12/24/Hook/</url>
+    <content><![CDATA[<blockquote>
+<p> Hook 是 React 16.8 的新增特性。它可以让你在不编写 class 的情况下使用 state 以及其他的 React 特性 </p>
+</blockquote><h2 id="useState"><a href="#useState" class="headerlink" title="useState"></a>useState</h2><blockquote>
+<p>返回一个自己指定的属性，以及更新原数据的函数</p>
+</blockquote><figure class="highlight jsx"><table><tr><td class="code"><pre><span class="line"><span class="keyword">const</span> [name, setName] = useState(<span class="string">"张三"</span>)</span><br></pre></td></tr></table></figure><a id="more"></a>
+
+
+
+<p>使用示例</p>
+<figure class="highlight jsx"><table><tr><td class="code"><pre><span class="line"><span class="keyword">const</span> App = <span class="function"><span class="params">()</span> =&gt;</span> &#123;</span><br><span class="line">    <span class="keyword">const</span> [name, setName] = useState(<span class="string">"张三"</span>)</span><br><span class="line">    <span class="keyword">return</span> (</span><br><span class="line">    	&lt;div&gt;</span><br><span class="line">        	&lt;p&gt;&#123; name &#125;&lt;<span class="regexp">/p&gt;</span></span><br><span class="line"><span class="regexp">            &lt;button onClick=&#123; () =&gt; &#123;</span></span><br><span class="line"><span class="regexp">                setName('李四')</span></span><br><span class="line"><span class="regexp">             &#125;&#125;&gt;修改name&lt;/</span>button&gt;</span><br><span class="line">        &lt;<span class="regexp">/div&gt;</span></span><br><span class="line"><span class="regexp">    )&#125;</span></span><br></pre></td></tr></table></figure>
+
+<h2 id="useEffect"><a href="#useEffect" class="headerlink" title="useEffect"></a>useEffect</h2><blockquote>
+<p>默认情况下，effect 会在每轮组件渲染完成后执行。这样的话，一旦 effect 的依赖发生变化，它就会被重新创建。 </p>
+</blockquote>
+<p> 给 effect 函数里面再返回一个函数，返回的函数会在组件销毁之前执行</p>
+<figure class="highlight jsx"><table><tr><td class="code"><pre><span class="line">useEffect(<span class="function"><span class="params">()</span> =&gt;</span> &#123;</span><br><span class="line">  <span class="keyword">let</span> timer = setInterval(<span class="function"><span class="params">()</span> =&gt;</span> &#123;</span><br><span class="line">    <span class="built_in">console</span>.log(<span class="number">1</span>)</span><br><span class="line">  &#125;, <span class="number">1000</span>)</span><br><span class="line">  <span class="keyword">return</span> <span class="function"><span class="params">()</span> =&gt;</span> &#123;</span><br><span class="line">    <span class="built_in">console</span>.log(<span class="string">'这个函数在组件销毁之前执行，componentWillUnmount'</span>)</span><br><span class="line">    clearInterval(timer)</span><br><span class="line">  &#125;</span><br><span class="line">&#125;)</span><br></pre></td></tr></table></figure>
+
+<p>给 useEffect 传递第二个参数，是一个数组，数组中写上需要监听的数据</p>
+<figure class="highlight jsx"><table><tr><td class="code"><pre><span class="line"><span class="keyword">const</span> [name, setName] = useState(<span class="string">'张三'</span>) </span><br><span class="line"></span><br><span class="line"> useEffect(<span class="function"><span class="params">()</span> =&gt;</span> &#123;</span><br><span class="line">   <span class="built_in">console</span>.log(<span class="string">'监听 name 数据的变化'</span>)</span><br><span class="line"> &#125;, [name])</span><br></pre></td></tr></table></figure>
+
+<p>将 useEffect 第二个参数，设置为空数组只会默认执行一次就结束</p>
+<figure class="highlight jsx"><table><tr><td class="code"><pre><span class="line">useEffect(<span class="function"><span class="params">()</span> =&gt;</span> &#123;</span><br><span class="line">  <span class="built_in">console</span>.log(<span class="string">'默认执行一次'</span>)</span><br><span class="line">&#125;, [])</span><br></pre></td></tr></table></figure>
+
+<h2 id="useContext"><a href="#useContext" class="headerlink" title="useContext"></a>useContext</h2><blockquote>
+<p>接收一个 context 对象，实现供应商与消费者之间的关系</p>
+</blockquote>
+<figure class="highlight jsx"><table><tr><td class="code"><pre><span class="line"><span class="keyword">const</span> MyCtx = React.createContext()</span><br><span class="line"><span class="keyword">const</span> Provider = MyCtx.Provider</span><br><span class="line"></span><br><span class="line"><span class="keyword">const</span> App3 = <span class="function"><span class="params">()</span> =&gt;</span> &#123;</span><br><span class="line">  <span class="keyword">const</span> [color, setColor] = useState(<span class="string">"blue"</span>)</span><br><span class="line">  <span class="keyword">return</span> (</span><br><span class="line">    &lt;Provider value=&#123;color&#125;&gt;</span><br><span class="line">      &lt;div&gt;</span><br><span class="line">        &lt;h2&gt;App3&lt;<span class="regexp">/h2&gt;</span></span><br><span class="line"><span class="regexp">        &lt;button</span></span><br><span class="line"><span class="regexp">          onClick=&#123;() =&gt; &#123;</span></span><br><span class="line"><span class="regexp">            setColor("#f40")&#125;&#125;&gt;</span></span><br><span class="line"><span class="regexp">            改变颜色&lt;/</span>button&gt;</span><br><span class="line">        &lt;One&gt;<span class="xml"><span class="tag">&lt;/<span class="name">One</span>&gt;</span></span></span><br><span class="line">      &lt;<span class="regexp">/div&gt;</span></span><br><span class="line"><span class="regexp">    &lt;/</span>Provider&gt;</span><br><span class="line">  )&#125;</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight jsx"><table><tr><td class="code"><pre><span class="line"><span class="keyword">const</span> One = <span class="function"><span class="params">()</span> =&gt;</span> &#123;</span><br><span class="line"><span class="keyword">const</span> value = useContext(MyCtx) <span class="comment">// 接收供应商传递的数据信息</span></span><br><span class="line">  <span class="keyword">return</span> (</span><br><span class="line">    &lt;div&gt;</span><br><span class="line">      &lt;h2 style=&#123;&#123; <span class="attr">color</span>: value &#125;&#125;&gt;One&lt;<span class="regexp">/h2&gt; /</span><span class="regexp">/ 此时颜色应该为 blue</span></span><br><span class="line"><span class="regexp">    &lt;/</span>div&gt;</span><br><span class="line">  )</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>]]></content>
+      <categories>
+        <category>React</category>
+      </categories>
+      <tags>
+        <tag>框架</tag>
+        <tag>笔记</tag>
+        <tag>新增</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>this指向和render性能优化</title>
     <url>/2019/12/20/this%E6%8C%87%E5%90%91%E5%92%8Crender%E9%97%AE%E9%A2%98/</url>
     <content><![CDATA[<h2 id="this指向问题"><a href="#this指向问题" class="headerlink" title="this指向问题"></a>this指向问题</h2><blockquote>
@@ -42,8 +83,8 @@
       </categories>
       <tags>
         <tag>框架</tag>
-        <tag>知识点</tag>
         <tag>笔记</tag>
+        <tag>知识点</tag>
       </tags>
   </entry>
   <entry>
@@ -122,8 +163,8 @@
         <category>React</category>
       </categories>
       <tags>
-        <tag>知识点</tag>
         <tag>笔记</tag>
+        <tag>知识点</tag>
         <tag>脚手架</tag>
       </tags>
   </entry>
@@ -179,8 +220,8 @@
         <category>React</category>
       </categories>
       <tags>
-        <tag>知识点</tag>
         <tag>笔记</tag>
+        <tag>知识点</tag>
         <tag>组件</tag>
       </tags>
   </entry>
@@ -545,8 +586,8 @@
       </categories>
       <tags>
         <tag>框架</tag>
-        <tag>知识点</tag>
         <tag>笔记</tag>
+        <tag>知识点</tag>
       </tags>
   </entry>
   <entry>
@@ -838,9 +879,9 @@
         <category>nodeJS</category>
       </categories>
       <tags>
-        <tag>node</tag>
         <tag>框架</tag>
         <tag>知识点</tag>
+        <tag>node</tag>
       </tags>
   </entry>
   <entry>
@@ -986,8 +1027,8 @@
         <category>web前端</category>
       </categories>
       <tags>
-        <tag>知识点</tag>
         <tag>语法</tag>
+        <tag>知识点</tag>
         <tag>es6</tag>
       </tags>
   </entry>
@@ -1066,8 +1107,8 @@
         <category>项目相关</category>
       </categories>
       <tags>
-        <tag>Git</tag>
         <tag>笔记</tag>
+        <tag>Git</tag>
         <tag>工具</tag>
       </tags>
   </entry>
@@ -1240,8 +1281,8 @@
         <category>项目相关</category>
       </categories>
       <tags>
-        <tag>知识点</tag>
         <tag>笔记</tag>
+        <tag>知识点</tag>
         <tag>gulp</tag>
       </tags>
   </entry>
@@ -1373,9 +1414,9 @@
         <category>nodeJS</category>
       </categories>
       <tags>
-        <tag>node</tag>
-        <tag>知识点</tag>
         <tag>笔记</tag>
+        <tag>知识点</tag>
+        <tag>node</tag>
       </tags>
   </entry>
   <entry>
@@ -1523,8 +1564,8 @@
         <category>web前端</category>
       </categories>
       <tags>
-        <tag>知识点</tag>
         <tag>笔记</tag>
+        <tag>知识点</tag>
       </tags>
   </entry>
   <entry>
@@ -1562,8 +1603,8 @@
         <category>web前端</category>
       </categories>
       <tags>
-        <tag>知识点</tag>
         <tag>笔记</tag>
+        <tag>知识点</tag>
       </tags>
   </entry>
   <entry>
@@ -1620,8 +1661,8 @@
         <category>web前端</category>
       </categories>
       <tags>
-        <tag>知识点</tag>
         <tag>笔记</tag>
+        <tag>知识点</tag>
       </tags>
   </entry>
   <entry>
@@ -1721,8 +1762,8 @@
         <category>web前端</category>
       </categories>
       <tags>
-        <tag>知识点</tag>
         <tag>笔记</tag>
+        <tag>知识点</tag>
       </tags>
   </entry>
   <entry>
@@ -1760,8 +1801,8 @@
         <category>web前端</category>
       </categories>
       <tags>
-        <tag>知识点</tag>
         <tag>笔记</tag>
+        <tag>知识点</tag>
         <tag>Ajax</tag>
       </tags>
   </entry>

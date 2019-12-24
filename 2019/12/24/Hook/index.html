@@ -51,18 +51,18 @@
   };
 </script>
 
-  <meta name="description" content="Yarn 一款包资源管理器 安装 npm install yarn -g 与npm的对比   描述 npm yarn    项目初始化 npm init -y yarn init -y   安装资源 - 开发环境 npm install –save-dev xxx yarn add xxx -D   安装资源 npm install –save xxxx yarn add xxx   根据pack">
-<meta name="keywords" content="知识点,yarn">
+  <meta name="description" content="Hook 是 React 16.8 的新增特性。它可以让你在不编写 class 的情况下使用 state 以及其他的 React 特性  useState 返回一个自己指定的属性，以及更新原数据的函数 1const [name, setName] = useState(&quot;张三&quot;)">
+<meta name="keywords" content="框架,笔记,新增">
 <meta property="og:type" content="article">
-<meta property="og:title" content="Yarn操作命令">
-<meta property="og:url" content="http:&#x2F;&#x2F;yoursite.com&#x2F;2019&#x2F;12&#x2F;18&#x2F;Yarn%E6%93%8D%E4%BD%9C%E5%91%BD%E4%BB%A4&#x2F;index.html">
+<meta property="og:title" content="Hook">
+<meta property="og:url" content="http:&#x2F;&#x2F;yoursite.com&#x2F;2019&#x2F;12&#x2F;24&#x2F;Hook&#x2F;index.html">
 <meta property="og:site_name" content="淡然的博客">
-<meta property="og:description" content="Yarn 一款包资源管理器 安装 npm install yarn -g 与npm的对比   描述 npm yarn    项目初始化 npm init -y yarn init -y   安装资源 - 开发环境 npm install –save-dev xxx yarn add xxx -D   安装资源 npm install –save xxxx yarn add xxx   根据pack">
+<meta property="og:description" content="Hook 是 React 16.8 的新增特性。它可以让你在不编写 class 的情况下使用 state 以及其他的 React 特性  useState 返回一个自己指定的属性，以及更新原数据的函数 1const [name, setName] = useState(&quot;张三&quot;)">
 <meta property="og:locale" content="zh-CN">
-<meta property="og:updated_time" content="2019-12-18T12:44:33.487Z">
+<meta property="og:updated_time" content="2019-12-24T02:12:07.906Z">
 <meta name="twitter:card" content="summary">
 
-<link rel="canonical" href="http://yoursite.com/2019/12/18/Yarn%E6%93%8D%E4%BD%9C%E5%91%BD%E4%BB%A4/">
+<link rel="canonical" href="http://yoursite.com/2019/12/24/Hook/">
 
 
 <script id="page-configurations">
@@ -76,7 +76,7 @@
   };
 </script>
 
-  <title>Yarn操作命令 | 淡然的博客</title>
+  <title>Hook | 淡然的博客</title>
   
 
 
@@ -214,7 +214,7 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block " lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/12/18/Yarn%E6%93%8D%E4%BD%9C%E5%91%BD%E4%BB%A4/">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/12/24/Hook/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="https://pic1.zhimg.com/v2-0a2b112762d84f53ce576a24a8b895ed_b.jpg">
@@ -227,7 +227,7 @@
     </span>
       <header class="post-header">
         <h1 class="post-title" itemprop="name headline">
-          Yarn操作命令
+          Hook
         </h1>
 
         <div class="post-meta">
@@ -238,7 +238,7 @@
               <span class="post-meta-item-text">发表于</span>
               
 
-              <time title="创建时间：2019-12-18 20:39:19 / 修改时间：20:44:33" itemprop="dateCreated datePublished" datetime="2019-12-18T20:39:19+08:00">2019-12-18</time>
+              <time title="创建时间：2019-12-24 10:10:56 / 修改时间：10:12:07" itemprop="dateCreated datePublished" datetime="2019-12-24T10:10:56+08:00">2019-12-24</time>
             </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -246,8 +246,8 @@
               </span>
               <span class="post-meta-item-text">分类于</span>
                 <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/web%E5%89%8D%E7%AB%AF/" itemprop="url" rel="index">
-                    <span itemprop="name">web前端</span>
+                  <a href="/categories/React/" itemprop="url" rel="index">
+                    <span itemprop="name">React</span>
                   </a>
                 </span>
             </span>
@@ -270,69 +270,35 @@
     <div class="post-body" itemprop="articleBody">
 
       
-        <h1 id="Yarn"><a href="#Yarn" class="headerlink" title="Yarn"></a>Yarn</h1><blockquote>
-<p>一款包资源管理器</p>
-</blockquote><h2 id="安装"><a href="#安装" class="headerlink" title="安装"></a>安装</h2><blockquote>
-<p>npm install yarn -g</p>
-</blockquote><h2 id="与npm的对比"><a href="#与npm的对比" class="headerlink" title="与npm的对比"></a>与npm的对比</h2><table>
-<thead>
-<tr>
-<th>描述</th>
-<th>npm</th>
-<th>yarn</th>
-</tr>
-</thead>
-<tbody><tr>
-<td>项目初始化</td>
-<td>npm init -y</td>
-<td>yarn init -y</td>
-</tr>
-<tr>
-<td>安装资源 - 开发环境</td>
-<td>npm install –save-dev xxx</td>
-<td>yarn add xxx -D</td>
-</tr>
-<tr>
-<td>安装资源</td>
-<td>npm install –save xxxx</td>
-<td>yarn add xxx</td>
-</tr>
-<tr>
-<td>根据package.json主动安装</td>
-<td>npm install</td>
-<td>yarn</td>
-</tr>
-<tr>
-<td>全局安装</td>
-<td>npm install -g xxx</td>
-<td>yarn global add xxx</td>
-</tr>
-<tr>
-<td>删除模块</td>
-<td>npm uninstall –save-dev xxx <br>npm uninstall –save xxx<br>npm uninstall -g xxx</td>
-<td>yarn remove xxx<br>yarn remove xxx -D<br>yarn global remove xxx</td>
-</tr>
-<tr>
-<td>运行脚本</td>
-<td>npm start<br>npm run 脚本名</td>
-<td>yarn start<br>yarn run 脚本名| yarn 脚本名</td>
-</tr>
-<tr>
-<td>获取当前源</td>
-<td>npm config get registry</td>
-<td>yarn config get registry</td>
-</tr>
-<tr>
-<td>换源</td>
-<td>npm config set registry xxx</td>
-<td>yarn config set registry xxx</td>
-</tr>
-<tr>
-<td>资源锁文件</td>
-<td>package-lock.json</td>
-<td>yarn.lock</td>
-</tr>
-</tbody></table>
+        <blockquote>
+<p> Hook 是 React 16.8 的新增特性。它可以让你在不编写 class 的情况下使用 state 以及其他的 React 特性 </p>
+</blockquote><h2 id="useState"><a href="#useState" class="headerlink" title="useState"></a>useState</h2><blockquote>
+<p>返回一个自己指定的属性，以及更新原数据的函数</p>
+</blockquote><figure class="highlight jsx"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> [name, setName] = useState(<span class="string">"张三"</span>)</span><br></pre></td></tr></table></figure><a id="more"></a>
+
+
+
+<p>使用示例</p>
+<figure class="highlight jsx"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> App = <span class="function"><span class="params">()</span> =&gt;</span> &#123;</span><br><span class="line">    <span class="keyword">const</span> [name, setName] = useState(<span class="string">"张三"</span>)</span><br><span class="line">    <span class="keyword">return</span> (</span><br><span class="line">    	&lt;div&gt;</span><br><span class="line">        	&lt;p&gt;&#123; name &#125;&lt;<span class="regexp">/p&gt;</span></span><br><span class="line"><span class="regexp">            &lt;button onClick=&#123; () =&gt; &#123;</span></span><br><span class="line"><span class="regexp">                setName('李四')</span></span><br><span class="line"><span class="regexp">             &#125;&#125;&gt;修改name&lt;/</span>button&gt;</span><br><span class="line">        &lt;<span class="regexp">/div&gt;</span></span><br><span class="line"><span class="regexp">    )&#125;</span></span><br></pre></td></tr></table></figure>
+
+<h2 id="useEffect"><a href="#useEffect" class="headerlink" title="useEffect"></a>useEffect</h2><blockquote>
+<p>默认情况下，effect 会在每轮组件渲染完成后执行。这样的话，一旦 effect 的依赖发生变化，它就会被重新创建。 </p>
+</blockquote>
+<p> 给 effect 函数里面再返回一个函数，返回的函数会在组件销毁之前执行</p>
+<figure class="highlight jsx"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">useEffect(<span class="function"><span class="params">()</span> =&gt;</span> &#123;</span><br><span class="line">  <span class="keyword">let</span> timer = setInterval(<span class="function"><span class="params">()</span> =&gt;</span> &#123;</span><br><span class="line">    <span class="built_in">console</span>.log(<span class="number">1</span>)</span><br><span class="line">  &#125;, <span class="number">1000</span>)</span><br><span class="line">  <span class="keyword">return</span> <span class="function"><span class="params">()</span> =&gt;</span> &#123;</span><br><span class="line">    <span class="built_in">console</span>.log(<span class="string">'这个函数在组件销毁之前执行，componentWillUnmount'</span>)</span><br><span class="line">    clearInterval(timer)</span><br><span class="line">  &#125;</span><br><span class="line">&#125;)</span><br></pre></td></tr></table></figure>
+
+<p>给 useEffect 传递第二个参数，是一个数组，数组中写上需要监听的数据</p>
+<figure class="highlight jsx"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> [name, setName] = useState(<span class="string">'张三'</span>) </span><br><span class="line"></span><br><span class="line"> useEffect(<span class="function"><span class="params">()</span> =&gt;</span> &#123;</span><br><span class="line">   <span class="built_in">console</span>.log(<span class="string">'监听 name 数据的变化'</span>)</span><br><span class="line"> &#125;, [name])</span><br></pre></td></tr></table></figure>
+
+<p>将 useEffect 第二个参数，设置为空数组只会默认执行一次就结束</p>
+<figure class="highlight jsx"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">useEffect(<span class="function"><span class="params">()</span> =&gt;</span> &#123;</span><br><span class="line">  <span class="built_in">console</span>.log(<span class="string">'默认执行一次'</span>)</span><br><span class="line">&#125;, [])</span><br></pre></td></tr></table></figure>
+
+<h2 id="useContext"><a href="#useContext" class="headerlink" title="useContext"></a>useContext</h2><blockquote>
+<p>接收一个 context 对象，实现供应商与消费者之间的关系</p>
+</blockquote>
+<figure class="highlight jsx"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> MyCtx = React.createContext()</span><br><span class="line"><span class="keyword">const</span> Provider = MyCtx.Provider</span><br><span class="line"></span><br><span class="line"><span class="keyword">const</span> App3 = <span class="function"><span class="params">()</span> =&gt;</span> &#123;</span><br><span class="line">  <span class="keyword">const</span> [color, setColor] = useState(<span class="string">"blue"</span>)</span><br><span class="line">  <span class="keyword">return</span> (</span><br><span class="line">    &lt;Provider value=&#123;color&#125;&gt;</span><br><span class="line">      &lt;div&gt;</span><br><span class="line">        &lt;h2&gt;App3&lt;<span class="regexp">/h2&gt;</span></span><br><span class="line"><span class="regexp">        &lt;button</span></span><br><span class="line"><span class="regexp">          onClick=&#123;() =&gt; &#123;</span></span><br><span class="line"><span class="regexp">            setColor("#f40")&#125;&#125;&gt;</span></span><br><span class="line"><span class="regexp">            改变颜色&lt;/</span>button&gt;</span><br><span class="line">        &lt;One&gt;<span class="xml"><span class="tag">&lt;/<span class="name">One</span>&gt;</span></span></span><br><span class="line">      &lt;<span class="regexp">/div&gt;</span></span><br><span class="line"><span class="regexp">    &lt;/</span>Provider&gt;</span><br><span class="line">  )&#125;</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight jsx"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> One = <span class="function"><span class="params">()</span> =&gt;</span> &#123;</span><br><span class="line"><span class="keyword">const</span> value = useContext(MyCtx) <span class="comment">// 接收供应商传递的数据信息</span></span><br><span class="line">  <span class="keyword">return</span> (</span><br><span class="line">    &lt;div&gt;</span><br><span class="line">      &lt;h2 style=&#123;&#123; <span class="attr">color</span>: value &#125;&#125;&gt;One&lt;<span class="regexp">/h2&gt; /</span><span class="regexp">/ 此时颜色应该为 blue</span></span><br><span class="line"><span class="regexp">    &lt;/</span>div&gt;</span><br><span class="line">  )</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
     </div>
 
     
@@ -341,25 +307,23 @@
 
       <footer class="post-footer">
           <div class="post-tags">
-              <a href="/tags/%E7%9F%A5%E8%AF%86%E7%82%B9/" rel="tag"><i class="fa fa-tag"></i> 知识点</a>
-              <a href="/tags/yarn/" rel="tag"><i class="fa fa-tag"></i> yarn</a>
+              <a href="/tags/%E6%A1%86%E6%9E%B6/" rel="tag"><i class="fa fa-tag"></i> 框架</a>
+              <a href="/tags/%E7%AC%94%E8%AE%B0/" rel="tag"><i class="fa fa-tag"></i> 笔记</a>
+              <a href="/tags/%E6%96%B0%E5%A2%9E/" rel="tag"><i class="fa fa-tag"></i> 新增</a>
           </div>
 
         
 
           <div class="post-nav">
             <div class="post-nav-next post-nav-item">
-                <a href="/2019/12/17/%E4%BA%91%E6%9C%8D%E5%8A%A1%E5%99%A8%E6%90%AD%E5%BB%BA/" rel="next" title="项目部署上线">
-                  <i class="fa fa-chevron-left"></i> 项目部署上线
+                <a href="/2019/12/20/this%E6%8C%87%E5%90%91%E5%92%8Crender%E9%97%AE%E9%A2%98/" rel="next" title="this指向和render性能优化">
+                  <i class="fa fa-chevron-left"></i> this指向和render性能优化
                 </a>
             </div>
 
             <span class="post-nav-divider"></span>
 
             <div class="post-nav-prev post-nav-item">
-                <a href="/2019/12/18/React%E8%99%9A%E6%8B%9FDOM%E5%92%8C%E7%BB%84%E4%BB%B6/" rel="prev" title="React虚拟DOM和组件">
-                  React虚拟DOM和组件 <i class="fa fa-chevron-right"></i>
-                </a>
             </div>
           </div>
       </footer>
@@ -398,7 +362,7 @@
 
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
-          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#Yarn"><span class="nav-number">1.</span> <span class="nav-text">Yarn</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#安装"><span class="nav-number">1.1.</span> <span class="nav-text">安装</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#与npm的对比"><span class="nav-number">1.2.</span> <span class="nav-text">与npm的对比</span></a></li></ol></li></ol></div>
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#useState"><span class="nav-number">1.</span> <span class="nav-text">useState</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#useEffect"><span class="nav-number">2.</span> <span class="nav-text">useEffect</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#useContext"><span class="nav-number">3.</span> <span class="nav-text">useContext</span></a></li></ol></div>
       </div>
       <!--/noindex-->
 
