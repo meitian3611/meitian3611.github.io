@@ -1,6 +1,48 @@
 <?xml version="1.0" encoding="utf-8"?>
 <search>
   <entry>
+    <title>NATAPP内网穿透</title>
+    <url>/2020/01/07/%E5%86%85%E7%BD%91%E7%A9%BF%E9%80%8F/</url>
+    <content><![CDATA[<h2 id="什么是内网穿透"><a href="#什么是内网穿透" class="headerlink" title="什么是内网穿透 ?"></a>什么是内网穿透 ?</h2><blockquote>
+<p>对于前端工程师来说，内网穿透就是可以实现内网与外网之间通过natapp隧道打通，让内网的数据可以使用外网获取，例如 Vue 脚手架的 127.0.0.1:8080 端口，通常只有本地才能预览，但是使用natapp进行内网穿透，就可以实现一个所有人可访问的域名，类似于项目上线，但是内网穿透必须保证服务开启状态，所有用户才能进行访问。</p>
+</blockquote><a id="more"></a>
+<h2 id="安装配置"><a href="#安装配置" class="headerlink" title="安装配置"></a>安装配置</h2><ol>
+<li><p>进入官网  <a href="https://natapp.cn/" target="_blank" rel="noopener">官网链接</a></p>
+</li>
+<li><p>点击客户端下载与自己电脑对应的版本即可</p>
+</li>
+<li><p>下载本地配置文件config.ini   <a href="https://natapp.cn/article/config_ini" target="_blank" rel="noopener">下载链接</a></p>
+</li>
+<li><p>将config.ini文件放在 客户端natapp.exe同级目录下</p>
+</li>
+<li><p>在官网注册账号并购买免费隧道</p>
+</li>
+</ol>
+<p><img src="https://i.loli.net/2020/01/07/ANzSWxbPsymgDdK.png" alt="TIM截图20200107175552.png"></p>
+<ol start="6">
+<li><p>复制自动生成的 authtoken ，打开config.ini 文件 找到 authtoken=</p>
+</li>
+<li><p>将复制的内容粘贴在 authtoken= 后保存退出即可</p>
+</li>
+<li><p>点击上图的配置按钮修改成自己项目生成的端口号</p>
+</li>
+</ol>
+<p><img src="https://i.loli.net/2020/01/07/7Z1PNF4VHxQCXYz.png" alt="TIM截图20200107180324.png"></p>
+<ol start="9">
+<li>点击natapp.exe 运行  浏览器输入生成的域名即可访问本地的项目</li>
+</ol>
+<p><img src="https://i.loli.net/2020/01/07/B5XHMR1sPVKL3Tt.png" alt="success.png"></p>
+]]></content>
+      <categories>
+        <category>进阶提升</category>
+      </categories>
+      <tags>
+        <tag>知识点</tag>
+        <tag>少数</tag>
+        <tag>服务端</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>Redux</title>
     <url>/2019/12/25/Redux/</url>
     <content><![CDATA[<h2 id="简介"><a href="#简介" class="headerlink" title="简介"></a>简介</h2><blockquote>
