@@ -1,6 +1,76 @@
 <?xml version="1.0" encoding="utf-8"?>
 <search>
   <entry>
+    <title>微信小程序</title>
+    <url>/2020/01/09/%E5%BE%AE%E4%BF%A1%E5%B0%8F%E7%A8%8B%E5%BA%8F/</url>
+    <content><![CDATA[<p>详细文档请参考官网   <a href="https://developers.weixin.qq.com/miniprogram/dev/framework/" target="_blank" rel="noopener">文档链接</a></p><h2 id="基本语法"><a href="#基本语法" class="headerlink" title="基本语法"></a>基本语法</h2><h3 id="数据绑定"><a href="#数据绑定" class="headerlink" title="数据绑定"></a>数据绑定</h3><ol>
+<li>在开始标签与结束标签中绑定直接使用 双花括号</li>
+<li>绑定属性仍然使用双花括号</li>
+</ol><h3 id="列表渲染"><a href="#列表渲染" class="headerlink" title="列表渲染"></a>列表渲染</h3><blockquote>
+<p>wx:for</p>
+</blockquote><ol>
+<li><p>默认情况下，循环的每一项是使用 item 来接收的。如果需要修改使用 wx:for-item=”xxx”</p>
+</li>
+<li><p>默认情况下，循环的每一项的下标是 index 来接收的。如果需要修改使用 wx:for-index=”yyy</p>
+</li>
+<li><p>需要提供 wx:key，如果数据由唯一值，例如id，那么直接设置 wx:key 为这个属性的名字，如果没有唯一值，则设置为 *this 即可</p>
+</li>
+</ol><a id="more"></a>
+
+
+
+<figure class="highlight html"><table><tr><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">view</span> <span class="attr">wx:for</span>=<span class="string">"&#123;&#123;list&#125;&#125;"</span> <span class="attr">wx:for-item</span>=<span class="string">"abc"</span> <span class="attr">wx:key</span>=<span class="string">"id"</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">text</span>&gt;</span>&#123;&#123;abc.name&#125;&#125; - &#123;&#123;index&#125;&#125;<span class="tag">&lt;/<span class="name">text</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">view</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="条件渲染"><a href="#条件渲染" class="headerlink" title="条件渲染"></a>条件渲染</h3><blockquote>
+<p>wx:if —– wx:else —— wx:elif </p>
+</blockquote>
+<ol>
+<li>小程序中没有wx:show，但有一个作用相反的公共 hidden 属性</li>
+<li>wx:if 和 hidden 的区别<ol>
+<li>wx:if 才是真真的条件渲染，而 hidden 只是简单的控制 display style</li>
+<li>wx:if 有配套的 wx:else wx:elif， 而 hidden 没有</li>
+<li>wx:if 可以配合 block 使用，而 hidden 不可以</li>
+<li>wx:if 有更高的切换开销，hidden 有更高的初始渲染开销</li>
+<li>频繁切换使用 hidden。否则使用 wx:if</li>
+</ol>
+</li>
+</ol>
+<h3 id="模板"><a href="#模板" class="headerlink" title="模板"></a>模板</h3><blockquote>
+<p>WXML提供模板（template），可以在模板中定义代码片段，然后在不同的地方调用</p>
+</blockquote>
+<ol>
+<li><p>定义模板, 要设置 name 属性</p>
+<figure class="highlight html"><table><tr><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">template</span> <span class="attr">name</span>=<span class="string">"xxx"</span>&gt;</span>hello<span class="tag">&lt;/<span class="name">template</span>&gt;</span></span><br></pre></td></tr></table></figure>
+</li>
+<li><p>使用模板，要设置 is 属性</p>
+<figure class="highlight html"><table><tr><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">template</span> <span class="attr">is</span>=<span class="string">"xxx"</span>&gt;</span><span class="tag">&lt;/<span class="name">template</span>&gt;</span></span><br></pre></td></tr></table></figure>
+</li>
+<li><p>引入在别的 wxml 中定义的模板，需要使用 import 标签</p>
+<figure class="highlight html"><table><tr><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">import</span> <span class="attr">src</span>=<span class="string">"xxx.wxml"</span> /&gt;</span></span><br></pre></td></tr></table></figure>
+</li>
+<li><p>使用模板时，可以设置 data 属性来给模板传递参数增加模板的复用性</p>
+<figure class="highlight html"><table><tr><td class="code"><pre><span class="line"><span class="comment">&lt;!-- 模板文件 --&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">template</span> <span class="attr">name</span>=<span class="string">"demo"</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">view</span>&gt;</span>demo ---- &#123;&#123; name &#125;&#125; - &#123;&#123; age &#125;&#125;<span class="tag">&lt;/<span class="name">view</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">template</span>&gt;</span></span><br><span class="line"></span><br><span class="line"><span class="comment">&lt;!-- 引入模板文件 --&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">import</span> <span class="attr">src</span>=<span class="string">"/templates/demo.wxml"</span> /&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">template</span> <span class="attr">is</span>=<span class="string">"demo"</span> <span class="attr">data</span>=<span class="string">"&#123;&#123;msg:'张三', age:20&#125;&#125;"</span>&gt;</span><span class="tag">&lt;/<span class="name">template</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+</li>
+</ol>
+<h3 id="引用"><a href="#引用" class="headerlink" title="引用"></a>引用</h3><blockquote>
+<p>wxml中提供了两个标签可以去引入别的 wxml 中的内容</p>
+</blockquote>
+<ol>
+<li>import 只能用于引入 template 模板</li>
+<li>include 只能用于引入wxml 中的视图，不能引入template内容</li>
+</ol>
+]]></content>
+      <categories>
+        <category>小程序</category>
+      </categories>
+      <tags>
+        <tag>组件</tag>
+        <tag>前端</tag>
+        <tag>API</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>NATAPP内网穿透</title>
     <url>/2020/01/07/%E5%86%85%E7%BD%91%E7%A9%BF%E9%80%8F/</url>
     <content><![CDATA[<h2 id="什么是内网穿透"><a href="#什么是内网穿透" class="headerlink" title="什么是内网穿透 ?"></a>什么是内网穿透 ?</h2><blockquote>
