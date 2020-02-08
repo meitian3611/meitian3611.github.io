@@ -1,7 +1,51 @@
 <?xml version="1.0" encoding="utf-8"?>
 <search>
   <entry>
-    <title>小程序-2</title>
+    <title>vue和react的路由传参</title>
+    <url>/2020/02/07/vue%E5%92%8Creact%E7%9A%84%E8%B7%AF%E7%94%B1%E4%BC%A0%E5%8F%82/</url>
+    <content><![CDATA[<h2 id="React路由传参"><a href="#React路由传参" class="headerlink" title="React路由传参"></a>React路由传参</h2><h3 id="1-params"><a href="#1-params" class="headerlink" title="1. params"></a>1. params</h3><p><strong>配置路由：</strong></p><figure class="highlight jsx"><table><tr><td class="code"><pre><span class="line">&lt;Route path=<span class="string">'/login/:id'</span> component=&#123;Login&#125;&gt;<span class="xml"><span class="tag">&lt;/<span class="name">Route</span>&gt;</span></span></span><br><span class="line">&lt;Route path=<span class="string">'/'</span> component=&#123;Home&#125;&gt;<span class="xml"><span class="tag">&lt;/<span class="name">Route</span>&gt;</span></span></span><br></pre></td></tr></table></figure><a id="more"></a>
+
+
+<p><strong>首页:</strong></p>
+<figure class="highlight jsx"><table><tr><td class="code"><pre><span class="line">&lt;Link to=<span class="string">'/login/99'</span>&gt; 跳转login页并传递参数&lt;<span class="regexp">/Link&gt;</span></span><br></pre></td></tr></table></figure>
+
+<p><strong>Login:</strong></p>
+<figure class="highlight jsx"><table><tr><td class="code"><pre><span class="line">componentDidMount() &#123;</span><br><span class="line">  <span class="keyword">const</span> &#123; match &#125; = <span class="keyword">this</span>.props</span><br><span class="line">  <span class="built_in">console</span>.log(match.params.id) <span class="comment">// 成功获取id</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="2-search"><a href="#2-search" class="headerlink" title="2. search"></a>2. search</h3><p><strong>配置路由：</strong></p>
+<figure class="highlight jsx"><table><tr><td class="code"><pre><span class="line">&lt;Route path=<span class="string">'/login'</span> component=&#123;Login&#125;&gt;<span class="xml"><span class="tag">&lt;/<span class="name">Route</span>&gt;</span></span> <span class="comment">// 正常配置即可</span></span><br><span class="line">&lt;Route path=<span class="string">'/'</span> component=&#123;Home&#125;&gt;<span class="xml"><span class="tag">&lt;/<span class="name">Route</span>&gt;</span></span></span><br></pre></td></tr></table></figure>
+
+<p><strong>首页：</strong></p>
+<figure class="highlight jsx"><table><tr><td class="code"><pre><span class="line">&lt;Link to=<span class="string">'login/?id=99'</span>&gt; 跳转login页并传递参数&lt;<span class="regexp">/Link&gt; /</span><span class="regexp">/ 注意这里login前面不需要加斜杠</span></span><br></pre></td></tr></table></figure>
+
+<p><strong>Login：</strong></p>
+<figure class="highlight jsx"><table><tr><td class="code"><pre><span class="line">componentDidMount() &#123;</span><br><span class="line">  <span class="keyword">const</span> &#123; match, location &#125; = <span class="keyword">this</span>.props</span><br><span class="line">  <span class="keyword">const</span> id = location.search.split(<span class="string">'='</span>)[<span class="number">1</span>]</span><br><span class="line">  <span class="built_in">console</span>.log(id) <span class="comment">// 成功获取id</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="3-query"><a href="#3-query" class="headerlink" title="3. query"></a>3. query</h3><p><strong>路由正常配置</strong></p>
+<p><strong>首页：</strong></p>
+<figure class="highlight jsx"><table><tr><td class="code"><pre><span class="line">render() &#123;</span><br><span class="line">  <span class="keyword">var</span> query = &#123;</span><br><span class="line">    pathname: <span class="string">'/login'</span>,</span><br><span class="line">    query: <span class="string">'通过query传递一个对象参数'</span></span><br><span class="line">  &#125;</span><br><span class="line">  <span class="keyword">return</span> (</span><br><span class="line">    &lt;div&gt;</span><br><span class="line">      &lt;Link to=&#123;query&#125;&gt;跳转login并传参数&lt;<span class="regexp">/Link&gt;</span></span><br><span class="line"><span class="regexp">    &lt;/</span>div&gt;</span><br><span class="line">  )</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p><strong>Login：</strong></p>
+<figure class="highlight jsx"><table><tr><td class="code"><pre><span class="line">componentDidMount() &#123;</span><br><span class="line">   <span class="keyword">const</span> &#123; location &#125; = <span class="keyword">this</span>.props</span><br><span class="line">   <span class="built_in">console</span>.log(location.query); <span class="comment">// 成功获取query的参数</span></span><br><span class="line"> &#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="4-state"><a href="#4-state" class="headerlink" title="4. state"></a>4. state</h3><p><strong>路由正常配置</strong></p>
+<p><strong>首页：</strong></p>
+<figure class="highlight jsx"><table><tr><td class="code"><pre><span class="line">render() &#123;</span><br><span class="line">  <span class="keyword">var</span> state = &#123;</span><br><span class="line">    pathname: <span class="string">'/login'</span>,</span><br><span class="line">    state: <span class="string">'通过state传递一个对象参数'</span></span><br><span class="line">  &#125;</span><br><span class="line">  <span class="keyword">return</span> (</span><br><span class="line">    &lt;div&gt;</span><br><span class="line">      &lt;Link to=&#123;state&#125;&gt;跳转login并传参数&lt;<span class="regexp">/Link&gt;</span></span><br><span class="line"><span class="regexp">    &lt;/</span>div&gt;</span><br><span class="line">  )</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p><strong>Login：</strong></p>
+<figure class="highlight jsx"><table><tr><td class="code"><pre><span class="line">componentDidMount() &#123;</span><br><span class="line">   <span class="keyword">const</span> &#123; location &#125; = <span class="keyword">this</span>.props</span><br><span class="line">   <span class="built_in">console</span>.log(location.state); <span class="comment">// 成功获取state的参数</span></span><br><span class="line"> &#125;</span><br></pre></td></tr></table></figure>
+]]></content>
+      <categories>
+        <category>框架</category>
+      </categories>
+      <tags>
+        <tag>笔记</tag>
+        <tag>知识点</tag>
+        <tag>路由</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>小程序组件通信</title>
     <url>/2020/01/13/%E5%BE%AE%E4%BF%A1%E5%B0%8F%E7%A8%8B%E5%BA%8F-2/</url>
     <content><![CDATA[<h2 id="构建npm"><a href="#构建npm" class="headerlink" title="构建npm"></a>构建npm</h2><ol>
 <li><code>npm init</code></li>
@@ -66,7 +110,7 @@
       </tags>
   </entry>
   <entry>
-    <title>小程序-1</title>
+    <title>微信小程序</title>
     <url>/2020/01/09/%E5%BE%AE%E4%BF%A1%E5%B0%8F%E7%A8%8B%E5%BA%8F-1/</url>
     <content><![CDATA[<p>详细文档请参考官网   <a href="https://developers.weixin.qq.com/miniprogram/dev/framework/" target="_blank" rel="noopener">文档链接</a></p><h2 id="一，基本语法"><a href="#一，基本语法" class="headerlink" title="一，基本语法"></a>一，基本语法</h2><h3 id="数据绑定"><a href="#数据绑定" class="headerlink" title="数据绑定"></a>数据绑定</h3><ol>
 <li>在开始标签与结束标签中绑定直接使用 双花括号</li>
