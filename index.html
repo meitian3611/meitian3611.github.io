@@ -243,7 +243,7 @@
                   <i class="fa fa-calendar-check-o"></i>
                 </span>
                 <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2020-02-08 12:41:04" itemprop="dateModified" datetime="2020-02-08T12:41:04+08:00">2020-02-08</time>
+                <time title="修改时间：2020-02-09 16:23:38" itemprop="dateModified" datetime="2020-02-09T16:23:38+08:00">2020-02-09</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -268,7 +268,9 @@
     <div class="post-body" itemprop="articleBody">
 
       
-          <h2 id="React路由传参"><a href="#React路由传参" class="headerlink" title="React路由传参"></a>React路由传参</h2><h3 id="1-params"><a href="#1-params" class="headerlink" title="1. params"></a>1. params</h3><p><strong>配置路由：</strong></p><figure class="highlight jsx"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">&lt;Route path=<span class="string">'/login/:id'</span> component=&#123;Login&#125;&gt;<span class="xml"><span class="tag">&lt;/<span class="name">Route</span>&gt;</span></span></span><br><span class="line">&lt;Route path=<span class="string">'/'</span> component=&#123;Home&#125;&gt;<span class="xml"><span class="tag">&lt;/<span class="name">Route</span>&gt;</span></span></span><br></pre></td></tr></table></figure>
+          <h2 id="Vue路由传参"><a href="#Vue路由传参" class="headerlink" title="Vue路由传参"></a>Vue路由传参</h2><h3 id="编程式导航-id-xx"><a href="#编程式导航-id-xx" class="headerlink" title="编程式导航 ( ?id=xx )"></a>编程式导航 ( ?id=xx )</h3><ul>
+<li>使用 $router.push 拼接参数传参</li>
+</ul><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line">// home.vue</span><br><span class="line">&lt;template&gt;</span><br><span class="line">  &lt;div class=&quot;page-home&quot;&gt;</span><br><span class="line">    &lt;h1&gt;首页&lt;/h1&gt;</span><br><span class="line">    &lt;button @click=&quot;handelClick&quot;&gt;</span><br><span class="line">      跳转a页面</span><br><span class="line">    &lt;/button&gt;</span><br><span class="line">  &lt;/div&gt;</span><br><span class="line">&lt;/template&gt;</span><br><span class="line"></span><br><span class="line">&lt;script&gt;</span><br><span class="line">export default &#123;</span><br><span class="line">  methods: &#123;</span><br><span class="line">    handelClick() &#123;</span><br><span class="line">      this.$router.push(&apos;/a?id=99&apos;) // 问号传参方式</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line">&lt;/script&gt;</span><br></pre></td></tr></table></figure>
           <!--noindex-->
             <div class="post-button">
               <a class="btn" href="/2020/02/07/vue%E5%92%8Creact%E7%9A%84%E8%B7%AF%E7%94%B1%E4%BC%A0%E5%8F%82/#more" rel="contents">
