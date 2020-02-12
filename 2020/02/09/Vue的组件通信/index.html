@@ -51,15 +51,15 @@
   };
 </script>
 
-  <meta name="description" content="父组件向子组件传递数据子组件123456789101112131415161718&#x2F;&#x2F; TestOne.vue&amp;lt;template&amp;gt;  &amp;lt;div&amp;gt;我是&amp;#123;&amp;#123; msg &amp;#125;&amp;#125;&amp;lt;&#x2F;div&amp;gt;&amp;lt;&#x2F;template&amp;gt;&amp;lt;script&amp;gt;export default &amp;#123;  data() &amp;#123;    re">
+  <meta name="description" content="父组件向子组件传递数据子组件1234567891011121314151617181920&#x2F;&#x2F; TestOne.vue&amp;lt;template&amp;gt;  &amp;lt;div&amp;gt;我是&amp;#123;&amp;#123; msg &amp;#125;&amp;#125;&amp;lt;&#x2F;div&amp;gt;&amp;lt;&#x2F;template&amp;gt;&amp;lt;script&amp;gt;export default &amp;#123;  data() &amp;#123;">
 <meta name="keywords" content="笔记,组件,复习">
 <meta property="og:type" content="article">
 <meta property="og:title" content="Vue的组件通信">
 <meta property="og:url" content="http:&#x2F;&#x2F;yoursite.com&#x2F;2020&#x2F;02&#x2F;09&#x2F;Vue%E7%9A%84%E7%BB%84%E4%BB%B6%E9%80%9A%E4%BF%A1&#x2F;index.html">
 <meta property="og:site_name" content="淡然的博客">
-<meta property="og:description" content="父组件向子组件传递数据子组件123456789101112131415161718&#x2F;&#x2F; TestOne.vue&amp;lt;template&amp;gt;  &amp;lt;div&amp;gt;我是&amp;#123;&amp;#123; msg &amp;#125;&amp;#125;&amp;lt;&#x2F;div&amp;gt;&amp;lt;&#x2F;template&amp;gt;&amp;lt;script&amp;gt;export default &amp;#123;  data() &amp;#123;    re">
+<meta property="og:description" content="父组件向子组件传递数据子组件1234567891011121314151617181920&#x2F;&#x2F; TestOne.vue&amp;lt;template&amp;gt;  &amp;lt;div&amp;gt;我是&amp;#123;&amp;#123; msg &amp;#125;&amp;#125;&amp;lt;&#x2F;div&amp;gt;&amp;lt;&#x2F;template&amp;gt;&amp;lt;script&amp;gt;export default &amp;#123;  data() &amp;#123;">
 <meta property="og:locale" content="zh-CN">
-<meta property="og:updated_time" content="2020-02-09T10:38:26.790Z">
+<meta property="og:updated_time" content="2020-02-12T13:48:00.208Z">
 <meta name="twitter:card" content="summary">
 
 <link rel="canonical" href="http://yoursite.com/2020/02/09/Vue%E7%9A%84%E7%BB%84%E4%BB%B6%E9%80%9A%E4%BF%A1/">
@@ -236,10 +236,16 @@
                 <i class="fa fa-calendar-o"></i>
               </span>
               <span class="post-meta-item-text">发表于</span>
-              
 
-              <time title="创建时间：2020-02-09 16:56:41 / 修改时间：18:38:26" itemprop="dateCreated datePublished" datetime="2020-02-09T16:56:41+08:00">2020-02-09</time>
+              <time title="创建时间：2020-02-09 16:56:41" itemprop="dateCreated datePublished" datetime="2020-02-09T16:56:41+08:00">2020-02-09</time>
             </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2020-02-12 21:48:00" itemprop="dateModified" datetime="2020-02-12T21:48:00+08:00">2020-02-12</time>
+              </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
                 <i class="fa fa-folder-o"></i>
@@ -270,11 +276,16 @@
     <div class="post-body" itemprop="articleBody">
 
       
-        <h2 id="父组件向子组件传递数据"><a href="#父组件向子组件传递数据" class="headerlink" title="父组件向子组件传递数据"></a>父组件向子组件传递数据</h2><p><strong>子组件</strong></p><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line">// TestOne.vue</span><br><span class="line">&lt;template&gt;</span><br><span class="line">  &lt;div&gt;我是&#123;&#123; msg &#125;&#125;&lt;/div&gt;</span><br><span class="line">&lt;/template&gt;</span><br><span class="line"></span><br><span class="line">&lt;script&gt;</span><br><span class="line">export default &#123;</span><br><span class="line">  data() &#123;</span><br><span class="line">    return &#123;&#125;</span><br><span class="line">  &#125;,</span><br><span class="line">  props: &#123;</span><br><span class="line">    msg: &#123;</span><br><span class="line">        type:String,</span><br><span class="line">        required:true</span><br><span class="line">    &#125; //采用对象的形式接收</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line">&lt;/script&gt;</span><br></pre></td></tr></table></figure><a id="more"></a>
+        <h2 id="父组件向子组件传递数据"><a href="#父组件向子组件传递数据" class="headerlink" title="父组件向子组件传递数据"></a>父组件向子组件传递数据</h2><p><strong>子组件</strong></p><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line">// TestOne.vue</span><br><span class="line">&lt;template&gt;</span><br><span class="line">  &lt;div&gt;我是&#123;&#123; msg &#125;&#125;&lt;/div&gt;</span><br><span class="line">&lt;/template&gt;</span><br><span class="line"></span><br><span class="line">&lt;script&gt;</span><br><span class="line">export default &#123;</span><br><span class="line">  data() &#123;</span><br><span class="line">    return &#123;&#125;</span><br><span class="line">  &#125;,</span><br><span class="line">  props: &#123;</span><br><span class="line">      //采用对象的形式接收</span><br><span class="line">    msg: &#123;</span><br><span class="line">        type:String,  //字符串格式</span><br><span class="line">        default:&apos; &apos;   // 默认值</span><br><span class="line">        required:true //是否必须传递</span><br><span class="line">    &#125; </span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line">&lt;/script&gt;</span><br></pre></td></tr></table></figure><a id="more"></a>
 
 
 <p><strong>父组件</strong></p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line">&lt;template&gt;</span><br><span class="line">  &lt;div class=&quot;page-home&quot;&gt;</span><br><span class="line">    &lt;h1&gt;首页&lt;/h1&gt;</span><br><span class="line">    &lt;One :msg=&quot;name&quot;&gt;&lt;/One&gt; //引入子组件后将数据传递给子组件使用</span><br><span class="line">  &lt;/div&gt;</span><br><span class="line">&lt;/template&gt;</span><br><span class="line">&lt;script&gt;</span><br><span class="line">import One from &apos;../components/TestOne&apos; // 引入子组件</span><br><span class="line">export default &#123;</span><br><span class="line">  components: &#123;</span><br><span class="line">    One // 注册子组件</span><br><span class="line">  &#125;,</span><br><span class="line">  data() &#123;</span><br><span class="line">    return &#123;</span><br><span class="line">      name: &apos;父级传递的数据&apos;</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line">&lt;/script&gt;</span><br></pre></td></tr></table></figure>
+
+<p><strong>补充一点</strong>：传入一个对象的所有属性</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">// 假如父组件需要传入大量的属性，这时候就需要在子组件标签一个个传递，非常麻烦</span><br><span class="line">&lt;One :name=&apos;list.name&apos; :age=&apos;list.age&apos; :sex=&apos;list.sex&apos; :money=&apos;list.money&apos; &gt;&lt;/One&gt;</span><br><span class="line"></span><br><span class="line">// 为了处理这种情况，可以采用 v-bind ,注意并不是冒号而是等于号</span><br><span class="line">&lt;One v-bind=&apos;list&apos;&gt;&lt;/One&gt;</span><br><span class="line"></span><br><span class="line">data()&#123;</span><br><span class="line">  return&#123;</span><br><span class="line">	list:&#123;</span><br><span class="line">		name:&apos;张三&apos;,</span><br><span class="line">		age:18,</span><br><span class="line">		sex:&apos;男&apos;,</span><br><span class="line">		money:99</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
 
 <p><strong>总结</strong></p>
 <ul>
@@ -282,6 +293,7 @@
 <li>父组件中注册子组件 </li>
 <li>父组件在子组件标签中添加子组件props中创建的属性 </li>
 <li>父组件把需要传给子组件的值赋给该属性 </li>
+<li>由于单向数据流，子组件不能去修改父组件传递的值</li>
 </ul>
 <h2 id="子组件向父组件传递数据"><a href="#子组件向父组件传递数据" class="headerlink" title="子组件向父组件传递数据"></a>子组件向父组件传递数据</h2><p><strong>子组件</strong></p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line">&lt;template&gt;</span><br><span class="line">  &lt;div&gt;</span><br><span class="line">      &#123;&#123; message &#125;&#125;</span><br><span class="line">    &lt;button @click=&quot;handelClick&quot;&gt;修改父组件&lt;/button&gt;</span><br><span class="line">  &lt;/div&gt;</span><br><span class="line">&lt;/template&gt;</span><br><span class="line"></span><br><span class="line">&lt;script&gt;</span><br><span class="line">export default &#123;</span><br><span class="line">  data()&#123;</span><br><span class="line">    return&#123;</span><br><span class="line">     message:&apos;我是子组件&apos;</span><br><span class="line">    &#125;</span><br><span class="line"> &#125;</span><br><span class="line">  methods:&#123;</span><br><span class="line">    handelClick()&#123;</span><br><span class="line">     this.$emit(&apos;child&apos;,&apos;子组件修改父组件&apos;) // 第一个参数为自定义事件，第二个参数是传递给父组件的值</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line">&lt;/script&gt;</span><br></pre></td></tr></table></figure>
