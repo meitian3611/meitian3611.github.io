@@ -1,6 +1,245 @@
 <?xml version="1.0" encoding="utf-8"?>
 <search>
   <entry>
+    <title>vue文本格式化</title>
+    <url>/2021/03/19/Vue%E6%96%87%E6%9C%AC%E6%A0%BC%E5%BC%8F%E5%8C%96/</url>
+    <content><![CDATA[<h2 id="vue-text-format"><a href="#vue-text-format" class="headerlink" title="vue-text-format"></a>vue-text-format</h2><blockquote>
+<p> 一个功能强大的 vue 自定义文本格式扩展插件。</p>
+<p> vue-text-format这个扩展移植了excel的功能，可以在页面上对数据改变显示格式。 使用方式也很简单，通过扩展vue的自定义命令v-format的形式，绑定格式，就可以将内部的文本进行转换。</p>
+</blockquote><a id="more"></a>
+<h3 id="使用方法"><a href="#使用方法" class="headerlink" title="使用方法"></a>使用方法</h3><h4 id="安装"><a href="#安装" class="headerlink" title="安装"></a>安装</h4><ul>
+<li><p>npm install vue-text-format</p>
+<p>在main.js入口文件引用插件</p>
+<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="keyword">import</span> Vue <span class="keyword">from</span> <span class="string">'vue'</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> format <span class="keyword">from</span> <span class="string">'vue-text-format'</span>;</span><br><span class="line">Vue.use(format);</span><br></pre></td></tr></table></figure>
+
+
+
+</li>
+</ul>
+<h4 id="使用"><a href="#使用" class="headerlink" title="使用"></a>使用</h4><ul>
+<li>方式1：指令v-format 通过v-format传入想要转换的格式</li>
+</ul>
+<figure class="highlight html"><table><tr><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">div</span> <span class="attr">v-format</span>=<span class="string">"'#,##0.00'"</span>&gt;</span>1200000<span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>方式2：函数调用，vue原型上绑定了一个textFormat函数</li>
+</ul>
+<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="keyword">export</span> <span class="keyword">default</span> &#123;</span><br><span class="line">    name: <span class="string">'home'</span>,</span><br><span class="line">    mounted() &#123;</span><br><span class="line">        <span class="keyword">let</span> newVal = <span class="keyword">this</span>.textFormat(<span class="number">1200000</span>, <span class="string">'#,##0.00'</span>);</span><br><span class="line">        <span class="comment">// 将获得1,200,000.00 (数字千分位格式化)</span></span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h4 id="示例"><a href="#示例" class="headerlink" title="示例"></a>示例</h4><ul>
+<li>我们通过几个例子，让你了解一下这个格式代码功能到底有多全多强大</li>
+</ul>
+<figure class="highlight js"><table><tr><td class="code"><pre><span class="line">&lt;div v-format=<span class="string">"'0.##%'"</span>&gt;<span class="number">0.123</span>&lt;<span class="regexp">/div&gt;</span></span><br><span class="line"><span class="regexp">&lt;!--最终显示的值是 【12.3%】转换百分比 --&gt;</span></span><br><span class="line"><span class="regexp"> </span></span><br><span class="line"><span class="regexp">&lt;div v-format="'0.00%'"&gt;0.123&lt;/</span>div&gt;</span><br><span class="line">&lt;!--最终显示的值是 【<span class="number">12.30</span>%】 转换百分比，控制占位符--&gt;</span><br><span class="line"> </span><br><span class="line">&lt;div v-format=<span class="string">"'#,##0.00'"</span>&gt;<span class="number">1200000</span>&lt;<span class="regexp">/div&gt;</span></span><br><span class="line"><span class="regexp">&lt;!--最终显示的值是 【1,200,000.00】千分位 --&gt;</span></span><br><span class="line"><span class="regexp"> </span></span><br><span class="line"><span class="regexp">&lt;div v-format="'¥#,##0.00'"&gt;1200000&lt;/</span>div&gt;</span><br><span class="line">&lt;!--最终显示的值是 【¥<span class="number">1</span>,<span class="number">200</span>,<span class="number">000.00</span>】前缀 --&gt;</span><br><span class="line"> </span><br><span class="line">&lt;div v-format=<span class="string">"'0.00E+00'"</span>&gt;<span class="number">1200000</span>&lt;<span class="regexp">/div&gt;</span></span><br><span class="line"><span class="regexp">&lt;!--最终显示的值是 【1.20E+06】科学计数法，有占位符 --&gt;</span></span><br><span class="line"><span class="regexp"> </span></span><br><span class="line"><span class="regexp">&lt;div v-format="'0.##E+##'"&gt;1200000&lt;/</span>div&gt;</span><br><span class="line">&lt;!--最终显示的值是 【<span class="number">1.2E+6</span>】科学计数法，无有占位符 --&gt;</span><br><span class="line"> </span><br><span class="line">&lt;div v-format=<span class="string">"'0000-00-00'"</span>&gt;<span class="number">20180512</span>&lt;<span class="regexp">/div&gt;</span></span><br><span class="line"><span class="regexp">&lt;!--最终显示的值是 【2018-05-12】改变格式--&gt;</span></span><br><span class="line"><span class="regexp"> </span></span><br><span class="line"><span class="regexp">&lt;div v-format="'000-0000-0000'"&gt;13812345678&lt;/</span>div&gt;</span><br><span class="line">&lt;!--最终显示的值是 【<span class="number">138</span><span class="number">-1234</span><span class="number">-5678</span>】手机号--&gt;</span><br><span class="line"> </span><br><span class="line">&lt;div v-format=<span class="string">"'YYYY-MM-DD'"</span>&gt;<span class="number">1562838244</span>&lt;<span class="regexp">/div&gt;</span></span><br><span class="line"><span class="regexp">&lt;!--最终显示的值是 【2019-07-11】时间--&gt;</span></span><br><span class="line"><span class="regexp"> </span></span><br><span class="line"><span class="regexp">&lt;div v-format="'??/</span>??<span class="string">'"&gt;0.28&lt;/div&gt;</span></span><br><span class="line"><span class="string">&lt;!--最终显示的值是 【7/25】两位数分母的近似分数--&gt;</span></span><br><span class="line"><span class="string"> </span></span><br><span class="line"><span class="string">&lt;div v-format="'</span>?<span class="regexp">/?'"&gt;0.28&lt;/</span>div&gt;</span><br><span class="line">&lt;!--最终显示的值是 【<span class="number">2</span>/<span class="number">7</span>】一位数分母的近似分数--&gt;</span><br></pre></td></tr></table></figure>
+
+<h3 id="常用格式编码介绍"><a href="#常用格式编码介绍" class="headerlink" title="常用格式编码介绍"></a>常用格式编码介绍</h3><h4 id="数字占位符"><a href="#数字占位符" class="headerlink" title="数字占位符"></a>数字占位符</h4><ul>
+<li><strong>‘#’</strong>： 只显有意义的零而不显示无意义的零。小数点后数字如大于”#”的数量，则按”#”的位数四舍五入。</li>
+<li><strong>‘0’</strong>： 如果单元格的内容大于占位符，则显示实际数字，如果小于点位符的数量，则用0补足。</li>
+</ul>
+<table>
+<thead>
+<tr>
+<th>代码</th>
+<th>数字</th>
+<th>显示</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>###.##</td>
+<td>12.1</td>
+<td>12.1</td>
+</tr>
+<tr>
+<td>###.##</td>
+<td>12.1263</td>
+<td>12.13</td>
+</tr>
+<tr>
+<td>00000</td>
+<td>1234567</td>
+<td>1234567</td>
+</tr>
+<tr>
+<td>00000</td>
+<td>123</td>
+<td>00123</td>
+</tr>
+<tr>
+<td>00.000</td>
+<td>100.14</td>
+<td>100.140</td>
+</tr>
+<tr>
+<td>00.000</td>
+<td>1.1</td>
+<td>01.100</td>
+</tr>
+</tbody></table>
+<h4 id="小数点"><a href="#小数点" class="headerlink" title="小数点"></a>小数点</h4><table>
+<thead>
+<tr>
+<th>代码</th>
+<th>文本</th>
+<th>显示</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>0.#</td>
+<td>11.23</td>
+<td>11.2</td>
+</tr>
+<tr>
+<td>0.#</td>
+<td>11</td>
+<td>11</td>
+</tr>
+<tr>
+<td>0.00</td>
+<td>3</td>
+<td>3.00</td>
+</tr>
+<tr>
+<td>0.##</td>
+<td>3</td>
+<td>3</td>
+</tr>
+<tr>
+<td>0.00%</td>
+<td>3</td>
+<td>300.00%</td>
+</tr>
+<tr>
+<td>0.##%</td>
+<td>3</td>
+<td>300%</td>
+</tr>
+</tbody></table>
+<h4 id="百分比"><a href="#百分比" class="headerlink" title="百分比"></a>百分比</h4><ul>
+<li>“%”：百分比。 例：代码“#%”。“0.1”显示为“10%”</li>
+</ul>
+<table>
+<thead>
+<tr>
+<th>代码</th>
+<th>数字</th>
+<th>显示</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>#%</td>
+<td>0.1</td>
+<td>10%</td>
+</tr>
+<tr>
+<td>#.#%</td>
+<td>0.131</td>
+<td>13.1%</td>
+</tr>
+<tr>
+<td>#.##%</td>
+<td>0.131</td>
+<td>13.1%</td>
+</tr>
+<tr>
+<td>#.#0%</td>
+<td>0.131</td>
+<td>13.10%</td>
+</tr>
+</tbody></table>
+<h4 id="千分位分隔符"><a href="#千分位分隔符" class="headerlink" title="千分位分隔符"></a>千分位分隔符</h4><table>
+<thead>
+<tr>
+<th>代码</th>
+<th>文本</th>
+<th>显示</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>#,###0.00</td>
+<td>12000</td>
+<td>12,000.00</td>
+</tr>
+</tbody></table>
+<ul>
+<li>如在代码中“,”之后为空，则把原来的数字缩小1000倍。</li>
+</ul>
+<table>
+<thead>
+<tr>
+<th>代码</th>
+<th>文本</th>
+<th>显示</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>#,</td>
+<td>10000</td>
+<td>10</td>
+</tr>
+<tr>
+<td>#,”k”</td>
+<td>123123</td>
+<td>123k</td>
+</tr>
+<tr>
+<td>#,,</td>
+<td>1000000</td>
+<td>1</td>
+</tr>
+<tr>
+<td>0,.#</td>
+<td>12345</td>
+<td>12.3</td>
+</tr>
+<tr>
+<td>#.00,</td>
+<td>12345</td>
+<td>12.35</td>
+</tr>
+<tr>
+<td>“人民币 “#,##0,,”百万”</td>
+<td>1234567890</td>
+<td>人民币 1,235百万</td>
+</tr>
+</tbody></table>
+<h4 id="时间和日期代码"><a href="#时间和日期代码" class="headerlink" title="时间和日期代码"></a>时间和日期代码</h4><table>
+<thead>
+<tr>
+<th>代码</th>
+<th>文本</th>
+<th>显示</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>YYYY-MM-DD</td>
+<td>1562838244</td>
+<td>2019-07-11</td>
+</tr>
+<tr>
+<td>YY-MM-DD</td>
+<td>1562838244</td>
+<td>19-07-11</td>
+</tr>
+<tr>
+<td>HH:mm:ss</td>
+<td>1562838244</td>
+<td>17:44:04</td>
+</tr>
+<tr>
+<td>YYYY-MM-DD HH:mm:ss</td>
+<td>1562838244</td>
+<td>2019-07-11 17:44:04</td>
+</tr>
+</tbody></table>
+]]></content>
+      <categories>
+        <category>web前端</category>
+      </categories>
+      <tags>
+        <tag>插件</tag>
+        <tag>实用</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>Vue的组件通信</title>
     <url>/2020/02/09/Vue%E7%9A%84%E7%BB%84%E4%BB%B6%E9%80%9A%E4%BF%A1/</url>
     <content><![CDATA[<h2 id="父组件向子组件传递数据"><a href="#父组件向子组件传递数据" class="headerlink" title="父组件向子组件传递数据"></a>父组件向子组件传递数据</h2><p><strong>子组件</strong></p><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">// TestOne.vue</span><br><span class="line">&lt;template&gt;</span><br><span class="line">  &lt;div&gt;我是&#123;&#123; msg &#125;&#125;&lt;/div&gt;</span><br><span class="line">&lt;/template&gt;</span><br><span class="line"></span><br><span class="line">&lt;script&gt;</span><br><span class="line">export default &#123;</span><br><span class="line">  data() &#123;</span><br><span class="line">    return &#123;&#125;</span><br><span class="line">  &#125;,</span><br><span class="line">  props: &#123;</span><br><span class="line">      //采用对象的形式接收</span><br><span class="line">    msg: &#123;</span><br><span class="line">        type:String,  //字符串格式</span><br><span class="line">        default:&apos; &apos;   // 默认值</span><br><span class="line">        required:true //是否必须传递</span><br><span class="line">    &#125; </span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line">&lt;/script&gt;</span><br></pre></td></tr></table></figure><a id="more"></a>
