@@ -393,8 +393,8 @@
         <category>框架</category>
       </categories>
       <tags>
-        <tag>知识点</tag>
         <tag>笔记</tag>
+        <tag>知识点</tag>
         <tag>路由</tag>
       </tags>
   </entry>
@@ -691,8 +691,8 @@
         <category>React</category>
       </categories>
       <tags>
-        <tag>框架</tag>
         <tag>笔记</tag>
+        <tag>框架</tag>
         <tag>核心</tag>
       </tags>
   </entry>
@@ -784,8 +784,8 @@
         <category>React</category>
       </categories>
       <tags>
-        <tag>框架</tag>
         <tag>笔记</tag>
+        <tag>框架</tag>
         <tag>新增</tag>
       </tags>
   </entry>
@@ -830,9 +830,9 @@
         <category>React</category>
       </categories>
       <tags>
-        <tag>框架</tag>
-        <tag>知识点</tag>
         <tag>笔记</tag>
+        <tag>知识点</tag>
+        <tag>框架</tag>
       </tags>
   </entry>
   <entry>
@@ -854,9 +854,9 @@
         <category>React</category>
       </categories>
       <tags>
-        <tag>框架</tag>
         <tag>笔记</tag>
         <tag>常用</tag>
+        <tag>框架</tag>
       </tags>
   </entry>
   <entry>
@@ -911,8 +911,8 @@
         <category>React</category>
       </categories>
       <tags>
-        <tag>知识点</tag>
         <tag>笔记</tag>
+        <tag>知识点</tag>
         <tag>脚手架</tag>
       </tags>
   </entry>
@@ -968,8 +968,8 @@
         <category>React</category>
       </categories>
       <tags>
-        <tag>知识点</tag>
         <tag>笔记</tag>
+        <tag>知识点</tag>
         <tag>组件</tag>
       </tags>
   </entry>
@@ -1333,9 +1333,9 @@
         <category>Vue</category>
       </categories>
       <tags>
-        <tag>框架</tag>
-        <tag>知识点</tag>
         <tag>笔记</tag>
+        <tag>知识点</tag>
+        <tag>框架</tag>
       </tags>
   </entry>
   <entry>
@@ -1627,9 +1627,9 @@
         <category>nodeJS</category>
       </categories>
       <tags>
-        <tag>node</tag>
-        <tag>框架</tag>
         <tag>知识点</tag>
+        <tag>框架</tag>
+        <tag>node</tag>
       </tags>
   </entry>
   <entry>
@@ -1775,8 +1775,8 @@
         <category>web前端</category>
       </categories>
       <tags>
-        <tag>知识点</tag>
         <tag>语法</tag>
+        <tag>知识点</tag>
         <tag>es6</tag>
       </tags>
   </entry>
@@ -2029,8 +2029,8 @@
         <category>项目相关</category>
       </categories>
       <tags>
-        <tag>知识点</tag>
         <tag>笔记</tag>
+        <tag>知识点</tag>
         <tag>gulp</tag>
       </tags>
   </entry>
@@ -2162,9 +2162,9 @@
         <category>nodeJS</category>
       </categories>
       <tags>
-        <tag>node</tag>
-        <tag>知识点</tag>
         <tag>笔记</tag>
+        <tag>知识点</tag>
+        <tag>node</tag>
       </tags>
   </entry>
   <entry>
@@ -2312,8 +2312,8 @@
         <category>web前端</category>
       </categories>
       <tags>
-        <tag>知识点</tag>
         <tag>笔记</tag>
+        <tag>知识点</tag>
       </tags>
   </entry>
   <entry>
@@ -2351,8 +2351,8 @@
         <category>web前端</category>
       </categories>
       <tags>
-        <tag>知识点</tag>
         <tag>笔记</tag>
+        <tag>知识点</tag>
       </tags>
   </entry>
   <entry>
@@ -2409,8 +2409,8 @@
         <category>web前端</category>
       </categories>
       <tags>
-        <tag>知识点</tag>
         <tag>笔记</tag>
+        <tag>知识点</tag>
       </tags>
   </entry>
   <entry>
@@ -2510,8 +2510,8 @@
         <category>web前端</category>
       </categories>
       <tags>
-        <tag>知识点</tag>
         <tag>笔记</tag>
+        <tag>知识点</tag>
       </tags>
   </entry>
   <entry>
@@ -2549,8 +2549,8 @@
         <category>web前端</category>
       </categories>
       <tags>
-        <tag>知识点</tag>
         <tag>笔记</tag>
+        <tag>知识点</tag>
         <tag>Ajax</tag>
       </tags>
   </entry>
