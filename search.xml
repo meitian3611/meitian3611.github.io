@@ -1,6 +1,57 @@
 <?xml version="1.0" encoding="utf-8"?>
 <search>
   <entry>
+    <title>Vue国际化</title>
+    <url>/2021/03/27/vue%E5%9B%BD%E9%99%85%E5%8C%96/</url>
+    <content><![CDATA[<h2 id="vue-i18n"><a href="#vue-i18n" class="headerlink" title="vue-i18n"></a>vue-i18n</h2><blockquote>
+<p>vue-i18n是一款针对Vue.js 的国际化插件</p>
+</blockquote><h3 id="安装-amp-配置"><a href="#安装-amp-配置" class="headerlink" title="安装&amp;配置"></a>安装&amp;配置</h3><ul>
+<li><p>npm install vue-i18n</p>
+</li>
+<li><p>main.js 文件</p>
+</li>
+</ul><figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="keyword">import</span> VueI18n <span class="keyword">from</span> <span class="string">'vue-i18n'</span>    <span class="comment">// 引入VueI18n </span></span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> &#123; cn &#125; <span class="keyword">from</span> <span class="string">'./static/lang/cn'</span>    <span class="comment">// 引入lang文件</span></span><br><span class="line"><span class="keyword">import</span> &#123; en &#125; <span class="keyword">from</span> <span class="string">'./static/lang/en'</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">const</span> i18n = <span class="keyword">new</span> VueI18n(&#123;</span><br><span class="line">  locale: <span class="string">'en'</span>,   <span class="comment">// 设置语言</span></span><br><span class="line">  messages: &#123;</span><br><span class="line">    cn: &#123; ...cn &#125;,</span><br><span class="line">    en: &#123; ...en &#125;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;)</span><br><span class="line"></span><br><span class="line">Vue.use(VueI18n)     <span class="comment">// 使用VueI18n</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">new</span> Vue(&#123;</span><br><span class="line">  router,</span><br><span class="line">  store,</span><br><span class="line">  i18n,     <span class="comment">// 挂载</span></span><br><span class="line">  render: <span class="function"><span class="params">h</span> =&gt;</span> h(App)</span><br><span class="line">&#125;).$mount(<span class="string">'#app'</span>)</span><br></pre></td></tr></table></figure><a id="more"></a>
+
+
+
+<ul>
+<li>在主目录 scr 下增加 lang 文件夹，例如 zh-CN.json , en-US.josn</li>
+</ul>
+<figure class="highlight json"><table><tr><td class="code"><pre><span class="line">// src/lang/zh-CN.json</span><br><span class="line">&#123;</span><br><span class="line">    <span class="attr">"content"</span>:&#123;</span><br><span class="line">        <span class="attr">"text"</span>:<span class="string">"你好"</span></span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">// src/lang/en-US.json</span><br><span class="line">&#123;</span><br><span class="line">    <span class="attr">"content"</span>:&#123;</span><br><span class="line">        <span class="attr">"text"</span>:<span class="string">"hello"</span></span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="使用"><a href="#使用" class="headerlink" title="使用"></a>使用</h3><ul>
+<li>配置文件创建完成后，就可以在任意一个组件下格式化数据</li>
+</ul>
+<figure class="highlight js"><table><tr><td class="code"><pre><span class="line">&lt;div&gt;&#123;&#123;$t(<span class="string">'content.text'</span>)&#125;&#125;&lt;<span class="regexp">/div&gt;</span></span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>后续可以通过下拉选择框来进行语言切换</li>
+</ul>
+<figure class="highlight js"><table><tr><td class="code"><pre><span class="line">changeLang () &#123;</span><br><span class="line">      <span class="keyword">const</span> temp = <span class="keyword">this</span>.$i18n.locale</span><br><span class="line">      <span class="keyword">if</span> (temp === <span class="string">'cn'</span>) &#123;</span><br><span class="line">        <span class="keyword">this</span>.$i18n.locale = <span class="string">'en'</span></span><br><span class="line">      &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">        <span class="keyword">this</span>.$i18n.locale = <span class="string">'cn'</span></span><br><span class="line">      &#125;</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="vsCode-实用插件"><a href="#vsCode-实用插件" class="headerlink" title="vsCode 实用插件"></a>vsCode 实用插件</h3><blockquote>
+<p>综上所诉，可以简单的处理一系列国际化需求，但是随着项目体积的增大，后期维护工作量会逐渐增大，</p>
+<p>这时可以使用 vsCode 相关插件来代替手动配置语言包，并且加入了相关的文案提示功能</p>
+</blockquote>
+<h4 id="vue-i18n-1"><a href="#vue-i18n-1" class="headerlink" title="vue i18n"></a>vue i18n</h4><ul>
+<li><p>配置</p>
+<p>安装完成后： 首先打开命令面板或者ctrl+shift+p输入 vue-i18n配置语言包路径  src/lang 即可</p>
+</li>
+<li><p>使用</p>
+<p> 选中需要国际化的文字： 使用快捷键 ctrl + &gt; 触发插件，一键生成语言包配置，输入对应的中英文即可。  </p>
+</li>
+</ul>
+<p><a href="https://marketplace.visualstudio.com/items?itemName=think2011.vue-i18n" target="_blank" rel="noopener">查看插件详情</a></p>
+]]></content>
+      <categories>
+        <category>web前端</category>
+      </categories>
+      <tags>
+        <tag>插件</tag>
+        <tag>实用</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>vue文本格式化</title>
     <url>/2021/03/19/Vue%E6%96%87%E6%9C%AC%E6%A0%BC%E5%BC%8F%E5%8C%96/</url>
     <content><![CDATA[<h2 id="vue-text-format"><a href="#vue-text-format" class="headerlink" title="vue-text-format"></a>vue-text-format</h2><blockquote>
@@ -342,8 +393,8 @@
         <category>框架</category>
       </categories>
       <tags>
-        <tag>笔记</tag>
         <tag>知识点</tag>
+        <tag>笔记</tag>
         <tag>路由</tag>
       </tags>
   </entry>
@@ -640,8 +691,8 @@
         <category>React</category>
       </categories>
       <tags>
-        <tag>笔记</tag>
         <tag>框架</tag>
+        <tag>笔记</tag>
         <tag>核心</tag>
       </tags>
   </entry>
@@ -733,8 +784,8 @@
         <category>React</category>
       </categories>
       <tags>
-        <tag>笔记</tag>
         <tag>框架</tag>
+        <tag>笔记</tag>
         <tag>新增</tag>
       </tags>
   </entry>
@@ -779,9 +830,9 @@
         <category>React</category>
       </categories>
       <tags>
-        <tag>笔记</tag>
         <tag>框架</tag>
         <tag>知识点</tag>
+        <tag>笔记</tag>
       </tags>
   </entry>
   <entry>
@@ -803,8 +854,8 @@
         <category>React</category>
       </categories>
       <tags>
-        <tag>笔记</tag>
         <tag>框架</tag>
+        <tag>笔记</tag>
         <tag>常用</tag>
       </tags>
   </entry>
@@ -860,8 +911,8 @@
         <category>React</category>
       </categories>
       <tags>
-        <tag>笔记</tag>
         <tag>知识点</tag>
+        <tag>笔记</tag>
         <tag>脚手架</tag>
       </tags>
   </entry>
@@ -917,8 +968,8 @@
         <category>React</category>
       </categories>
       <tags>
-        <tag>笔记</tag>
         <tag>知识点</tag>
+        <tag>笔记</tag>
         <tag>组件</tag>
       </tags>
   </entry>
@@ -1282,9 +1333,9 @@
         <category>Vue</category>
       </categories>
       <tags>
-        <tag>笔记</tag>
         <tag>框架</tag>
         <tag>知识点</tag>
+        <tag>笔记</tag>
       </tags>
   </entry>
   <entry>
@@ -1978,8 +2029,8 @@
         <category>项目相关</category>
       </categories>
       <tags>
-        <tag>笔记</tag>
         <tag>知识点</tag>
+        <tag>笔记</tag>
         <tag>gulp</tag>
       </tags>
   </entry>
@@ -2111,9 +2162,9 @@
         <category>nodeJS</category>
       </categories>
       <tags>
-        <tag>笔记</tag>
         <tag>node</tag>
         <tag>知识点</tag>
+        <tag>笔记</tag>
       </tags>
   </entry>
   <entry>
@@ -2261,8 +2312,8 @@
         <category>web前端</category>
       </categories>
       <tags>
-        <tag>笔记</tag>
         <tag>知识点</tag>
+        <tag>笔记</tag>
       </tags>
   </entry>
   <entry>
@@ -2300,8 +2351,8 @@
         <category>web前端</category>
       </categories>
       <tags>
-        <tag>笔记</tag>
         <tag>知识点</tag>
+        <tag>笔记</tag>
       </tags>
   </entry>
   <entry>
@@ -2358,8 +2409,8 @@
         <category>web前端</category>
       </categories>
       <tags>
-        <tag>笔记</tag>
         <tag>知识点</tag>
+        <tag>笔记</tag>
       </tags>
   </entry>
   <entry>
@@ -2459,8 +2510,8 @@
         <category>web前端</category>
       </categories>
       <tags>
-        <tag>笔记</tag>
         <tag>知识点</tag>
+        <tag>笔记</tag>
       </tags>
   </entry>
   <entry>
@@ -2498,8 +2549,8 @@
         <category>web前端</category>
       </categories>
       <tags>
-        <tag>笔记</tag>
         <tag>知识点</tag>
+        <tag>笔记</tag>
         <tag>Ajax</tag>
       </tags>
   </entry>
