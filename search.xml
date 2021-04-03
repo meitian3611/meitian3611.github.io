@@ -1,6 +1,113 @@
 <?xml version="1.0" encoding="utf-8"?>
 <search>
   <entry>
+    <title>Vuex</title>
+    <url>/2021/03/31/Vuex/</url>
+    <content><![CDATA[<h2 id="Vuex-简述"><a href="#Vuex-简述" class="headerlink" title="Vuex 简述"></a>Vuex 简述</h2><blockquote>
+<p>Vuex 是一个专为 Vue.js 应用程序开发的<strong>状态管理模式</strong>。它采用集中式存储管理应用的所有组件的状态。</p>
+<p><strong>例如：</strong>A，B，C三个组件同时需要使用一个数据，并且其中一个组件对数据进行了更改操作，另外2个组件需要同时进行更新。按照传统方式来，可能需要使用父子传值，兄弟传值，可随着项目体积的增大，需要管理的数据也相应增加，就会导致代码十分繁琐，难以维护等一系列问题。</p>
+<p>将此数据放在 vuex 的 state 中进行管理，对任意组件共享，能够有效的解决问题。</p>
+</blockquote>
+<a id="more"></a>
+
+<h2 id="核心概念"><a href="#核心概念" class="headerlink" title="核心概念"></a>核心概念</h2><h3 id="State"><a href="#State" class="headerlink" title="State"></a>State</h3><blockquote>
+<p>State 用于提供唯一的公共数据源，所有共享的数据都要统一放到 Store 的 state 中进行存储</p>
+</blockquote>
+<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="keyword">export</span> <span class="keyword">default</span> <span class="keyword">new</span> Vuex.Store(&#123;</span><br><span class="line">  <span class="comment">// 创建 store 数据源</span></span><br><span class="line">    state:&#123;</span><br><span class="line">        count:<span class="number">0</span> <span class="comment">// 共享数据</span></span><br><span class="line">    &#125;</span><br><span class="line">&#125;)</span><br></pre></td></tr></table></figure>
+
+<ol>
+<li>组件访问 state 中数据的第一种方式</li>
+</ol>
+<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="comment">// 模板中引用</span></span><br><span class="line">&lt;div&gt; &#123;&#123; $store.state.count &#125;&#125; &lt;<span class="regexp">/div&gt; </span></span><br><span class="line"><span class="regexp">/</span><span class="regexp">/ script中引用</span></span><br><span class="line"><span class="regexp">this.$store.state.count</span></span><br></pre></td></tr></table></figure>
+
+<ol start="2">
+<li>组件访问 state 中数据的第二种方式</li>
+</ol>
+<figure class="highlight js"><table><tr><td class="code"><pre><span class="line">&lt;div&gt; &#123;&#123; count &#125;&#125; &lt;<span class="regexp">/div&gt; </span></span><br><span class="line"><span class="regexp">&lt;script&gt;</span></span><br><span class="line"><span class="regexp">import &#123; mapState &#125; from 'vuex' /</span><span class="regexp">/在组件中从 Vuex 中按需导入 mapState 函数</span></span><br><span class="line"><span class="regexp">export default &#123;</span></span><br><span class="line"><span class="regexp">  computed: &#123;</span></span><br><span class="line"><span class="regexp">    ...mapState(['count']), /</span><span class="regexp">/ 在计算属性中映射出state的全局共享数据</span></span><br><span class="line"><span class="regexp">  &#125;,</span></span><br><span class="line"><span class="regexp">&#125;</span></span><br><span class="line"><span class="regexp">&lt;/</span>script&gt;</span><br></pre></td></tr></table></figure>
+
+<h3 id="Mutations"><a href="#Mutations" class="headerlink" title="Mutations"></a>Mutations</h3><blockquote>
+<p>Mutations 用于变更 state 中的数据。</p>
+<p>注意：修改 store 中 state的数据，只有通过 mutations 来修改，不可以在其他组件随意修改。</p>
+<p>错误示范： <del><code>this.$store.state.count</code> = 99</del></p>
+<p>只有 mutations 有权利修改 state 的数据，但是不能在 mutations 中执行异步操作，难以调试。</p>
+</blockquote>
+<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="keyword">export</span> <span class="keyword">default</span> <span class="keyword">new</span> Vuex.Store(&#123;</span><br><span class="line">    state:&#123;</span><br><span class="line">        count:<span class="number">0</span></span><br><span class="line">    &#125;,</span><br><span class="line">  <span class="comment">// 定义 mutations</span></span><br><span class="line">    mutations: &#123;</span><br><span class="line">      add(state, val) &#123; <span class="comment">// val：组件传递过来的参数</span></span><br><span class="line">      	state.count += val</span><br><span class="line">    &#125;,</span><br><span class="line">      sub(state, val) &#123;</span><br><span class="line">      	state.count -= val</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;,</span><br><span class="line">&#125;)</span><br></pre></td></tr></table></figure>
+
+<ol>
+<li>组件触发 mutations 的第一种方式</li>
+</ol>
+<figure class="highlight js"><table><tr><td class="code"><pre><span class="line">methods:&#123;</span><br><span class="line">    click(val)&#123; <span class="comment">// val:需要传递的参数</span></span><br><span class="line">        <span class="keyword">this</span>.$store.commit(<span class="string">'add'</span>，val) <span class="comment">// 调用 store 的事件修改 state的数据</span></span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<ol start="2">
+<li>组件触发 mutations 的第二种方式</li>
+</ol>
+<figure class="highlight js"><table><tr><td class="code"><pre><span class="line">&lt;script&gt;</span><br><span class="line"><span class="keyword">import</span> &#123; mapState, mapMutations &#125; <span class="keyword">from</span> <span class="string">'vuex'</span> <span class="comment">// 引入 mapMutations</span></span><br><span class="line"><span class="keyword">export</span> <span class="keyword">default</span> &#123;</span><br><span class="line">  computed: &#123;</span><br><span class="line">    ...mapState([<span class="string">'count'</span>]),</span><br><span class="line">  &#125;,</span><br><span class="line">  methods: &#123;</span><br><span class="line">    ...mapMutations([<span class="string">'add'</span>]), <span class="comment">// 在 methods 中映射出方法名</span></span><br><span class="line">     click(val)&#123;</span><br><span class="line">         <span class="keyword">this</span>.add(val) <span class="comment">// val：需要传递的参数</span></span><br><span class="line">     &#125;</span><br><span class="line">  &#125;,</span><br><span class="line">&#125;</span><br><span class="line">&lt;<span class="regexp">/script&gt;</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="Actions"><a href="#Actions" class="headerlink" title="Actions"></a>Actions</h3><blockquote>
+<p>Actions 用于处理异步任务，不能直接修改 state 的数据，只能提交 mutations 方法。</p>
+<p>例如 调用后台接口API 的时候。</p>
+</blockquote>
+<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="keyword">export</span> <span class="keyword">default</span> <span class="keyword">new</span> Vuex.Store(&#123;</span><br><span class="line">    state:&#123;</span><br><span class="line">        count:<span class="number">0</span></span><br><span class="line">    &#125;,</span><br><span class="line">    mutations: &#123;</span><br><span class="line">      add(state, val) &#123; </span><br><span class="line">      	state.count += val</span><br><span class="line">    &#125;,</span><br><span class="line">      sub(state, val) &#123;</span><br><span class="line">      	state.count -= val</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;,</span><br><span class="line"> <span class="comment">// 定义 actions</span></span><br><span class="line">    actions: &#123;</span><br><span class="line">      addAsync(context, val) &#123; <span class="comment">// val：组件传递过来的参数</span></span><br><span class="line">        setTimeout(<span class="function"><span class="params">()</span> =&gt;</span> &#123;</span><br><span class="line">          context.commit(<span class="string">'add'</span>, val) <span class="comment">// 提交mutations</span></span><br><span class="line">      &#125;, <span class="number">1000</span>)</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;)</span><br></pre></td></tr></table></figure>
+
+<ol>
+<li>组件触发 actions的第一种方式</li>
+</ol>
+<figure class="highlight js"><table><tr><td class="code"><pre><span class="line">methods:&#123;</span><br><span class="line">    click(val)&#123; <span class="comment">// val:需要传递的参数</span></span><br><span class="line">        <span class="keyword">this</span>.$store.dispatch(<span class="string">'addAsync'</span>，val) <span class="comment">// 调用 store 的事件修改 state的数据</span></span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<ol start="2">
+<li>组件触发 actions的第二种方式</li>
+</ol>
+<figure class="highlight js"><table><tr><td class="code"><pre><span class="line">&lt;script&gt;</span><br><span class="line"><span class="keyword">import</span> &#123; mapState, mapMutations, mapActions &#125; <span class="keyword">from</span> <span class="string">'vuex'</span> <span class="comment">// 引入mapActions 函数</span></span><br><span class="line"><span class="keyword">export</span> <span class="keyword">default</span> &#123;</span><br><span class="line">  computed: &#123;</span><br><span class="line">    ...mapState([<span class="string">'count'</span>]),</span><br><span class="line">  &#125;,</span><br><span class="line">  methods: &#123;</span><br><span class="line">    ...mapMutations([<span class="string">'add'</span>]),</span><br><span class="line">    ...mapActions([<span class="string">'addAsync'</span>]), <span class="comment">// 映射方法名</span></span><br><span class="line">    addBtn(val) &#123;</span><br><span class="line">        <span class="keyword">this</span>.addAsync(val) <span class="comment">// 第二种方式触发</span></span><br><span class="line">    &#125;,</span><br><span class="line">  &#125;,</span><br><span class="line">&#125;</span><br><span class="line">&lt;<span class="regexp">/script&gt;</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="Getters"><a href="#Getters" class="headerlink" title="Getters"></a>Getters</h3><blockquote>
+<p>Getters 用于对 state 数据进行加工处理形成新的数据，类似 vue 的计算属性。</p>
+<ol>
+<li>getters 不会修改 state 的数据，在原有的数据基础上加工，形成新的数据。</li>
+<li>state的数据发生改变，getters 的数据也会发生变化。</li>
+</ol>
+</blockquote>
+<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="keyword">export</span> <span class="keyword">default</span> <span class="keyword">new</span> Vuex.Store(&#123;</span><br><span class="line">    state:&#123;</span><br><span class="line">        count:<span class="number">0</span></span><br><span class="line">    &#125;,</span><br><span class="line">    getters:&#123;</span><br><span class="line">        showNum(state)&#123;</span><br><span class="line">        <span class="keyword">let</span> num = state.count + <span class="number">1</span></span><br><span class="line">      	<span class="keyword">return</span> <span class="string">'当前count的数量是：'</span> + num</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;)</span><br></pre></td></tr></table></figure>
+
+<ol>
+<li>组件使用 getters 中数据的第一种方式</li>
+</ol>
+<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="comment">// 模板中引用</span></span><br><span class="line">&lt;div&gt; &#123;&#123; $store.getters.showNum &#125;&#125; &lt;<span class="regexp">/div&gt; </span></span><br><span class="line"><span class="regexp">/</span><span class="regexp">/ script中引用</span></span><br><span class="line"><span class="regexp">this.$store.getters.showNum</span></span><br></pre></td></tr></table></figure>
+
+<ol start="2">
+<li>组件使用 getters 中数据的第二种方式</li>
+</ol>
+<figure class="highlight js"><table><tr><td class="code"><pre><span class="line">&lt;div&gt; &#123;&#123; showNum &#125;&#125; &lt;<span class="regexp">/div&gt; </span></span><br><span class="line"><span class="regexp">&lt;script&gt;</span></span><br><span class="line"><span class="regexp">import &#123; mapState,mapGetters &#125; from 'vuex' /</span><span class="regexp">/导入 mapGetters 函数</span></span><br><span class="line"><span class="regexp">export default &#123;</span></span><br><span class="line"><span class="regexp">  computed: &#123;</span></span><br><span class="line"><span class="regexp">    ...mapGetters(['showNum']),/</span><span class="regexp">/ 在计算属性中映射出getters的全局共享数据</span></span><br><span class="line"><span class="regexp">    ...mapState(['count']), </span></span><br><span class="line"><span class="regexp">  &#125;,</span></span><br><span class="line"><span class="regexp">&#125;</span></span><br><span class="line"><span class="regexp">&lt;/</span>script&gt;</span><br></pre></td></tr></table></figure>
+
+<h3 id="Modules"><a href="#Modules" class="headerlink" title="Modules"></a>Modules</h3><blockquote>
+<p>Modules 模块化 用于项目体系较大，一个store的共享仓库代码也相对冗余，此时可以将 store 拆分</p>
+<p>成若干个store仓库，创建多个文件夹，在主文件 store/index.js 引入即可</p>
+</blockquote>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">store 文件夹</span><br><span class="line"> - modules 模块化文件夹</span><br><span class="line">   -- store01.js // 仓库01</span><br><span class="line">   -- store02.js</span><br><span class="line">   -- store03.js</span><br><span class="line"> - index.js  主文件</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>主文件引入拆分后的 store 仓库</li>
+</ul>
+<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="keyword">import</span> Vue <span class="keyword">from</span> <span class="string">'vue'</span></span><br><span class="line"><span class="keyword">import</span> Vuex <span class="keyword">from</span> <span class="string">'vuex'</span></span><br><span class="line"></span><br><span class="line">Vue.use(Vuex)</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> store01 <span class="keyword">from</span> <span class="string">'./modules/store01'</span></span><br><span class="line"><span class="keyword">export</span> <span class="keyword">default</span> <span class="keyword">new</span> Vuex.Store(&#123;</span><br><span class="line">  <span class="comment">// 模块化</span></span><br><span class="line">  modules: &#123;</span><br><span class="line">    store01</span><br><span class="line">  &#125;</span><br><span class="line">&#125;)</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>拆分后的仓库 store01.js</li>
+</ul>
+<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="keyword">export</span> <span class="keyword">default</span> &#123;</span><br><span class="line">  state: &#123;</span><br><span class="line">      count:<span class="number">10</span></span><br><span class="line">  &#125;,</span><br><span class="line">  getters: &#123;&#125;,</span><br><span class="line">  mutations: &#123;&#125;,</span><br><span class="line">  actions: &#123;&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>有一点需要注意，模块化的仓库，…mapState 函数的映射方法是有区别的</li>
+</ul>
+<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="keyword">import</span> &#123; mapState &#125; <span class="keyword">from</span> <span class="string">'vuex'</span></span><br><span class="line"><span class="keyword">export</span> <span class="keyword">default</span> &#123;</span><br><span class="line">  computed: &#123;</span><br><span class="line">    ...mapState(&#123;</span><br><span class="line">      count: <span class="function">(<span class="params">state</span>) =&gt;</span> state.store01.count, <span class="comment">// 使用对象来指定 count 是来自哪个模块的数据</span></span><br><span class="line">    &#125;),</span><br><span class="line">  &#125;,</span><br><span class="line">&#125;</span><br><span class="line">&lt;<span class="regexp">/script&gt;</span></span><br></pre></td></tr></table></figure>]]></content>
+      <categories>
+        <category>Vue</category>
+      </categories>
+      <tags>
+        <tag>知识点</tag>
+        <tag>笔记</tag>
+        <tag>复习</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>Vue国际化</title>
     <url>/2021/03/27/vue%E5%9B%BD%E9%99%85%E5%8C%96/</url>
     <content><![CDATA[<h2 id="vue-i18n"><a href="#vue-i18n" class="headerlink" title="vue-i18n"></a>vue-i18n</h2><blockquote>
@@ -331,8 +438,8 @@
       </categories>
       <tags>
         <tag>笔记</tag>
-        <tag>组件</tag>
         <tag>复习</tag>
+        <tag>组件</tag>
       </tags>
   </entry>
   <entry>
@@ -393,8 +500,8 @@
         <category>框架</category>
       </categories>
       <tags>
-        <tag>笔记</tag>
         <tag>知识点</tag>
+        <tag>笔记</tag>
         <tag>路由</tag>
       </tags>
   </entry>
@@ -691,8 +798,8 @@
         <category>React</category>
       </categories>
       <tags>
-        <tag>笔记</tag>
         <tag>框架</tag>
+        <tag>笔记</tag>
         <tag>核心</tag>
       </tags>
   </entry>
@@ -784,8 +891,8 @@
         <category>React</category>
       </categories>
       <tags>
-        <tag>笔记</tag>
         <tag>框架</tag>
+        <tag>笔记</tag>
         <tag>新增</tag>
       </tags>
   </entry>
@@ -830,9 +937,9 @@
         <category>React</category>
       </categories>
       <tags>
-        <tag>笔记</tag>
-        <tag>知识点</tag>
         <tag>框架</tag>
+        <tag>知识点</tag>
+        <tag>笔记</tag>
       </tags>
   </entry>
   <entry>
@@ -854,9 +961,9 @@
         <category>React</category>
       </categories>
       <tags>
+        <tag>框架</tag>
         <tag>笔记</tag>
         <tag>常用</tag>
-        <tag>框架</tag>
       </tags>
   </entry>
   <entry>
@@ -911,8 +1018,8 @@
         <category>React</category>
       </categories>
       <tags>
-        <tag>笔记</tag>
         <tag>知识点</tag>
+        <tag>笔记</tag>
         <tag>脚手架</tag>
       </tags>
   </entry>
@@ -968,8 +1075,8 @@
         <category>React</category>
       </categories>
       <tags>
-        <tag>笔记</tag>
         <tag>知识点</tag>
+        <tag>笔记</tag>
         <tag>组件</tag>
       </tags>
   </entry>
@@ -1333,9 +1440,9 @@
         <category>Vue</category>
       </categories>
       <tags>
-        <tag>笔记</tag>
-        <tag>知识点</tag>
         <tag>框架</tag>
+        <tag>知识点</tag>
+        <tag>笔记</tag>
       </tags>
   </entry>
   <entry>
@@ -1627,9 +1734,9 @@
         <category>nodeJS</category>
       </categories>
       <tags>
-        <tag>知识点</tag>
-        <tag>框架</tag>
         <tag>node</tag>
+        <tag>框架</tag>
+        <tag>知识点</tag>
       </tags>
   </entry>
   <entry>
@@ -1775,8 +1882,8 @@
         <category>web前端</category>
       </categories>
       <tags>
-        <tag>语法</tag>
         <tag>知识点</tag>
+        <tag>语法</tag>
         <tag>es6</tag>
       </tags>
   </entry>
@@ -2029,8 +2136,8 @@
         <category>项目相关</category>
       </categories>
       <tags>
-        <tag>笔记</tag>
         <tag>知识点</tag>
+        <tag>笔记</tag>
         <tag>gulp</tag>
       </tags>
   </entry>
@@ -2162,9 +2269,9 @@
         <category>nodeJS</category>
       </categories>
       <tags>
-        <tag>笔记</tag>
-        <tag>知识点</tag>
         <tag>node</tag>
+        <tag>知识点</tag>
+        <tag>笔记</tag>
       </tags>
   </entry>
   <entry>
@@ -2312,8 +2419,8 @@
         <category>web前端</category>
       </categories>
       <tags>
-        <tag>笔记</tag>
         <tag>知识点</tag>
+        <tag>笔记</tag>
       </tags>
   </entry>
   <entry>
@@ -2351,8 +2458,8 @@
         <category>web前端</category>
       </categories>
       <tags>
-        <tag>笔记</tag>
         <tag>知识点</tag>
+        <tag>笔记</tag>
       </tags>
   </entry>
   <entry>
@@ -2409,8 +2516,8 @@
         <category>web前端</category>
       </categories>
       <tags>
-        <tag>笔记</tag>
         <tag>知识点</tag>
+        <tag>笔记</tag>
       </tags>
   </entry>
   <entry>
@@ -2510,8 +2617,8 @@
         <category>web前端</category>
       </categories>
       <tags>
-        <tag>笔记</tag>
         <tag>知识点</tag>
+        <tag>笔记</tag>
       </tags>
   </entry>
   <entry>
@@ -2549,8 +2656,8 @@
         <category>web前端</category>
       </categories>
       <tags>
-        <tag>笔记</tag>
         <tag>知识点</tag>
+        <tag>笔记</tag>
         <tag>Ajax</tag>
       </tags>
   </entry>
