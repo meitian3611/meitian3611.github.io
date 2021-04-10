@@ -1,6 +1,43 @@
 <?xml version="1.0" encoding="utf-8"?>
 <search>
   <entry>
+    <title>async异步处理</title>
+    <url>/2021/04/09/async%E5%BC%82%E6%AD%A5%E5%A4%84%E7%90%86/</url>
+    <content><![CDATA[<h2 id="vue中异步函数async和await的用法"><a href="#vue中异步函数async和await的用法" class="headerlink" title="vue中异步函数async和await的用法"></a>vue中异步函数async和await的用法</h2><h3 id="什么场景需要使用"><a href="#什么场景需要使用" class="headerlink" title="什么场景需要使用"></a>什么场景需要使用</h3><blockquote>
+<p>很多时候有很多需求，需要依次调用多个后台接口，并且后一个接口需要依赖前一个接口的响应结果，如果上一个接口挂了，后一个接口也就不需要调用了。</p>
+</blockquote>
+<h3 id="举例说明"><a href="#举例说明" class="headerlink" title="举例说明"></a>举例说明</h3><p>需求：获取用户信息，由于数据涉及用户隐私，信息分为三个接口： userOne，userTwo，userThree</p>
+<blockquote>
+<p>第一层：通过入参id获取 userOne 接口中的 姓名，性别， 年龄， 以及 user_id</p>
+<p>第二层：根据第一层的 user_id 请求 userTwo 接口中的 手机号，生日，微信号，QQ号，以及 user_id</p>
+<p>第三层：根据第二层的 user_id 请求 userThree 接口中的 身份证号码，家庭详细地址，银行卡号</p>
+</blockquote>
+<a id="more"></a>
+
+<h3 id="普通写法"><a href="#普通写法" class="headerlink" title="普通写法"></a>普通写法</h3><figure class="highlight js"><table><tr><td class="code"><pre><span class="line">methods: &#123;</span><br><span class="line">    getUserOne(id) &#123;</span><br><span class="line">      <span class="comment">// 获取第一层用户信息</span></span><br><span class="line">      <span class="keyword">return</span> <span class="keyword">this</span>.$axios.get(<span class="string">"userOne"</span>, id);</span><br><span class="line">    &#125;,</span><br><span class="line">    getUserTwo(user_id) &#123;</span><br><span class="line">      <span class="comment">// 获取第二层用户信息</span></span><br><span class="line">      <span class="keyword">return</span> <span class="keyword">this</span>.$axios.get(<span class="string">"userTwo"</span>, user_id);</span><br><span class="line">    &#125;,</span><br><span class="line">    getUserThree(user_id) &#123;</span><br><span class="line">      <span class="comment">// 获取第三层用户信息</span></span><br><span class="line">      <span class="keyword">return</span> <span class="keyword">this</span>.$axios.get(<span class="string">"userThree"</span>, user_id);</span><br><span class="line">    &#125;,</span><br><span class="line">    <span class="comment">// 通过链式调用，实现三层嵌套逻辑</span></span><br><span class="line">    getUserData(id) &#123;</span><br><span class="line">      <span class="keyword">this</span>.getUserOne(id)</span><br><span class="line">        .then(<span class="function">(<span class="params">res</span>) =&gt;</span> &#123;</span><br><span class="line">          <span class="keyword">if</span> (res.data.success &amp;&amp; res.status == <span class="number">200</span>) &#123;</span><br><span class="line">            <span class="comment">// 第一层数据成功获取,请求第二层数据</span></span><br><span class="line">            <span class="keyword">this</span>.getUserTwo(res.data.data.user_id).then(<span class="function">(<span class="params">res</span>) =&gt;</span> &#123;</span><br><span class="line">              <span class="comment">// 第二层数据成功获取,请求第三层数据</span></span><br><span class="line">              <span class="keyword">this</span>.getUserThree(res.data.data.user_id).then(<span class="function">(<span class="params">res</span>) =&gt;</span> &#123;</span><br><span class="line">                <span class="comment">// 成功获取用户第三层数据</span></span><br><span class="line">              &#125;);</span><br><span class="line">            &#125;);</span><br><span class="line">          &#125;</span><br><span class="line">        &#125;)</span><br><span class="line">        .catch(<span class="function">(<span class="params">err</span>) =&gt;</span> &#123;</span><br><span class="line">          <span class="built_in">console</span>.log(err);</span><br><span class="line">        &#125;);</span><br><span class="line">    &#125;,</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p>通过这种链式调用方法，确实可以实现需求，但是从代码冗余程度，项目可维护性来看，明显十分麻烦，容易造成回调地狱。</p>
+</blockquote>
+<h3 id="async-await-写法"><a href="#async-await-写法" class="headerlink" title="async await 写法"></a>async await 写法</h3><figure class="highlight js"><table><tr><td class="code"><pre><span class="line">methods: &#123;    </span><br><span class="line"> 	getUserOne(id) &#123;</span><br><span class="line">      <span class="comment">// 获取第一层用户信息</span></span><br><span class="line">      <span class="keyword">return</span> <span class="keyword">this</span>.$axios.get(<span class="string">"userOne"</span>, id);</span><br><span class="line">    &#125;,</span><br><span class="line">    getUserTwo(user_id) &#123;</span><br><span class="line">      <span class="comment">// 获取第二层用户信息</span></span><br><span class="line">      <span class="keyword">return</span> <span class="keyword">this</span>.$axios.get(<span class="string">"userTwo"</span>, user_id);</span><br><span class="line">    &#125;,</span><br><span class="line">    getUserThree(user_id) &#123;</span><br><span class="line">      <span class="comment">// 获取第三层用户信息</span></span><br><span class="line">      <span class="keyword">return</span> <span class="keyword">this</span>.$axios.get(<span class="string">"userThree"</span>, user_id);</span><br><span class="line">    &#125;,</span><br><span class="line">    <span class="comment">// async await 使用</span></span><br><span class="line">  <span class="keyword">async</span> getUserData(id) &#123;</span><br><span class="line">    <span class="keyword">try</span> &#123;</span><br><span class="line">      <span class="keyword">let</span> userDataOne = <span class="keyword">await</span> <span class="keyword">this</span>.getUserOne(id); <span class="comment">// 第一层</span></span><br><span class="line">      <span class="keyword">let</span> userDataTwo = <span class="keyword">await</span> <span class="keyword">this</span>.getUserTwo(userDataOne.user_id); <span class="comment">// 第二层</span></span><br><span class="line">      <span class="keyword">let</span> userDataThree = <span class="keyword">await</span> <span class="keyword">this</span>.getUserTwo(userDataTwo.user_id); <span class="comment">// 第三层</span></span><br><span class="line">      <span class="built_in">console</span>.log(userDataOne, userDataTwo, userDataThree); <span class="comment">// 成功获取用户所有数据</span></span><br><span class="line">    	</span><br><span class="line">   &#125; <span class="keyword">catch</span>(err) &#123;</span><br><span class="line">      <span class="built_in">console</span>.log(err);</span><br><span class="line">   &#125;</span><br><span class="line">&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>语法特性</li>
+</ul>
+<p>通过 async await 在实际项目的使用，可以得知，在调用 getUserData 函数时，它里面遇到了await, await 表示等一下，代码就暂停到这里，不再向下执行了，它等什么呢？等 await 后面的接口执行完毕，然后拿到接口返回的值并进行传递，返回值拿到之后，它继续向下执行。具体到 我们的代码, 遇到await 之后，代码就暂停执行了， 等待 getUserOne 函数执行完毕，</p>
+<h3 id="回调地狱解决"><a href="#回调地狱解决" class="headerlink" title="回调地狱解决"></a>回调地狱解决</h3><figure class="highlight js"><table><tr><td class="code"><pre><span class="line">methods:&#123;</span><br><span class="line">    <span class="keyword">async</span> test() &#123;</span><br><span class="line">      <span class="comment">// 解决回调地狱 异步处理同步化</span></span><br><span class="line">      <span class="keyword">let</span> one = <span class="keyword">await</span> <span class="keyword">this</span>.demo(<span class="number">10</span>); <span class="comment">// 20  1s</span></span><br><span class="line">      <span class="keyword">let</span> two = <span class="keyword">await</span> <span class="keyword">this</span>.demo(<span class="number">20</span>); <span class="comment">// 40  1s 等待 one 执行完毕</span></span><br><span class="line">      <span class="keyword">let</span> three = <span class="keyword">await</span> <span class="keyword">this</span>.demo(<span class="number">10</span>); <span class="comment">// 20 1s 等待 two 执行完毕</span></span><br><span class="line">      <span class="built_in">console</span>.log(one + two + three);  <span class="comment">// 3s后，结果打印：80</span></span><br><span class="line">    &#125;,</span><br><span class="line">    demo(num) &#123;</span><br><span class="line">      <span class="keyword">return</span> <span class="keyword">new</span> <span class="built_in">Promise</span>(<span class="function">(<span class="params">resole, rej</span>) =&gt;</span> &#123;</span><br><span class="line">        setTimeout(<span class="function"><span class="params">()</span> =&gt;</span> &#123;</span><br><span class="line">          resole(<span class="number">2</span> * num);</span><br><span class="line">        &#125;, <span class="number">1000</span>);</span><br><span class="line">      &#125;);</span><br><span class="line">    &#125;,</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+]]></content>
+      <categories>
+        <category>web前端</category>
+      </categories>
+      <tags>
+        <tag>知识点</tag>
+        <tag>笔记</tag>
+        <tag>异步</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>Vuex</title>
     <url>/2021/03/31/Vuex/</url>
     <content><![CDATA[<h2 id="Vuex-简述"><a href="#Vuex-简述" class="headerlink" title="Vuex 简述"></a>Vuex 简述</h2><blockquote>
@@ -438,8 +475,8 @@
       </categories>
       <tags>
         <tag>笔记</tag>
-        <tag>复习</tag>
         <tag>组件</tag>
+        <tag>复习</tag>
       </tags>
   </entry>
   <entry>

@@ -212,6 +212,97 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2021/04/09/async%E5%BC%82%E6%AD%A5%E5%A4%84%E7%90%86/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="https://pic1.zhimg.com/v2-0a2b112762d84f53ce576a24a8b895ed_b.jpg">
+      <meta itemprop="name" content="淡然">
+      <meta itemprop="description" content="Life-long learning">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="淡然的博客">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          
+            <a href="/2021/04/09/async%E5%BC%82%E6%AD%A5%E5%A4%84%E7%90%86/" class="post-title-link" itemprop="url">async异步处理</a>
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2021-04-09 14:12:42" itemprop="dateCreated datePublished" datetime="2021-04-09T14:12:42+08:00">2021-04-09</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2021-04-10 12:26:22" itemprop="dateModified" datetime="2021-04-10T12:26:22+08:00">2021-04-10</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/web%E5%89%8D%E7%AB%AF/" itemprop="url" rel="index">
+                    <span itemprop="name">web前端</span>
+                  </a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h2 id="vue中异步函数async和await的用法"><a href="#vue中异步函数async和await的用法" class="headerlink" title="vue中异步函数async和await的用法"></a>vue中异步函数async和await的用法</h2><h3 id="什么场景需要使用"><a href="#什么场景需要使用" class="headerlink" title="什么场景需要使用"></a>什么场景需要使用</h3><blockquote>
+<p>很多时候有很多需求，需要依次调用多个后台接口，并且后一个接口需要依赖前一个接口的响应结果，如果上一个接口挂了，后一个接口也就不需要调用了。</p>
+</blockquote>
+<h3 id="举例说明"><a href="#举例说明" class="headerlink" title="举例说明"></a>举例说明</h3><p>需求：获取用户信息，由于数据涉及用户隐私，信息分为三个接口： userOne，userTwo，userThree</p>
+<blockquote>
+<p>第一层：通过入参id获取 userOne 接口中的 姓名，性别， 年龄， 以及 user_id</p>
+<p>第二层：根据第一层的 user_id 请求 userTwo 接口中的 手机号，生日，微信号，QQ号，以及 user_id</p>
+<p>第三层：根据第二层的 user_id 请求 userThree 接口中的 身份证号码，家庭详细地址，银行卡号</p>
+</blockquote>
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/2021/04/09/async%E5%BC%82%E6%AD%A5%E5%A4%84%E7%90%86/#more" rel="contents">
+                阅读全文 &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+        
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="zh-CN">
     <link itemprop="mainEntityOfPage" href="http://yoursite.com/2021/03/31/Vuex/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -982,89 +1073,6 @@
   
   
 
-        
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/12/25/state%E4%B8%8E%E5%8F%97%E6%8E%A7%E7%BB%84%E4%BB%B6/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="https://pic1.zhimg.com/v2-0a2b112762d84f53ce576a24a8b895ed_b.jpg">
-      <meta itemprop="name" content="淡然">
-      <meta itemprop="description" content="Life-long learning">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="淡然的博客">
-    </span>
-      <header class="post-header">
-        <h1 class="post-title" itemprop="name headline">
-          
-            <a href="/2019/12/25/state%E4%B8%8E%E5%8F%97%E6%8E%A7%E7%BB%84%E4%BB%B6/" class="post-title-link" itemprop="url">state与受控组件</a>
-        </h1>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-              
-
-              <time title="创建时间：2019-12-25 09:47:00 / 修改时间：09:50:38" itemprop="dateCreated datePublished" datetime="2019-12-25T09:47:00+08:00">2019-12-25</time>
-            </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              <span class="post-meta-item-text">分类于</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/React/" itemprop="url" rel="index">
-                    <span itemprop="name">React</span>
-                  </a>
-                </span>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <h2 id="state的一些额外情况"><a href="#state的一些额外情况" class="headerlink" title="state的一些额外情况"></a>state的一些额外情况</h2><blockquote>
-<ul>
-<li>初始化是放在 构造函数的</li>
-<li>如果代码支持 public class filed 的实验语法 那么可以直接进行初始化 state</li>
-<li>不可以直接对 state 进行修改，要修改一定是使用 setState()函数</li>
-</ul>
-</blockquote>
-          <!--noindex-->
-            <div class="post-button">
-              <a class="btn" href="/2019/12/25/state%E4%B8%8E%E5%8F%97%E6%8E%A7%E7%BB%84%E4%BB%B6/#more" rel="contents">
-                阅读全文 &raquo;
-              </a>
-            </div>
-          <!--/noindex-->
-        
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
   </div>
 
   
@@ -1115,7 +1123,7 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">34</span>
+          <span class="site-state-item-count">35</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
@@ -1128,7 +1136,7 @@
       <div class="site-state-item site-state-tags">
             <a href="/tags/">
           
-        <span class="site-state-item-count">39</span>
+        <span class="site-state-item-count">40</span>
         <span class="site-state-item-name">标签</span></a>
       </div>
   </nav>
