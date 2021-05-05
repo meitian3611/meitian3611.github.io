@@ -1,6 +1,38 @@
 <?xml version="1.0" encoding="utf-8"?>
 <search>
   <entry>
+    <title>VsCode云同步配置</title>
+    <url>/2021/04/14/VsCode%E4%BA%91%E5%90%8C%E6%AD%A5%E9%85%8D%E7%BD%AE/</url>
+    <content><![CDATA[<h2 id="VsCode-setting-sync配置及使用"><a href="#VsCode-setting-sync配置及使用" class="headerlink" title="VsCode setting sync配置及使用"></a>VsCode setting sync配置及使用</h2><h3 id="安装"><a href="#安装" class="headerlink" title="安装"></a>安装</h3><ol>
+<li><p>点击VSCode的插件栏搜索Settings Sync然后安装</p>
+<p><img src="https://i.loli.net/2021/04/14/amZWDo2RFGPNMtv.png" alt="001.png"></p>
+</li>
+<li><p>安装完之后会弹出一个登陆界面,这里点击login with github </p>
+<a id="more"></a>
+
+<p><img src="https://i.loli.net/2021/04/14/VOmHdyLlsgIxW9j.png" alt="002.png"></p>
+</li>
+<li><p>点击后会自动弹出一个登陆页面,授权登录你的GitHub账户即可</p>
+</li>
+</ol>
+<p><img src="https://i.loli.net/2021/04/14/dYImqKpJyAwc75g.png" alt="003.png"></p>
+<h3 id="使用"><a href="#使用" class="headerlink" title="使用"></a>使用</h3><ol>
+<li><p>在vscode任意界面按 Alt + Shift + U即可上传当前配置，并生成一个gits id.此时终端会打印上传成功的日志信息</p>
+</li>
+<li><p>.保存好gits id，在需要导入远程配置的电脑上安装好该插件，使用组合键 Alt + Shift + D 即可下载配置。</p>
+</li>
+</ol>
+]]></content>
+      <categories>
+        <category>web前端</category>
+      </categories>
+      <tags>
+        <tag>工具</tag>
+        <tag>插件</tag>
+        <tag>实用</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>async异步处理</title>
     <url>/2021/04/09/async%E5%BC%82%E6%AD%A5%E5%A4%84%E7%90%86/</url>
     <content><![CDATA[<h2 id="vue中异步函数async和await的用法"><a href="#vue中异步函数async和await的用法" class="headerlink" title="vue中异步函数async和await的用法"></a>vue中异步函数async和await的用法</h2><h3 id="什么场景需要使用"><a href="#什么场景需要使用" class="headerlink" title="什么场景需要使用"></a>什么场景需要使用</h3><blockquote>
