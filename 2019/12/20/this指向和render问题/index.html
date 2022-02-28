@@ -51,15 +51,15 @@
   };
 </script>
 
-  <meta name="description" content="this指向问题 在ES6模块化代码中，全局this的默认指向是undefined   1234567891011render () &amp;#123;    return (      &amp;lt;div&amp;gt;        &amp;lt;h1&amp;gt;Hello&amp;lt;&#x2F;h1&amp;gt;        &amp;lt;button onClick=&amp;#123; this.handleClick &amp;#125;&amp;gt;点我&amp;">
-<meta name="keywords" content="笔记,框架,知识点">
+  <meta name="description" content="this指向问题 在ES6模块化代码中，全局this的默认指向是undefined    1234567891011render () &amp;#123;    return (      &amp;lt;div&amp;gt;        &amp;lt;h1&amp;gt;Hello&amp;lt;&#x2F;h1&amp;gt;        &amp;lt;button onClick=&amp;#123; this.handleClick &amp;#125;&amp;gt;点我">
+<meta name="keywords" content="知识点,框架,笔记">
 <meta property="og:type" content="article">
 <meta property="og:title" content="this指向和render性能优化">
 <meta property="og:url" content="http:&#x2F;&#x2F;yoursite.com&#x2F;2019&#x2F;12&#x2F;20&#x2F;this%E6%8C%87%E5%90%91%E5%92%8Crender%E9%97%AE%E9%A2%98&#x2F;index.html">
 <meta property="og:site_name" content="淡然的博客">
-<meta property="og:description" content="this指向问题 在ES6模块化代码中，全局this的默认指向是undefined   1234567891011render () &amp;#123;    return (      &amp;lt;div&amp;gt;        &amp;lt;h1&amp;gt;Hello&amp;lt;&#x2F;h1&amp;gt;        &amp;lt;button onClick=&amp;#123; this.handleClick &amp;#125;&amp;gt;点我&amp;">
+<meta property="og:description" content="this指向问题 在ES6模块化代码中，全局this的默认指向是undefined    1234567891011render () &amp;#123;    return (      &amp;lt;div&amp;gt;        &amp;lt;h1&amp;gt;Hello&amp;lt;&#x2F;h1&amp;gt;        &amp;lt;button onClick=&amp;#123; this.handleClick &amp;#125;&amp;gt;点我">
 <meta property="og:locale" content="zh-CN">
-<meta property="og:updated_time" content="2019-12-20T09:57:21.185Z">
+<meta property="og:updated_time" content="2022-02-28T14:37:43.235Z">
 <meta name="twitter:card" content="summary">
 
 <link rel="canonical" href="http://yoursite.com/2019/12/20/this%E6%8C%87%E5%90%91%E5%92%8Crender%E9%97%AE%E9%A2%98/">
@@ -236,10 +236,16 @@
                 <i class="fa fa-calendar-o"></i>
               </span>
               <span class="post-meta-item-text">发表于</span>
-              
 
-              <time title="创建时间：2019-12-20 17:52:52 / 修改时间：17:57:21" itemprop="dateCreated datePublished" datetime="2019-12-20T17:52:52+08:00">2019-12-20</time>
+              <time title="创建时间：2019-12-20 17:52:52" itemprop="dateCreated datePublished" datetime="2019-12-20T17:52:52+08:00">2019-12-20</time>
             </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2022-02-28 22:37:43" itemprop="dateModified" datetime="2022-02-28T22:37:43+08:00">2022-02-28</time>
+              </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
                 <i class="fa fa-folder-o"></i>
@@ -272,8 +278,10 @@
       
         <h2 id="this指向问题"><a href="#this指向问题" class="headerlink" title="this指向问题"></a>this指向问题</h2><blockquote>
 <p>在ES6模块化代码中，全局this的默认指向是undefined  </p>
-</blockquote><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">render () &#123;</span><br><span class="line">    <span class="keyword">return</span> (</span><br><span class="line">      &lt;div&gt;</span><br><span class="line">        &lt;h1&gt;Hello&lt;<span class="regexp">/h1&gt;</span></span><br><span class="line"><span class="regexp">        &lt;button onClick=&#123; this.handleClick &#125;&gt;点我&lt;/</span>button&gt;</span><br><span class="line">      &lt;<span class="regexp">/div&gt;</span></span><br><span class="line"><span class="regexp">    )</span></span><br><span class="line"><span class="regexp">  &#125;</span></span><br><span class="line"><span class="regexp">handleClick () &#123;</span></span><br><span class="line"><span class="regexp">    console.log(this) /</span><span class="regexp">/ 输出Undefined</span></span><br><span class="line"><span class="regexp">  &#125;</span></span><br></pre></td></tr></table></figure><a id="more"></a>
+</blockquote>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">render () &#123;</span><br><span class="line">    <span class="keyword">return</span> (</span><br><span class="line">      &lt;div&gt;</span><br><span class="line">        &lt;h1&gt;Hello&lt;<span class="regexp">/h1&gt;</span></span><br><span class="line"><span class="regexp">        &lt;button onClick=&#123; this.handleClick &#125;&gt;点我&lt;/</span>button&gt;</span><br><span class="line">      &lt;<span class="regexp">/div&gt;</span></span><br><span class="line"><span class="regexp">    )</span></span><br><span class="line"><span class="regexp">  &#125;</span></span><br><span class="line"><span class="regexp">handleClick () &#123;</span></span><br><span class="line"><span class="regexp">    console.log(this) /</span><span class="regexp">/ 输出Undefined</span></span><br><span class="line"><span class="regexp">  &#125;</span></span><br></pre></td></tr></table></figure>
 
+<a id="more"></a>
 
 <blockquote>
 <p>onClick 并不是onclick原生点击事件，它只是一个写在虚拟DOM中的一个属性</p>
@@ -312,9 +320,9 @@
 
       <footer class="post-footer">
           <div class="post-tags">
-              <a href="/tags/%E7%AC%94%E8%AE%B0/" rel="tag"><i class="fa fa-tag"></i> 笔记</a>
-              <a href="/tags/%E6%A1%86%E6%9E%B6/" rel="tag"><i class="fa fa-tag"></i> 框架</a>
               <a href="/tags/%E7%9F%A5%E8%AF%86%E7%82%B9/" rel="tag"><i class="fa fa-tag"></i> 知识点</a>
+              <a href="/tags/%E6%A1%86%E6%9E%B6/" rel="tag"><i class="fa fa-tag"></i> 框架</a>
+              <a href="/tags/%E7%AC%94%E8%AE%B0/" rel="tag"><i class="fa fa-tag"></i> 笔记</a>
           </div>
 
         
@@ -432,7 +440,7 @@
 <div class="copyright">
   
   &copy; 
-  <span itemprop="copyrightYear">2021</span>
+  <span itemprop="copyrightYear">2022</span>
   <span class="with-love">
     <i class="fa fa-user"></i>
   </span>

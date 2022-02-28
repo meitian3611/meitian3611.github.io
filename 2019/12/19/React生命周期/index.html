@@ -52,7 +52,7 @@
 </script>
 
   <meta name="description" content="生命周期的三个阶段1. 挂载阶段constructor 构造函数1. 一次生命周期中，只会触发一次 2. 一般是用来 state 的初始化 3. 使用它来做提前的 事件处理函数 this 绑定问题render 函数1. 一次生命周期中，可以触发多次 2. 主要是用来返回 组件的模板内容 3. 只要 state，prop 发生变化，那么这个函数默认情况下一定会重新执行 4. 如果调用了 forceU">
-<meta name="keywords" content="笔记,框架,常用">
+<meta name="keywords" content="框架,笔记,常用">
 <meta property="og:type" content="article">
 <meta property="og:title" content="React生命周期">
 <meta property="og:url" content="http:&#x2F;&#x2F;yoursite.com&#x2F;2019&#x2F;12&#x2F;19&#x2F;React%E7%94%9F%E5%91%BD%E5%91%A8%E6%9C%9F&#x2F;index.html">
@@ -60,7 +60,7 @@
 <meta property="og:description" content="生命周期的三个阶段1. 挂载阶段constructor 构造函数1. 一次生命周期中，只会触发一次 2. 一般是用来 state 的初始化 3. 使用它来做提前的 事件处理函数 this 绑定问题render 函数1. 一次生命周期中，可以触发多次 2. 主要是用来返回 组件的模板内容 3. 只要 state，prop 发生变化，那么这个函数默认情况下一定会重新执行 4. 如果调用了 forceU">
 <meta property="og:locale" content="zh-CN">
 <meta property="og:image" content="https:&#x2F;&#x2F;i.loli.net&#x2F;2019&#x2F;12&#x2F;19&#x2F;wUjPnxB8DZfWcSY.png">
-<meta property="og:updated_time" content="2019-12-19T13:26:02.964Z">
+<meta property="og:updated_time" content="2022-02-28T14:38:16.004Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:image" content="https:&#x2F;&#x2F;i.loli.net&#x2F;2019&#x2F;12&#x2F;19&#x2F;wUjPnxB8DZfWcSY.png">
 
@@ -238,10 +238,16 @@
                 <i class="fa fa-calendar-o"></i>
               </span>
               <span class="post-meta-item-text">发表于</span>
-              
 
-              <time title="创建时间：2019-12-19 21:23:54 / 修改时间：21:26:02" itemprop="dateCreated datePublished" datetime="2019-12-19T21:23:54+08:00">2019-12-19</time>
+              <time title="创建时间：2019-12-19 21:23:54" itemprop="dateCreated datePublished" datetime="2019-12-19T21:23:54+08:00">2019-12-19</time>
             </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2022-02-28 22:38:16" itemprop="dateModified" datetime="2022-02-28T22:38:16+08:00">2022-02-28</time>
+              </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
                 <i class="fa fa-folder-o"></i>
@@ -278,7 +284,9 @@
 2. 主要是用来返回 组件的模板内容
 3. 只要 state，prop 发生变化，那么这个函数默认情况下一定会重新执行
 4. 如果调用了 forceUpdate() 那么 render一定会重新执行
-5. 不能在这发生Ajax|Axios请求</code></pre><a id="more"></a><h4 id="componentWillMount-挂载之前（过期）"><a href="#componentWillMount-挂载之前（过期）" class="headerlink" title="componentWillMount 挂载之前（过期）"></a>componentWillMount 挂载之前（过期）</h4><h4 id="static-getDerivedStateFromProps-props-state-替代挂载之前-派生state数据"><a href="#static-getDerivedStateFromProps-props-state-替代挂载之前-派生state数据" class="headerlink" title="static getDerivedStateFromProps(props, state)替代挂载之前   派生state数据"></a>static getDerivedStateFromProps(props, state)替代挂载之前   派生state数据</h4><pre><code>1. 触发在 render函数之前，挂载与更新阶段都会触发
+5. 不能在这发生Ajax|Axios请求</code></pre><a id="more"></a>
+
+<h4 id="componentWillMount-挂载之前（过期）"><a href="#componentWillMount-挂载之前（过期）" class="headerlink" title="componentWillMount 挂载之前（过期）"></a>componentWillMount 挂载之前（过期）</h4><h4 id="static-getDerivedStateFromProps-props-state-替代挂载之前-派生state数据"><a href="#static-getDerivedStateFromProps-props-state-替代挂载之前-派生state数据" class="headerlink" title="static getDerivedStateFromProps(props, state)替代挂载之前   派生state数据"></a>static getDerivedStateFromProps(props, state)替代挂载之前   派生state数据</h4><pre><code>1. 触发在 render函数之前，挂载与更新阶段都会触发
 2. 必须返回对象或者null。返回的如果是对象的话，会和state对象合并一份新的state。如果是null的话就不做处理</code></pre><h4 id="componentDidMount-挂载完成"><a href="#componentDidMount-挂载完成" class="headerlink" title="componentDidMount 挂载完成"></a>componentDidMount 挂载完成</h4><pre><code>1. 可以进行Ajax数据请求
 2. 可以得到真实的DOM对象</code></pre><h3 id="2-更新阶段（五个步骤）"><a href="#2-更新阶段（五个步骤）" class="headerlink" title="2. 更新阶段（五个步骤）"></a>2. 更新阶段（五个步骤）</h3><h4 id="01-—-static-getDerivedStateFromProps-props-state-派生state数据"><a href="#01-—-static-getDerivedStateFromProps-props-state-派生state数据" class="headerlink" title="01 — static getDerivedStateFromProps(props, state) 派生state数据"></a>01 — static getDerivedStateFromProps(props, state) 派生state数据</h4><h4 id="02-—-shouldComponentUpdate-nextProps-nextState-判断是否应该更新"><a href="#02-—-shouldComponentUpdate-nextProps-nextState-判断是否应该更新" class="headerlink" title="02 — shouldComponentUpdate(nextProps, nextState)  判断是否应该更新"></a>02 — shouldComponentUpdate(nextProps, nextState)  判断是否应该更新</h4><pre><code>1. 比较重要，是实现性能优化的一个点
 2. 必须提供返回值，返回一个布尔类型的值，为true，继续流程，为 false，流程结束</code></pre><h4 id="03-—-render函数"><a href="#03-—-render函数" class="headerlink" title="03 —  render函数"></a>03 —  render函数</h4><h4 id="componentWillUpdate-更新之前（过期）"><a href="#componentWillUpdate-更新之前（过期）" class="headerlink" title="componentWillUpdate() 更新之前（过期）"></a>componentWillUpdate() 更新之前（过期）</h4><h4 id="04-—-getSnapshotBeforeUpdate-prevProps-prevState-替代更新之前"><a href="#04-—-getSnapshotBeforeUpdate-prevProps-prevState-替代更新之前" class="headerlink" title="04 — getSnapshotBeforeUpdate(prevProps, prevState) 替代更新之前"></a>04 — getSnapshotBeforeUpdate(prevProps, prevState) 替代更新之前</h4><pre><code>1. 更新之前
@@ -292,8 +300,8 @@
 
       <footer class="post-footer">
           <div class="post-tags">
-              <a href="/tags/%E7%AC%94%E8%AE%B0/" rel="tag"><i class="fa fa-tag"></i> 笔记</a>
               <a href="/tags/%E6%A1%86%E6%9E%B6/" rel="tag"><i class="fa fa-tag"></i> 框架</a>
+              <a href="/tags/%E7%AC%94%E8%AE%B0/" rel="tag"><i class="fa fa-tag"></i> 笔记</a>
               <a href="/tags/%E5%B8%B8%E7%94%A8/" rel="tag"><i class="fa fa-tag"></i> 常用</a>
           </div>
 
@@ -412,7 +420,7 @@
 <div class="copyright">
   
   &copy; 
-  <span itemprop="copyrightYear">2021</span>
+  <span itemprop="copyrightYear">2022</span>
   <span class="with-love">
     <i class="fa fa-user"></i>
   </span>

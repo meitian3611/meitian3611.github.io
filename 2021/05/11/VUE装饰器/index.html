@@ -51,15 +51,15 @@
   };
 </script>
 
-  <meta name="description" content="vue-property-decorator装饰器用法 在Vue 中使用 TypeScript，使用vue装饰器来简化代码书写，大大提升开发效率">
-<meta name="keywords" content="笔记,知识点,进阶">
+  <meta name="description" content="vue-property-decorator装饰器用法 在Vue 中使用 TypeScript，使用vue装饰器来简化代码书写，大大提升开发效率   @Component @Emit @Prop @PropSync @Watch @Inject @Provide @Model @Ref Mixins">
+<meta name="keywords" content="知识点,笔记,进阶">
 <meta property="og:type" content="article">
 <meta property="og:title" content="VUE装饰器">
 <meta property="og:url" content="http:&#x2F;&#x2F;yoursite.com&#x2F;2021&#x2F;05&#x2F;11&#x2F;VUE%E8%A3%85%E9%A5%B0%E5%99%A8&#x2F;index.html">
 <meta property="og:site_name" content="淡然的博客">
-<meta property="og:description" content="vue-property-decorator装饰器用法 在Vue 中使用 TypeScript，使用vue装饰器来简化代码书写，大大提升开发效率">
+<meta property="og:description" content="vue-property-decorator装饰器用法 在Vue 中使用 TypeScript，使用vue装饰器来简化代码书写，大大提升开发效率   @Component @Emit @Prop @PropSync @Watch @Inject @Provide @Model @Ref Mixins">
 <meta property="og:locale" content="zh-CN">
-<meta property="og:updated_time" content="2021-06-26T09:48:09.651Z">
+<meta property="og:updated_time" content="2022-02-28T14:26:08.929Z">
 <meta name="twitter:card" content="summary">
 
 <link rel="canonical" href="http://yoursite.com/2021/05/11/VUE%E8%A3%85%E9%A5%B0%E5%99%A8/">
@@ -244,7 +244,7 @@
                   <i class="fa fa-calendar-check-o"></i>
                 </span>
                 <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2021-06-26 17:48:09" itemprop="dateModified" datetime="2021-06-26T17:48:09+08:00">2021-06-26</time>
+                <time title="修改时间：2022-02-28 22:26:08" itemprop="dateModified" datetime="2022-02-28T22:26:08+08:00">2022-02-28</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -279,8 +279,6 @@
         <h2 id="vue-property-decorator装饰器用法"><a href="#vue-property-decorator装饰器用法" class="headerlink" title="vue-property-decorator装饰器用法"></a>vue-property-decorator装饰器用法</h2><blockquote>
 <p>在Vue 中使用 TypeScript，使用vue装饰器来简化代码书写，大大提升开发效率</p>
 </blockquote>
-<a id="more"></a>
-
 <ul>
 <li>@Component</li>
 <li>@Emit</li>
@@ -293,6 +291,8 @@
 <li>@Ref</li>
 <li>Mixins</li>
 </ul>
+<a id="more"></a>
+
 <h3 id="Component-声明组件"><a href="#Component-声明组件" class="headerlink" title="@Component 声明组件"></a>@Component 声明组件</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">import &#123; Vue,Component &#125; from &apos;vue-property-decorator&apos; // 引入装饰器</span><br><span class="line">import helloWorld from &apos;@/components&apos;</span><br><span class="line">@Component(&#123;</span><br><span class="line">    helloWorld // 其他组件声明</span><br><span class="line">&#125;)</span><br><span class="line">// @Component</span><br><span class="line">export default class &apos;组件名&apos; extends Vue &#123;</span><br><span class="line">    private valueA: string = &apos;我是ValueA&apos;  // 相当于data里的变量</span><br><span class="line">    private valueB: number[] = [1,2,3]</span><br><span class="line">    private valuec: Array&lt;any&gt; = [1,2,3,&apos;4&apos;,true]</span><br><span class="line">    private get valued () &#123;  // 计算属性的写法,相当于getter</span><br><span class="line">        return 1</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
 <blockquote>
@@ -361,8 +361,8 @@
 
       <footer class="post-footer">
           <div class="post-tags">
-              <a href="/tags/%E7%AC%94%E8%AE%B0/" rel="tag"><i class="fa fa-tag"></i> 笔记</a>
               <a href="/tags/%E7%9F%A5%E8%AF%86%E7%82%B9/" rel="tag"><i class="fa fa-tag"></i> 知识点</a>
+              <a href="/tags/%E7%AC%94%E8%AE%B0/" rel="tag"><i class="fa fa-tag"></i> 笔记</a>
               <a href="/tags/%E8%BF%9B%E9%98%B6/" rel="tag"><i class="fa fa-tag"></i> 进阶</a>
           </div>
 
@@ -478,7 +478,7 @@
 <div class="copyright">
   
   &copy; 
-  <span itemprop="copyrightYear">2021</span>
+  <span itemprop="copyrightYear">2022</span>
   <span class="with-love">
     <i class="fa fa-user"></i>
   </span>

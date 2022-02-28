@@ -51,15 +51,15 @@
   };
 </script>
 
-  <meta name="description" content="vue-i18n vue-i18n是一款针对Vue.js 的国际化插件 安装&amp;amp;配置 npm install vue-i18n  main.js 文件  123456789101112131415161718192021import VueI18n from &amp;apos;vue-i18n&amp;apos;    &#x2F;&#x2F; 引入VueI18n import &amp;#123; cn &amp;#125; from &amp;apos;.&#x2F;static&#x2F;l">
+  <meta name="description" content="vue-i18n vue-i18n是一款针对Vue.js 的国际化插件  安装&amp;amp;配置 npm install vue-i18n  main.js 文件   123456789101112131415161718192021import VueI18n from &amp;apos;vue-i18n&amp;apos;    &#x2F;&#x2F; 引入VueI18n import &amp;#123; cn &amp;#125; from &amp;apos;.&#x2F;static">
 <meta name="keywords" content="插件,实用">
 <meta property="og:type" content="article">
 <meta property="og:title" content="Vue国际化">
 <meta property="og:url" content="http:&#x2F;&#x2F;yoursite.com&#x2F;2021&#x2F;03&#x2F;27&#x2F;vue%E5%9B%BD%E9%99%85%E5%8C%96&#x2F;index.html">
 <meta property="og:site_name" content="淡然的博客">
-<meta property="og:description" content="vue-i18n vue-i18n是一款针对Vue.js 的国际化插件 安装&amp;amp;配置 npm install vue-i18n  main.js 文件  123456789101112131415161718192021import VueI18n from &amp;apos;vue-i18n&amp;apos;    &#x2F;&#x2F; 引入VueI18n import &amp;#123; cn &amp;#125; from &amp;apos;.&#x2F;static&#x2F;l">
+<meta property="og:description" content="vue-i18n vue-i18n是一款针对Vue.js 的国际化插件  安装&amp;amp;配置 npm install vue-i18n  main.js 文件   123456789101112131415161718192021import VueI18n from &amp;apos;vue-i18n&amp;apos;    &#x2F;&#x2F; 引入VueI18n import &amp;#123; cn &amp;#125; from &amp;apos;.&#x2F;static">
 <meta property="og:locale" content="zh-CN">
-<meta property="og:updated_time" content="2021-03-27T06:55:54.250Z">
+<meta property="og:updated_time" content="2022-02-28T14:31:07.552Z">
 <meta name="twitter:card" content="summary">
 
 <link rel="canonical" href="http://yoursite.com/2021/03/27/vue%E5%9B%BD%E9%99%85%E5%8C%96/">
@@ -236,10 +236,16 @@
                 <i class="fa fa-calendar-o"></i>
               </span>
               <span class="post-meta-item-text">发表于</span>
-              
 
-              <time title="创建时间：2021-03-27 14:54:30 / 修改时间：14:55:54" itemprop="dateCreated datePublished" datetime="2021-03-27T14:54:30+08:00">2021-03-27</time>
+              <time title="创建时间：2021-03-27 14:54:30" itemprop="dateCreated datePublished" datetime="2021-03-27T14:54:30+08:00">2021-03-27</time>
             </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2022-02-28 22:31:07" itemprop="dateModified" datetime="2022-02-28T22:31:07+08:00">2022-02-28</time>
+              </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
                 <i class="fa fa-folder-o"></i>
@@ -272,14 +278,16 @@
       
         <h2 id="vue-i18n"><a href="#vue-i18n" class="headerlink" title="vue-i18n"></a>vue-i18n</h2><blockquote>
 <p>vue-i18n是一款针对Vue.js 的国际化插件</p>
-</blockquote><h3 id="安装-amp-配置"><a href="#安装-amp-配置" class="headerlink" title="安装&amp;配置"></a>安装&amp;配置</h3><ul>
+</blockquote>
+<h3 id="安装-amp-配置"><a href="#安装-amp-配置" class="headerlink" title="安装&amp;配置"></a>安装&amp;配置</h3><ul>
 <li><p>npm install vue-i18n</p>
 </li>
 <li><p>main.js 文件</p>
 </li>
-</ul><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> VueI18n <span class="keyword">from</span> <span class="string">'vue-i18n'</span>    <span class="comment">// 引入VueI18n </span></span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> &#123; cn &#125; <span class="keyword">from</span> <span class="string">'./static/lang/cn'</span>    <span class="comment">// 引入lang文件</span></span><br><span class="line"><span class="keyword">import</span> &#123; en &#125; <span class="keyword">from</span> <span class="string">'./static/lang/en'</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">const</span> i18n = <span class="keyword">new</span> VueI18n(&#123;</span><br><span class="line">  locale: <span class="string">'en'</span>,   <span class="comment">// 设置语言</span></span><br><span class="line">  messages: &#123;</span><br><span class="line">    cn: &#123; ...cn &#125;,</span><br><span class="line">    en: &#123; ...en &#125;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;)</span><br><span class="line"></span><br><span class="line">Vue.use(VueI18n)     <span class="comment">// 使用VueI18n</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">new</span> Vue(&#123;</span><br><span class="line">  router,</span><br><span class="line">  store,</span><br><span class="line">  i18n,     <span class="comment">// 挂载</span></span><br><span class="line">  render: <span class="function"><span class="params">h</span> =&gt;</span> h(App)</span><br><span class="line">&#125;).$mount(<span class="string">'#app'</span>)</span><br></pre></td></tr></table></figure><a id="more"></a>
+</ul>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> VueI18n <span class="keyword">from</span> <span class="string">'vue-i18n'</span>    <span class="comment">// 引入VueI18n </span></span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> &#123; cn &#125; <span class="keyword">from</span> <span class="string">'./static/lang/cn'</span>    <span class="comment">// 引入lang文件</span></span><br><span class="line"><span class="keyword">import</span> &#123; en &#125; <span class="keyword">from</span> <span class="string">'./static/lang/en'</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">const</span> i18n = <span class="keyword">new</span> VueI18n(&#123;</span><br><span class="line">  locale: <span class="string">'en'</span>,   <span class="comment">// 设置语言</span></span><br><span class="line">  messages: &#123;</span><br><span class="line">    cn: &#123; ...cn &#125;,</span><br><span class="line">    en: &#123; ...en &#125;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;)</span><br><span class="line"></span><br><span class="line">Vue.use(VueI18n)     <span class="comment">// 使用VueI18n</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">new</span> Vue(&#123;</span><br><span class="line">  router,</span><br><span class="line">  store,</span><br><span class="line">  i18n,     <span class="comment">// 挂载</span></span><br><span class="line">  render: <span class="function"><span class="params">h</span> =&gt;</span> h(App)</span><br><span class="line">&#125;).$mount(<span class="string">'#app'</span>)</span><br></pre></td></tr></table></figure>
 
-
+<a id="more"></a>
 
 <ul>
 <li>在主目录 scr 下增加 lang 文件夹，例如 zh-CN.json , en-US.josn</li>
@@ -437,7 +445,7 @@
 <div class="copyright">
   
   &copy; 
-  <span itemprop="copyrightYear">2021</span>
+  <span itemprop="copyrightYear">2022</span>
   <span class="with-love">
     <i class="fa fa-user"></i>
   </span>
