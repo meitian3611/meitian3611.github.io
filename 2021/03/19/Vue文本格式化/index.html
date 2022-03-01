@@ -1,0 +1,735 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 4.0.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=7.4.2">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=7.4.2">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=7.4.2">
+  <link rel="mask-icon" href="/images/logo.svg?v=7.4.2" color="#222">
+
+<link rel="stylesheet" href="/css/main.css?v=7.4.2">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css?v=4.7.0">
+
+
+<script id="hexo-configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Gemini',
+    version: '7.4.2',
+    exturl: false,
+    sidebar: {"position":"left","display":"post","offset":12,"onmobile":false},
+    copycode: {"enable":false,"show_result":false,"style":null},
+    back2top: {"enable":true,"sidebar":false,"scrollpercent":true},
+    bookmark: {"enable":false,"color":"#222","save":"auto"},
+    fancybox: false,
+    mediumzoom: false,
+    lazyload: false,
+    pangu: false,
+    algolia: {
+      appID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    },
+    localsearch: {"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},
+    path: 'search.xml',
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    translation: {
+      copy_button: '复制',
+      copy_success: '复制成功',
+      copy_failure: '复制失败'
+    },
+    sidebarPadding: 40
+  };
+</script>
+
+  <meta name="description" content="vue-text-format  一个功能强大的 vue 自定义文本格式扩展插件。  vue-text-format这个扩展移植了excel的功能，可以在页面上对数据改变显示格式。 使用方式也很简单，通过扩展vue的自定义命令v-format的形式，绑定格式，就可以将内部的文本进行转换。">
+<meta name="keywords" content="插件,实用">
+<meta property="og:type" content="article">
+<meta property="og:title" content="vue文本格式化">
+<meta property="og:url" content="http:&#x2F;&#x2F;yoursite.com&#x2F;2021&#x2F;03&#x2F;19&#x2F;Vue%E6%96%87%E6%9C%AC%E6%A0%BC%E5%BC%8F%E5%8C%96&#x2F;index.html">
+<meta property="og:site_name" content="淡然的博客">
+<meta property="og:description" content="vue-text-format  一个功能强大的 vue 自定义文本格式扩展插件。  vue-text-format这个扩展移植了excel的功能，可以在页面上对数据改变显示格式。 使用方式也很简单，通过扩展vue的自定义命令v-format的形式，绑定格式，就可以将内部的文本进行转换。">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:updated_time" content="2022-02-28T14:31:47.017Z">
+<meta name="twitter:card" content="summary">
+
+<link rel="canonical" href="http://yoursite.com/2021/03/19/Vue%E6%96%87%E6%9C%AC%E6%A0%BC%E5%BC%8F%E5%8C%96/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome: false,
+    isPost: true,
+    isPage: false,
+    isArchive: false
+  };
+</script>
+
+  <title>vue文本格式化 | 淡然的博客</title>
+  
+
+
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+
+  <div class="container use-motion">
+    <div class="headband"></div>
+    <a href="https://github.com/meitian3611" target="_blank" rel="noopener" class="github-corner" aria-label="View source on GitHub"><svg width="80" height="80" viewBox="0 0 250 250" style="fill:#151513; color:#fff; position: absolute; top: 0; border: 0; right: 0;" aria-hidden="true"><path d="M0,0 L115,115 L130,115 L142,142 L250,250 L250,0 Z"></path><path d="M128.3,109.0 C113.8,99.7 119.0,89.6 119.0,89.6 C122.0,82.7 120.5,78.6 120.5,78.6 C119.2,72.0 123.4,76.3 123.4,76.3 C127.3,80.9 125.5,87.3 125.5,87.3 C122.9,97.6 130.6,101.9 134.4,103.2" fill="currentColor" style="transform-origin: 130px 106px;" class="octo-arm"></path><path d="M115.0,115.0 C114.9,115.1 118.7,116.5 119.8,115.4 L133.7,101.6 C136.9,99.2 139.9,98.4 142.2,98.6 C133.8,88.0 127.5,74.4 143.8,58.0 C148.5,53.4 154.0,51.2 159.7,51.0 C160.3,49.4 163.2,43.6 171.4,40.1 C171.4,40.1 176.1,42.5 178.8,56.2 C183.1,58.6 187.2,61.8 190.9,65.4 C194.5,69.0 197.7,73.2 200.1,77.6 C213.8,80.2 216.3,84.9 216.3,84.9 C212.7,93.1 206.9,96.0 205.4,96.6 C205.1,102.4 203.0,107.8 198.3,112.5 C181.9,128.9 168.3,122.5 157.7,114.1 C157.9,116.9 156.7,120.9 152.7,124.9 L141.0,136.5 C139.8,137.7 141.6,141.9 141.8,141.8 Z" fill="currentColor" class="octo-body"></path></svg></a><style>.github-corner:hover .octo-arm{animation:octocat-wave 560ms ease-in-out}@keyframes octocat-wave{0%,100%{transform:rotate(0)}20%,60%{transform:rotate(-25deg)}40%,80%{transform:rotate(10deg)}}@media (max-width:500px){.github-corner:hover .octo-arm{animation:none}.github-corner .octo-arm{animation:octocat-wave 560ms ease-in-out}}</style>
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-meta">
+
+    <div>
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">淡然的博客</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+        <p class="site-subtitle">是个热爱探索的前端Coder</p>
+  </div>
+
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+</div>
+
+
+<nav class="site-nav">
+  
+  <ul id="menu" class="menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-fw fa-home"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-fw fa-tags"></i>标签</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-fw fa-th"></i>分类</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-fw fa-archive"></i>归档</a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+
+</nav>
+  <div class="site-search">
+    <div class="popup search-popup">
+    <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocorrect="off" autocapitalize="none"
+           placeholder="搜索..." spellcheck="false"
+           type="text" id="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div id="search-result"></div>
+
+</div>
+<div class="search-pop-overlay"></div>
+
+  </div>
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content">
+            
+
+  <div class="posts-expand">
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block " lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2021/03/19/Vue%E6%96%87%E6%9C%AC%E6%A0%BC%E5%BC%8F%E5%8C%96/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="https://pic1.zhimg.com/v2-0a2b112762d84f53ce576a24a8b895ed_b.jpg">
+      <meta itemprop="name" content="淡然">
+      <meta itemprop="description" content="Life-long learning">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="淡然的博客">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          vue文本格式化
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2021-03-19 22:55:44" itemprop="dateCreated datePublished" datetime="2021-03-19T22:55:44+08:00">2021-03-19</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2022-02-28 22:31:47" itemprop="dateModified" datetime="2022-02-28T22:31:47+08:00">2022-02-28</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/web%E5%89%8D%E7%AB%AF/" itemprop="url" rel="index">
+                    <span itemprop="name">web前端</span>
+                  </a>
+                </span>
+            </span>
+
+          
+            <span class="post-meta-item" title="阅读次数" id="busuanzi_container_page_pv" style="display: none;">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-eye"></i>
+              </span>
+              <span class="post-meta-item-text">阅读次数：</span>
+              <span id="busuanzi_value_page_pv"></span>
+            </span>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <h2 id="vue-text-format"><a href="#vue-text-format" class="headerlink" title="vue-text-format"></a>vue-text-format</h2><blockquote>
+<p> 一个功能强大的 vue 自定义文本格式扩展插件。</p>
+<p> vue-text-format这个扩展移植了excel的功能，可以在页面上对数据改变显示格式。 使用方式也很简单，通过扩展vue的自定义命令v-format的形式，绑定格式，就可以将内部的文本进行转换。</p>
+</blockquote>
+<a id="more"></a>
+
+<h3 id="使用方法"><a href="#使用方法" class="headerlink" title="使用方法"></a>使用方法</h3><h4 id="安装"><a href="#安装" class="headerlink" title="安装"></a>安装</h4><ul>
+<li><p>npm install vue-text-format</p>
+<p>在main.js入口文件引用插件</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> Vue <span class="keyword">from</span> <span class="string">'vue'</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> format <span class="keyword">from</span> <span class="string">'vue-text-format'</span>;</span><br><span class="line">Vue.use(format);</span><br></pre></td></tr></table></figure>
+
+
+
+</li>
+</ul>
+<h4 id="使用"><a href="#使用" class="headerlink" title="使用"></a>使用</h4><ul>
+<li>方式1：指令v-format 通过v-format传入想要转换的格式</li>
+</ul>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">div</span> <span class="attr">v-format</span>=<span class="string">"'#,##0.00'"</span>&gt;</span>1200000<span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>方式2：函数调用，vue原型上绑定了一个textFormat函数</li>
+</ul>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">export</span> <span class="keyword">default</span> &#123;</span><br><span class="line">    name: <span class="string">'home'</span>,</span><br><span class="line">    mounted() &#123;</span><br><span class="line">        <span class="keyword">let</span> newVal = <span class="keyword">this</span>.textFormat(<span class="number">1200000</span>, <span class="string">'#,##0.00'</span>);</span><br><span class="line">        <span class="comment">// 将获得1,200,000.00 (数字千分位格式化)</span></span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h4 id="示例"><a href="#示例" class="headerlink" title="示例"></a>示例</h4><ul>
+<li>我们通过几个例子，让你了解一下这个格式代码功能到底有多全多强大</li>
+</ul>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br></pre></td><td class="code"><pre><span class="line">&lt;div v-format=<span class="string">"'0.##%'"</span>&gt;<span class="number">0.123</span>&lt;<span class="regexp">/div&gt;</span></span><br><span class="line"><span class="regexp">&lt;!--最终显示的值是 【12.3%】转换百分比 --&gt;</span></span><br><span class="line"><span class="regexp"> </span></span><br><span class="line"><span class="regexp">&lt;div v-format="'0.00%'"&gt;0.123&lt;/</span>div&gt;</span><br><span class="line">&lt;!--最终显示的值是 【<span class="number">12.30</span>%】 转换百分比，控制占位符--&gt;</span><br><span class="line"> </span><br><span class="line">&lt;div v-format=<span class="string">"'#,##0.00'"</span>&gt;<span class="number">1200000</span>&lt;<span class="regexp">/div&gt;</span></span><br><span class="line"><span class="regexp">&lt;!--最终显示的值是 【1,200,000.00】千分位 --&gt;</span></span><br><span class="line"><span class="regexp"> </span></span><br><span class="line"><span class="regexp">&lt;div v-format="'¥#,##0.00'"&gt;1200000&lt;/</span>div&gt;</span><br><span class="line">&lt;!--最终显示的值是 【¥<span class="number">1</span>,<span class="number">200</span>,<span class="number">000.00</span>】前缀 --&gt;</span><br><span class="line"> </span><br><span class="line">&lt;div v-format=<span class="string">"'0.00E+00'"</span>&gt;<span class="number">1200000</span>&lt;<span class="regexp">/div&gt;</span></span><br><span class="line"><span class="regexp">&lt;!--最终显示的值是 【1.20E+06】科学计数法，有占位符 --&gt;</span></span><br><span class="line"><span class="regexp"> </span></span><br><span class="line"><span class="regexp">&lt;div v-format="'0.##E+##'"&gt;1200000&lt;/</span>div&gt;</span><br><span class="line">&lt;!--最终显示的值是 【<span class="number">1.2E+6</span>】科学计数法，无有占位符 --&gt;</span><br><span class="line"> </span><br><span class="line">&lt;div v-format=<span class="string">"'0000-00-00'"</span>&gt;<span class="number">20180512</span>&lt;<span class="regexp">/div&gt;</span></span><br><span class="line"><span class="regexp">&lt;!--最终显示的值是 【2018-05-12】改变格式--&gt;</span></span><br><span class="line"><span class="regexp"> </span></span><br><span class="line"><span class="regexp">&lt;div v-format="'000-0000-0000'"&gt;13812345678&lt;/</span>div&gt;</span><br><span class="line">&lt;!--最终显示的值是 【<span class="number">138</span><span class="number">-1234</span><span class="number">-5678</span>】手机号--&gt;</span><br><span class="line"> </span><br><span class="line">&lt;div v-format=<span class="string">"'YYYY-MM-DD'"</span>&gt;<span class="number">1562838244</span>&lt;<span class="regexp">/div&gt;</span></span><br><span class="line"><span class="regexp">&lt;!--最终显示的值是 【2019-07-11】时间--&gt;</span></span><br><span class="line"><span class="regexp"> </span></span><br><span class="line"><span class="regexp">&lt;div v-format="'??/</span>??<span class="string">'"&gt;0.28&lt;/div&gt;</span></span><br><span class="line"><span class="string">&lt;!--最终显示的值是 【7/25】两位数分母的近似分数--&gt;</span></span><br><span class="line"><span class="string"> </span></span><br><span class="line"><span class="string">&lt;div v-format="'</span>?<span class="regexp">/?'"&gt;0.28&lt;/</span>div&gt;</span><br><span class="line">&lt;!--最终显示的值是 【<span class="number">2</span>/<span class="number">7</span>】一位数分母的近似分数--&gt;</span><br></pre></td></tr></table></figure>
+
+<h3 id="常用格式编码介绍"><a href="#常用格式编码介绍" class="headerlink" title="常用格式编码介绍"></a>常用格式编码介绍</h3><h4 id="数字占位符"><a href="#数字占位符" class="headerlink" title="数字占位符"></a>数字占位符</h4><ul>
+<li><strong>‘#’</strong>： 只显有意义的零而不显示无意义的零。小数点后数字如大于”#”的数量，则按”#”的位数四舍五入。</li>
+<li><strong>‘0’</strong>： 如果单元格的内容大于占位符，则显示实际数字，如果小于点位符的数量，则用0补足。</li>
+</ul>
+<table>
+<thead>
+<tr>
+<th>代码</th>
+<th>数字</th>
+<th>显示</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>###.##</td>
+<td>12.1</td>
+<td>12.1</td>
+</tr>
+<tr>
+<td>###.##</td>
+<td>12.1263</td>
+<td>12.13</td>
+</tr>
+<tr>
+<td>00000</td>
+<td>1234567</td>
+<td>1234567</td>
+</tr>
+<tr>
+<td>00000</td>
+<td>123</td>
+<td>00123</td>
+</tr>
+<tr>
+<td>00.000</td>
+<td>100.14</td>
+<td>100.140</td>
+</tr>
+<tr>
+<td>00.000</td>
+<td>1.1</td>
+<td>01.100</td>
+</tr>
+</tbody></table>
+<h4 id="小数点"><a href="#小数点" class="headerlink" title="小数点"></a>小数点</h4><table>
+<thead>
+<tr>
+<th>代码</th>
+<th>文本</th>
+<th>显示</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>0.#</td>
+<td>11.23</td>
+<td>11.2</td>
+</tr>
+<tr>
+<td>0.#</td>
+<td>11</td>
+<td>11</td>
+</tr>
+<tr>
+<td>0.00</td>
+<td>3</td>
+<td>3.00</td>
+</tr>
+<tr>
+<td>0.##</td>
+<td>3</td>
+<td>3</td>
+</tr>
+<tr>
+<td>0.00%</td>
+<td>3</td>
+<td>300.00%</td>
+</tr>
+<tr>
+<td>0.##%</td>
+<td>3</td>
+<td>300%</td>
+</tr>
+</tbody></table>
+<h4 id="百分比"><a href="#百分比" class="headerlink" title="百分比"></a>百分比</h4><ul>
+<li>“%”：百分比。 例：代码“#%”。“0.1”显示为“10%”</li>
+</ul>
+<table>
+<thead>
+<tr>
+<th>代码</th>
+<th>数字</th>
+<th>显示</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>#%</td>
+<td>0.1</td>
+<td>10%</td>
+</tr>
+<tr>
+<td>#.#%</td>
+<td>0.131</td>
+<td>13.1%</td>
+</tr>
+<tr>
+<td>#.##%</td>
+<td>0.131</td>
+<td>13.1%</td>
+</tr>
+<tr>
+<td>#.#0%</td>
+<td>0.131</td>
+<td>13.10%</td>
+</tr>
+</tbody></table>
+<h4 id="千分位分隔符"><a href="#千分位分隔符" class="headerlink" title="千分位分隔符"></a>千分位分隔符</h4><table>
+<thead>
+<tr>
+<th>代码</th>
+<th>文本</th>
+<th>显示</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>#,###0.00</td>
+<td>12000</td>
+<td>12,000.00</td>
+</tr>
+</tbody></table>
+<ul>
+<li>如在代码中“,”之后为空，则把原来的数字缩小1000倍。</li>
+</ul>
+<table>
+<thead>
+<tr>
+<th>代码</th>
+<th>文本</th>
+<th>显示</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>#,</td>
+<td>10000</td>
+<td>10</td>
+</tr>
+<tr>
+<td>#,”k”</td>
+<td>123123</td>
+<td>123k</td>
+</tr>
+<tr>
+<td>#,,</td>
+<td>1000000</td>
+<td>1</td>
+</tr>
+<tr>
+<td>0,.#</td>
+<td>12345</td>
+<td>12.3</td>
+</tr>
+<tr>
+<td>#.00,</td>
+<td>12345</td>
+<td>12.35</td>
+</tr>
+<tr>
+<td>“人民币 “#,##0,,”百万”</td>
+<td>1234567890</td>
+<td>人民币 1,235百万</td>
+</tr>
+</tbody></table>
+<h4 id="时间和日期代码"><a href="#时间和日期代码" class="headerlink" title="时间和日期代码"></a>时间和日期代码</h4><table>
+<thead>
+<tr>
+<th>代码</th>
+<th>文本</th>
+<th>显示</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>YYYY-MM-DD</td>
+<td>1562838244</td>
+<td>2019-07-11</td>
+</tr>
+<tr>
+<td>YY-MM-DD</td>
+<td>1562838244</td>
+<td>19-07-11</td>
+</tr>
+<tr>
+<td>HH:mm:ss</td>
+<td>1562838244</td>
+<td>17:44:04</td>
+</tr>
+<tr>
+<td>YYYY-MM-DD HH:mm:ss</td>
+<td>1562838244</td>
+<td>2019-07-11 17:44:04</td>
+</tr>
+</tbody></table>
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/%E6%8F%92%E4%BB%B6/" rel="tag"><i class="fa fa-tag"></i> 插件</a>
+              <a href="/tags/%E5%AE%9E%E7%94%A8/" rel="tag"><i class="fa fa-tag"></i> 实用</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-next post-nav-item">
+                <a href="/2020/02/09/Vue%E7%9A%84%E7%BB%84%E4%BB%B6%E9%80%9A%E4%BF%A1/" rel="next" title="Vue的组件通信">
+                  <i class="fa fa-chevron-left"></i> Vue的组件通信
+                </a>
+            </div>
+
+            <span class="post-nav-divider"></span>
+
+            <div class="post-nav-prev post-nav-item">
+                <a href="/2021/03/27/vue%E5%9B%BD%E9%99%85%E5%8C%96/" rel="prev" title="Vue国际化">
+                  Vue国际化 <i class="fa fa-chevron-right"></i>
+                </a>
+            </div>
+          </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+  </div>
+
+
+          </div>
+          
+
+        </div>
+        
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#vue-text-format"><span class="nav-number">1.</span> <span class="nav-text">vue-text-format</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#使用方法"><span class="nav-number">1.1.</span> <span class="nav-text">使用方法</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#安装"><span class="nav-number">1.1.1.</span> <span class="nav-text">安装</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#使用"><span class="nav-number">1.1.2.</span> <span class="nav-text">使用</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#示例"><span class="nav-number">1.1.3.</span> <span class="nav-text">示例</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#常用格式编码介绍"><span class="nav-number">1.2.</span> <span class="nav-text">常用格式编码介绍</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#数字占位符"><span class="nav-number">1.2.1.</span> <span class="nav-text">数字占位符</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#小数点"><span class="nav-number">1.2.2.</span> <span class="nav-text">小数点</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#百分比"><span class="nav-number">1.2.3.</span> <span class="nav-text">百分比</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#千分位分隔符"><span class="nav-number">1.2.4.</span> <span class="nav-text">千分位分隔符</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#时间和日期代码"><span class="nav-number">1.2.5.</span> <span class="nav-text">时间和日期代码</span></a></li></ol></li></ol></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <img class="site-author-image" itemprop="image" alt="淡然"
+    src="https://pic1.zhimg.com/v2-0a2b112762d84f53ce576a24a8b895ed_b.jpg">
+  <p class="site-author-name" itemprop="name">淡然</p>
+  <div class="site-description" itemprop="description">Life-long learning</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">37</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">10</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">41</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <a href="https://github.com/meitian3611" title="GitHub &amp;rarr; https:&#x2F;&#x2F;github.com&#x2F;meitian3611" rel="noopener" target="_blank"><i class="fa fa-fw fa-github"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="mailto:meitian3611@163.com" title="E-Mail &amp;rarr; mailto:meitian3611@163.com" rel="noopener" target="_blank"><i class="fa fa-fw fa-envelope"></i>E-Mail</a>
+      </span>
+  </div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2022</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">淡然</span>
+</div>
+
+<!--
+  <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> 强力驱动 v4.0.0
+  </div>
+  <span class="post-meta-divider">|</span>
+  <div class="theme-info">主题 – <a href="https://theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Gemini</a> v7.4.2
+  </div>  -->
+
+        
+<div class="busuanzi-count">
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+    <span class="post-meta-item" id="busuanzi_container_site_uv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-user"></i>
+      </span>
+      <span class="site-uv" title="总访客量">
+        <span id="busuanzi_value_site_uv"></span>
+      </span>
+    </span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item" id="busuanzi_container_site_pv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-eye"></i>
+      </span>
+      <span class="site-pv" title="总访问量">
+        <span id="busuanzi_value_site_pv"></span>
+      </span>
+    </span>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+  </div>
+
+  
+  
+  <script color='0,0,255' opacity='0.5' zIndex='-1' count='99' src="/lib/canvas-nest/canvas-nest.min.js"></script>
+  <script src="/lib/anime.min.js?v=3.1.0"></script>
+  <script src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  <script src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+<script src="/js/utils.js?v=7.4.2"></script><script src="/js/motion.js?v=7.4.2"></script>
+<script src="/js/schemes/pisces.js?v=7.4.2"></script>
+<script src="/js/next-boot.js?v=7.4.2"></script>
+
+
+
+  
+
+
+
+
+
+
+  <script src="/js/local-search.js?v=7.4.2"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+    
+
+    
+
+    
+
+  
+  <script type="text/javascript" src="//cdn.bootcss.com/canvas-nest.js/1.0.0/canvas-nest.min.js"></script>
+  \
+  <!-- 页面点击小红心 -->
+
+</body>
+</html>
+
+<script type="text/javascript" src="/js/love.js"></script>
