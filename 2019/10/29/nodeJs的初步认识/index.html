@@ -1,0 +1,592 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 4.0.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=7.4.2">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=7.4.2">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=7.4.2">
+  <link rel="mask-icon" href="/images/logo.svg?v=7.4.2" color="#222">
+
+<link rel="stylesheet" href="/css/main.css?v=7.4.2">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css?v=4.7.0">
+
+
+<script id="hexo-configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Gemini',
+    version: '7.4.2',
+    exturl: false,
+    sidebar: {"position":"left","display":"post","offset":12,"onmobile":false},
+    copycode: {"enable":false,"show_result":false,"style":null},
+    back2top: {"enable":true,"sidebar":false,"scrollpercent":true},
+    bookmark: {"enable":false,"color":"#222","save":"auto"},
+    fancybox: false,
+    mediumzoom: false,
+    lazyload: false,
+    pangu: false,
+    algolia: {
+      appID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    },
+    localsearch: {"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},
+    path: 'search.xml',
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    translation: {
+      copy_button: '复制',
+      copy_success: '复制成功',
+      copy_failure: '复制失败'
+    },
+    sidebarPadding: 40
+  };
+</script>
+
+  <meta name="description" content="Node.js简介 Node.js 是一个基于 Chrome V8 引擎的 JavaScript 运行环境。 Node.js 使用了一个事件驱动、非阻塞式 I&#x2F;O 的模型，使其轻量又高效。 简单的说 Node.js 就是运行在服务端的 JavaScript Node.js是一个让JavaScript运行在服务器端的开发平台，它让JavaScript的触角伸到了服务器端，可以与PHP、JSP、Pyt">
+<meta name="keywords" content="node,知识点,笔记">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Node.js的初步认识">
+<meta property="og:url" content="http:&#x2F;&#x2F;yoursite.com&#x2F;2019&#x2F;10&#x2F;29&#x2F;nodeJs%E7%9A%84%E5%88%9D%E6%AD%A5%E8%AE%A4%E8%AF%86&#x2F;index.html">
+<meta property="og:site_name" content="淡然的博客">
+<meta property="og:description" content="Node.js简介 Node.js 是一个基于 Chrome V8 引擎的 JavaScript 运行环境。 Node.js 使用了一个事件驱动、非阻塞式 I&#x2F;O 的模型，使其轻量又高效。 简单的说 Node.js 就是运行在服务端的 JavaScript Node.js是一个让JavaScript运行在服务器端的开发平台，它让JavaScript的触角伸到了服务器端，可以与PHP、JSP、Pyt">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:updated_time" content="2022-02-28T14:44:11.163Z">
+<meta name="twitter:card" content="summary">
+
+<link rel="canonical" href="http://yoursite.com/2019/10/29/nodeJs%E7%9A%84%E5%88%9D%E6%AD%A5%E8%AE%A4%E8%AF%86/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome: false,
+    isPost: true,
+    isPage: false,
+    isArchive: false
+  };
+</script>
+
+  <title>Node.js的初步认识 | 淡然的博客</title>
+  
+
+
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+
+  <div class="container use-motion">
+    <div class="headband"></div>
+    <a href="https://github.com/meitian3611" target="_blank" rel="noopener" class="github-corner" aria-label="View source on GitHub"><svg width="80" height="80" viewBox="0 0 250 250" style="fill:#151513; color:#fff; position: absolute; top: 0; border: 0; right: 0;" aria-hidden="true"><path d="M0,0 L115,115 L130,115 L142,142 L250,250 L250,0 Z"></path><path d="M128.3,109.0 C113.8,99.7 119.0,89.6 119.0,89.6 C122.0,82.7 120.5,78.6 120.5,78.6 C119.2,72.0 123.4,76.3 123.4,76.3 C127.3,80.9 125.5,87.3 125.5,87.3 C122.9,97.6 130.6,101.9 134.4,103.2" fill="currentColor" style="transform-origin: 130px 106px;" class="octo-arm"></path><path d="M115.0,115.0 C114.9,115.1 118.7,116.5 119.8,115.4 L133.7,101.6 C136.9,99.2 139.9,98.4 142.2,98.6 C133.8,88.0 127.5,74.4 143.8,58.0 C148.5,53.4 154.0,51.2 159.7,51.0 C160.3,49.4 163.2,43.6 171.4,40.1 C171.4,40.1 176.1,42.5 178.8,56.2 C183.1,58.6 187.2,61.8 190.9,65.4 C194.5,69.0 197.7,73.2 200.1,77.6 C213.8,80.2 216.3,84.9 216.3,84.9 C212.7,93.1 206.9,96.0 205.4,96.6 C205.1,102.4 203.0,107.8 198.3,112.5 C181.9,128.9 168.3,122.5 157.7,114.1 C157.9,116.9 156.7,120.9 152.7,124.9 L141.0,136.5 C139.8,137.7 141.6,141.9 141.8,141.8 Z" fill="currentColor" class="octo-body"></path></svg></a><style>.github-corner:hover .octo-arm{animation:octocat-wave 560ms ease-in-out}@keyframes octocat-wave{0%,100%{transform:rotate(0)}20%,60%{transform:rotate(-25deg)}40%,80%{transform:rotate(10deg)}}@media (max-width:500px){.github-corner:hover .octo-arm{animation:none}.github-corner .octo-arm{animation:octocat-wave 560ms ease-in-out}}</style>
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-meta">
+
+    <div>
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">淡然的博客</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+        <p class="site-subtitle">是个热爱探索的前端Coder</p>
+  </div>
+
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+</div>
+
+
+<nav class="site-nav">
+  
+  <ul id="menu" class="menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-fw fa-home"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-fw fa-tags"></i>标签</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-fw fa-th"></i>分类</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-fw fa-archive"></i>归档</a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+
+</nav>
+  <div class="site-search">
+    <div class="popup search-popup">
+    <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocorrect="off" autocapitalize="none"
+           placeholder="搜索..." spellcheck="false"
+           type="text" id="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div id="search-result"></div>
+
+</div>
+<div class="search-pop-overlay"></div>
+
+  </div>
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content">
+            
+
+  <div class="posts-expand">
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block " lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/10/29/nodeJs%E7%9A%84%E5%88%9D%E6%AD%A5%E8%AE%A4%E8%AF%86/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="https://pic1.zhimg.com/v2-0a2b112762d84f53ce576a24a8b895ed_b.jpg">
+      <meta itemprop="name" content="淡然">
+      <meta itemprop="description" content="Life-long learning">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="淡然的博客">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          Node.js的初步认识
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2019-10-29 20:48:23" itemprop="dateCreated datePublished" datetime="2019-10-29T20:48:23+08:00">2019-10-29</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2022-02-28 22:44:11" itemprop="dateModified" datetime="2022-02-28T22:44:11+08:00">2022-02-28</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/nodeJS/" itemprop="url" rel="index">
+                    <span itemprop="name">nodeJS</span>
+                  </a>
+                </span>
+            </span>
+
+          
+            <span class="post-meta-item" title="阅读次数" id="busuanzi_container_page_pv" style="display: none;">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-eye"></i>
+              </span>
+              <span class="post-meta-item-text">阅读次数：</span>
+              <span id="busuanzi_value_page_pv"></span>
+            </span>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <h2 id="Node-js简介"><a href="#Node-js简介" class="headerlink" title="Node.js简介"></a>Node.js简介</h2><blockquote>
+<p>Node.js 是一个基于 Chrome V8 引擎的 JavaScript 运行环境。</p>
+<p>Node.js 使用了一个事件驱动、非阻塞式 I/O 的模型，使其轻量又高效。</p>
+<p>简单的说 Node.js 就是运行在服务端的 JavaScript</p>
+<p>Node.js是一个让JavaScript运行在服务器端的开发平台，它让JavaScript的触角伸到了服务器端，可以与PHP、JSP、Python、Ruby平起平坐。</p>
+</blockquote>
+<a id="more"></a>
+
+<p><strong>node.js三大特点：</strong></p>
+<p><strong>1.单线程</strong></p>
+<blockquote>
+<p>Node.js不为每个客户连接创建一个新的线程，而仅仅使用一个线程。当有用户连接了，就触发一个内部事件，通过非阻塞I/O、事件驱动机制，让Node.js程序宏观上也是并行的。使用Node.js，一个8GB内存的服务器，可以同时处理超过4万用户的连接。</p>
+</blockquote>
+<p><strong>2.非阻塞I/O(异步)</strong></p>
+<blockquote>
+<p>阻塞模式下，一个线程只能处理一项任务，要想提高吞吐量必须通过多线程。而非阻塞模式下，一个线程永远在执行计算操作，这个线程的CPU核心利用率永远是100%。</p>
+<p>这是一种特别有哲理的解决方案：<strong>与其人多，但是好多人闲着；还不如一个人玩命，往死里干活儿。</strong></p>
+</blockquote>
+<p><strong>3.事件驱动</strong></p>
+<blockquote>
+<p>在Node中，客户端请求建立连接，提交数据等行为，会触发相应的事件。在Node中，在一个时刻，只能执行一个事件回调函数，但是在执行一个事件回调函数的中途，可以转而处理其他事件（比如，又有新用户连接了），然后返回继续执行原事件的回调函数，这种处理机制，称为“事件循环”机制。</p>
+<p>用事件驱动来完成服务器的任务调度，用一个线程，担负起了处理非常多的任务的使命。</p>
+</blockquote>
+<h2 id="搭建web服务器"><a href="#搭建web服务器" class="headerlink" title="搭建web服务器"></a>搭建web服务器</h2><p><strong>总共分为四个步骤</strong></p>
+<ol>
+<li><p>加载http模块    </p>
+</li>
+<li><p>创建http服务    </p>
+</li>
+<li><p>服务端对象监听request 请求事件，用于监听客户端的请求    </p>
+</li>
+<li><p>启动http服务，监听端口</p>
+</li>
+</ol>
+<p><strong>参考代码：</strong></p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> http = <span class="built_in">require</span>(<span class="string">'http'</span>);		 <span class="comment">//加载http模块</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">var</span> server = http.createServer();<span class="comment">//创建http服务</span></span><br><span class="line"></span><br><span class="line">server.on(<span class="string">'request'</span>,<span class="function"><span class="keyword">function</span> (<span class="params">req, res</span>) </span>&#123; <span class="comment">//服务对象监听request 请求事件，用于监听客户端的请求</span></span><br><span class="line">  <span class="comment">//req-请求对象 , res-响应对象</span></span><br><span class="line">  <span class="comment">//处理客户端请求逻辑</span></span><br><span class="line">  <span class="built_in">console</span>.log(<span class="string">'收到请求: '</span>+ req.url); <span class="comment">//用户请求地址</span></span><br><span class="line">  res.setHeader(<span class="string">"Content-type"</span>,<span class="string">"text/plain;charset=utf-8"</span>); <span class="comment">//设置文件类型</span></span><br><span class="line">  res.end(); <span class="comment">//必须结束响应，否则浏览器会被挂起</span></span><br><span class="line">&#125;);</span><br><span class="line"></span><br><span class="line">server.listen(<span class="number">3000</span>, <span class="function"><span class="keyword">function</span> (<span class="params"></span>) </span>&#123; <span class="comment">//启动http服务，开始监听3000端口</span></span><br><span class="line">  <span class="built_in">console</span>.log(<span class="string">'服务已经启动，请访问： http://localhost:3000 或 http://127.0.0.1:3000'</span>);</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
+
+<p><strong>注意点：</strong></p>
+<ol>
+<li>在监听request事件中，最后一定要res.end()结束响应。</li>
+<li>浏览器显示中文可能是乱码，需设置响应头告诉浏览器显示时所使用的编码，要在res.end()之前设置</li>
+</ol>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">res.setHeader(<span class="string">"Content-type"</span>,<span class="string">"text/plain;charset=utf-8"</span>); <span class="comment">// 响应为纯文本</span></span><br><span class="line">res.setHeader(<span class="string">"Content-type"</span>,<span class="string">"text/html;charset=utf-8"</span>);  <span class="comment">//响应为html文本</span></span><br></pre></td></tr></table></figure>
+
+<ol start="3">
+<li><strong>node.js没有根目录、没有web容器的概念！</strong></li>
+</ol>
+<h2 id="node-js读写文件"><a href="#node-js读写文件" class="headerlink" title="node.js读写文件"></a>node.js读写文件</h2><p><strong>读文件</strong></p>
+<p><code>fs.readFile(file[, options], callback)</code></p>
+<ul>
+<li>参数1：要读取的文件路径，必填。   </li>
+<li>参数2：读取文件时的选项，比如：文件编码utf8。选填。 </li>
+<li>参数3：文件读取完毕后的回调函数，必填。</li>
+</ul>
+<p><strong>注意点：</strong></p>
+<ul>
+<li>该操作采用异步执行    </li>
+<li>回调函数有两个参数，分别是err和data    </li>
+<li>如果读取文件时没有指定编码，返回的是二进制数据，如指定编码utf8，会返回指定的编码数据。    </li>
+<li>只要异步操作，回调函数第一个都是错误对象err优先</li>
+</ul>
+<p><strong>示例：</strong></p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//加载http包(nodeJS内置包)</span></span><br><span class="line"><span class="keyword">let</span> http = <span class="built_in">require</span>(<span class="string">"http"</span>);</span><br><span class="line"><span class="comment">//创建服务器  </span></span><br><span class="line"><span class="keyword">let</span> server = http.createServer()</span><br><span class="line"><span class="keyword">let</span> fs = <span class="built_in">require</span>(<span class="string">'fs'</span>); <span class="comment">//引入内部模块</span></span><br><span class="line"><span class="comment">//监听服务器的请求状态(用户发送请求触发)</span></span><br><span class="line">server.on(<span class="string">'request'</span>, <span class="function"><span class="keyword">function</span> (<span class="params">req, res</span>) </span>&#123;</span><br><span class="line">    <span class="built_in">console</span>.log(<span class="string">'用户发送了请求'</span>);</span><br><span class="line">    <span class="keyword">if</span> (req.url == <span class="string">'/heihei'</span>) &#123;<span class="comment">//地址可以自定义</span></span><br><span class="line">        fs.readFile(<span class="string">'./home.html'</span>, <span class="string">'utf-8'</span>, <span class="function"><span class="keyword">function</span> (<span class="params">err, data</span>) </span>&#123;</span><br><span class="line">            <span class="keyword">if</span> (!err) &#123;</span><br><span class="line">                res.setHeader(<span class="string">'Content-type'</span>, <span class="string">'text/html;charset=utf-8'</span>);</span><br><span class="line">                res.end(data);</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;)</span><br><span class="line">    &#125;<span class="keyword">else</span> &#123;</span><br><span class="line">        res.writeHead(<span class="number">404</span>, &#123; <span class="string">'Content-type'</span>: <span class="string">'text/plain;charset=utf-8'</span> &#125;);</span><br><span class="line">        res.end(<span class="string">'404,页面丢失了！！！'</span>);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;)</span><br><span class="line"><span class="comment">//启动服务，监听端口 ip地址 回调函数</span></span><br><span class="line">server.listen(<span class="string">"3000"</span>, <span class="string">"10.36.147.180"</span>, <span class="function"><span class="keyword">function</span> (<span class="params"></span>) </span>&#123;</span><br><span class="line">    <span class="built_in">console</span>.log(<span class="string">'服务已启动，请访问：10.36.147.180:3000'</span>);</span><br><span class="line">&#125;)</span><br></pre></td></tr></table></figure>
+
+<p><strong>写文件</strong></p>
+<p><code>fs.writeFile(file, data[, options], callback);</code></p>
+<ul>
+<li>参数1：要写入的文件路径，必填</li>
+<li>参数2：要写入的数据，必填</li>
+<li>参数3：写入文件时的选项，比如：文件编码</li>
+<li>参数4：文件写入完毕后的回调函数，必填</li>
+</ul>
+<p><strong>注意点：</strong></p>
+<ul>
+<li>该操作采用异步执行    </li>
+<li>如果文件存在则替换原内容    </li>
+<li>默认写入的文件编码为utf8    </li>
+<li>回调函数有1个参数：err，表示在写入文件的操作过程中是否出错了。    </li>
+<li>如果出错了err != null，成功时 err === null    </li>
+<li>写入文件（文件不存在则自动创建）</li>
+</ul>
+<p>writeFile写入文件是先把文件内容清空再写入，如果要追加写入的话可以使用appendFile函数</p>
+<p><strong>示例：</strong></p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//加载http包(nodeJS内置包)</span></span><br><span class="line"><span class="keyword">var</span> http = <span class="built_in">require</span>(<span class="string">"http"</span>);</span><br><span class="line"><span class="keyword">var</span> fs = <span class="built_in">require</span>(<span class="string">'fs'</span>); <span class="comment">//引入内部模块</span></span><br><span class="line"> </span><br><span class="line"><span class="keyword">var</span> server = http.createServer(<span class="function"><span class="keyword">function</span>(<span class="params">req,res</span>)</span>&#123;</span><br><span class="line">    <span class="comment">//给用户生成一个id</span></span><br><span class="line">    <span class="keyword">var</span> userid = <span class="built_in">parseInt</span>(<span class="built_in">Math</span>.radom()*<span class="number">89999</span>)+<span class="number">10000</span>;</span><br><span class="line">    <span class="built_in">console</span>.log(<span class="string">'用户'</span>+userid);</span><br><span class="line">    res.writeHead(<span class="number">200</span>,&#123;<span class="string">"Content-Type"</span>:<span class="string">"text/html;charset=UTF8"</span>&#125;);</span><br><span class="line">    <span class="keyword">var</span> str = <span class="string">'新修改的文字'</span>;</span><br><span class="line">    <span class="comment">//参数一是当前文件路径 参数二是写入数据</span></span><br><span class="line">    <span class="comment">//参数三是文件编码	  参数四是回调函数</span></span><br><span class="line">    fs.writeFile(<span class="string">"./test.txt"</span>,str,<span class="string">'utf8'</span>,<span class="function"><span class="keyword">function</span>(<span class="params">err</span>)</span>&#123;</span><br><span class="line">       <span class="keyword">if</span>(err)&#123;</span><br><span class="line">           <span class="keyword">throw</span> err;</span><br><span class="line">       &#125; </span><br><span class="line">        <span class="built_in">console</span>.log(<span class="string">'文件写入完成'</span>);</span><br><span class="line">        res.end();</span><br><span class="line">    &#125;)</span><br><span class="line">&#125;)</span><br><span class="line">server.listen(<span class="string">"3002"</span>, <span class="string">"10.36.147.180"</span>, <span class="function"><span class="keyword">function</span> (<span class="params"></span>) </span>&#123;</span><br><span class="line">    <span class="built_in">console</span>.log(<span class="string">'服务已启动，请访问：10.36.147.180:3002'</span>);</span><br><span class="line">&#125;)</span><br></pre></td></tr></table></figure>
+
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/node/" rel="tag"><i class="fa fa-tag"></i> node</a>
+              <a href="/tags/%E7%9F%A5%E8%AF%86%E7%82%B9/" rel="tag"><i class="fa fa-tag"></i> 知识点</a>
+              <a href="/tags/%E7%AC%94%E8%AE%B0/" rel="tag"><i class="fa fa-tag"></i> 笔记</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-next post-nav-item">
+                <a href="/2019/10/28/%E6%A8%A1%E5%9D%97%E5%8C%96%E7%BC%96%E7%A8%8B/" rel="next" title="模块化编程">
+                  <i class="fa fa-chevron-left"></i> 模块化编程
+                </a>
+            </div>
+
+            <span class="post-nav-divider"></span>
+
+            <div class="post-nav-prev post-nav-item">
+                <a href="/2019/10/30/npm%E7%9A%84%E4%BD%BF%E7%94%A8/" rel="prev" title="npm的使用">
+                  npm的使用 <i class="fa fa-chevron-right"></i>
+                </a>
+            </div>
+          </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+  </div>
+
+
+          </div>
+          
+
+        </div>
+        
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#Node-js简介"><span class="nav-number">1.</span> <span class="nav-text">Node.js简介</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#搭建web服务器"><span class="nav-number">2.</span> <span class="nav-text">搭建web服务器</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#node-js读写文件"><span class="nav-number">3.</span> <span class="nav-text">node.js读写文件</span></a></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <img class="site-author-image" itemprop="image" alt="淡然"
+    src="https://pic1.zhimg.com/v2-0a2b112762d84f53ce576a24a8b895ed_b.jpg">
+  <p class="site-author-name" itemprop="name">淡然</p>
+  <div class="site-description" itemprop="description">Life-long learning</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">38</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">11</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">41</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <a href="https://github.com/meitian3611" title="GitHub &amp;rarr; https:&#x2F;&#x2F;github.com&#x2F;meitian3611" rel="noopener" target="_blank"><i class="fa fa-fw fa-github"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="mailto:meitian3611@163.com" title="E-Mail &amp;rarr; mailto:meitian3611@163.com" rel="noopener" target="_blank"><i class="fa fa-fw fa-envelope"></i>E-Mail</a>
+      </span>
+  </div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2022</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">淡然</span>
+</div>
+
+<!--
+  <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> 强力驱动 v4.0.0
+  </div>
+  <span class="post-meta-divider">|</span>
+  <div class="theme-info">主题 – <a href="https://theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Gemini</a> v7.4.2
+  </div>  -->
+
+        
+<div class="busuanzi-count">
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+    <span class="post-meta-item" id="busuanzi_container_site_uv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-user"></i>
+      </span>
+      <span class="site-uv" title="总访客量">
+        <span id="busuanzi_value_site_uv"></span>
+      </span>
+    </span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item" id="busuanzi_container_site_pv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-eye"></i>
+      </span>
+      <span class="site-pv" title="总访问量">
+        <span id="busuanzi_value_site_pv"></span>
+      </span>
+    </span>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+  </div>
+
+  
+  
+  <script color='0,0,255' opacity='0.5' zIndex='-1' count='99' src="/lib/canvas-nest/canvas-nest.min.js"></script>
+  <script src="/lib/anime.min.js?v=3.1.0"></script>
+  <script src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  <script src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+<script src="/js/utils.js?v=7.4.2"></script><script src="/js/motion.js?v=7.4.2"></script>
+<script src="/js/schemes/pisces.js?v=7.4.2"></script>
+<script src="/js/next-boot.js?v=7.4.2"></script>
+
+
+
+  
+
+
+
+
+
+
+  <script src="/js/local-search.js?v=7.4.2"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+    
+
+    
+
+    
+
+  
+  <script type="text/javascript" src="//cdn.bootcss.com/canvas-nest.js/1.0.0/canvas-nest.min.js"></script>
+  \
+  <!-- 页面点击小红心 -->
+
+</body>
+</html>
+
+<script type="text/javascript" src="/js/love.js"></script>

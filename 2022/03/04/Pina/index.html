@@ -1,0 +1,648 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 4.0.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=7.4.2">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=7.4.2">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=7.4.2">
+  <link rel="mask-icon" href="/images/logo.svg?v=7.4.2" color="#222">
+
+<link rel="stylesheet" href="/css/main.css?v=7.4.2">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css?v=4.7.0">
+
+
+<script id="hexo-configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Gemini',
+    version: '7.4.2',
+    exturl: false,
+    sidebar: {"position":"left","display":"post","offset":12,"onmobile":false},
+    copycode: {"enable":false,"show_result":false,"style":null},
+    back2top: {"enable":true,"sidebar":false,"scrollpercent":true},
+    bookmark: {"enable":false,"color":"#222","save":"auto"},
+    fancybox: false,
+    mediumzoom: false,
+    lazyload: false,
+    pangu: false,
+    algolia: {
+      appID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    },
+    localsearch: {"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},
+    path: 'search.xml',
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    translation: {
+      copy_button: '复制',
+      copy_success: '复制成功',
+      copy_failure: '复制失败'
+    },
+    sidebarPadding: 40
+  };
+</script>
+
+  <meta name="description" content="Pinia是Vue生态里Vuex的代替者，一个全新Vue的状态管理库。在Vue3成为正式版以后，尤雨溪强势推荐的项目就是Pinia。那先来看看Pinia比Vuex好的地方，也就是Pinia的五大优势。">
+<meta name="keywords" content="知识点,常用,笔记">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Pina">
+<meta property="og:url" content="http:&#x2F;&#x2F;yoursite.com&#x2F;2022&#x2F;03&#x2F;04&#x2F;Pina&#x2F;index.html">
+<meta property="og:site_name" content="淡然的博客">
+<meta property="og:description" content="Pinia是Vue生态里Vuex的代替者，一个全新Vue的状态管理库。在Vue3成为正式版以后，尤雨溪强势推荐的项目就是Pinia。那先来看看Pinia比Vuex好的地方，也就是Pinia的五大优势。">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:updated_time" content="2022-03-04T10:24:18.341Z">
+<meta name="twitter:card" content="summary">
+
+<link rel="canonical" href="http://yoursite.com/2022/03/04/Pina/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome: false,
+    isPost: true,
+    isPage: false,
+    isArchive: false
+  };
+</script>
+
+  <title>Pina | 淡然的博客</title>
+  
+
+
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+
+  <div class="container use-motion">
+    <div class="headband"></div>
+    <a href="https://github.com/meitian3611" target="_blank" rel="noopener" class="github-corner" aria-label="View source on GitHub"><svg width="80" height="80" viewBox="0 0 250 250" style="fill:#151513; color:#fff; position: absolute; top: 0; border: 0; right: 0;" aria-hidden="true"><path d="M0,0 L115,115 L130,115 L142,142 L250,250 L250,0 Z"></path><path d="M128.3,109.0 C113.8,99.7 119.0,89.6 119.0,89.6 C122.0,82.7 120.5,78.6 120.5,78.6 C119.2,72.0 123.4,76.3 123.4,76.3 C127.3,80.9 125.5,87.3 125.5,87.3 C122.9,97.6 130.6,101.9 134.4,103.2" fill="currentColor" style="transform-origin: 130px 106px;" class="octo-arm"></path><path d="M115.0,115.0 C114.9,115.1 118.7,116.5 119.8,115.4 L133.7,101.6 C136.9,99.2 139.9,98.4 142.2,98.6 C133.8,88.0 127.5,74.4 143.8,58.0 C148.5,53.4 154.0,51.2 159.7,51.0 C160.3,49.4 163.2,43.6 171.4,40.1 C171.4,40.1 176.1,42.5 178.8,56.2 C183.1,58.6 187.2,61.8 190.9,65.4 C194.5,69.0 197.7,73.2 200.1,77.6 C213.8,80.2 216.3,84.9 216.3,84.9 C212.7,93.1 206.9,96.0 205.4,96.6 C205.1,102.4 203.0,107.8 198.3,112.5 C181.9,128.9 168.3,122.5 157.7,114.1 C157.9,116.9 156.7,120.9 152.7,124.9 L141.0,136.5 C139.8,137.7 141.6,141.9 141.8,141.8 Z" fill="currentColor" class="octo-body"></path></svg></a><style>.github-corner:hover .octo-arm{animation:octocat-wave 560ms ease-in-out}@keyframes octocat-wave{0%,100%{transform:rotate(0)}20%,60%{transform:rotate(-25deg)}40%,80%{transform:rotate(10deg)}}@media (max-width:500px){.github-corner:hover .octo-arm{animation:none}.github-corner .octo-arm{animation:octocat-wave 560ms ease-in-out}}</style>
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-meta">
+
+    <div>
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">淡然的博客</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+        <p class="site-subtitle">是个热爱探索的前端Coder</p>
+  </div>
+
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+</div>
+
+
+<nav class="site-nav">
+  
+  <ul id="menu" class="menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-fw fa-home"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-fw fa-tags"></i>标签</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-fw fa-th"></i>分类</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-fw fa-archive"></i>归档</a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+
+</nav>
+  <div class="site-search">
+    <div class="popup search-popup">
+    <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocorrect="off" autocapitalize="none"
+           placeholder="搜索..." spellcheck="false"
+           type="text" id="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div id="search-result"></div>
+
+</div>
+<div class="search-pop-overlay"></div>
+
+  </div>
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content">
+            
+
+  <div class="posts-expand">
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block " lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2022/03/04/Pina/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="https://pic1.zhimg.com/v2-0a2b112762d84f53ce576a24a8b895ed_b.jpg">
+      <meta itemprop="name" content="淡然">
+      <meta itemprop="description" content="Life-long learning">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="淡然的博客">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          Pina
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+              
+
+              <time title="创建时间：2022-03-04 15:59:41 / 修改时间：18:24:18" itemprop="dateCreated datePublished" datetime="2022-03-04T15:59:41+08:00">2022-03-04</time>
+            </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Vue3/" itemprop="url" rel="index">
+                    <span itemprop="name">Vue3</span>
+                  </a>
+                </span>
+            </span>
+
+          
+            <span class="post-meta-item" title="阅读次数" id="busuanzi_container_page_pv" style="display: none;">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-eye"></i>
+              </span>
+              <span class="post-meta-item-text">阅读次数：</span>
+              <span id="busuanzi_value_page_pv"></span>
+            </span>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <blockquote>
+<p>Pinia是Vue生态里Vuex的代替者，一个全新Vue的状态管理库。在Vue3成为正式版以后，尤雨溪强势推荐的项目就是Pinia。那先来看看Pinia比Vuex好的地方，也就是Pinia的五大优势。</p>
+</blockquote>
+<a id="more"></a>
+
+<h2 id="pinia五大优势"><a href="#pinia五大优势" class="headerlink" title="pinia五大优势"></a>pinia五大优势</h2><ol>
+<li>可以对Vue2和Vue3做到很好的支持，也就是老项目也可以使用Pinia。</li>
+<li>抛弃了Mutations的操作，只有state、getters和actions.极大的简化了状态管理库的使用，让代码编写更加容易直观。</li>
+<li>不需要嵌套模块，符合Vue3的Composition api ，让代码更加扁平化。</li>
+<li>完整的TypeScript支持。Vue3版本的一大优势就是对TypeScript的支持，所以Pinia也做到了完整的支持。如果你对Vuex很熟悉的化，一定知道Vuex对TS的语法支持不是完整的（经常被吐槽）。</li>
+<li>代码更加简洁，可以实现很好的代码自动分割。Vue2的时代，写代码需要来回翻滚屏幕屏幕找变量，非常的麻烦，Vue3的Composition api完美了解决这个问题。 可以实现代码自动分割，pinia也同样继承了这个优点。</li>
+</ol>
+<p>如果你说这五点有点太多了，记不住。可以简单总结Pinia的优势就是，更加简洁的语法，完美支持Vue3的Composition api 和 对TypesCcript的完美支持。这些优势和尤雨溪的强烈推荐，个人觉得很快Pinia就会完全取代Vuex，成为最适合Vue3的状态管理库。</p>
+<p>另外说一点，其实pinia的开发团队，就是Vuex的开发团队。</p>
+<blockquote>
+<p><strong>pinia的安装</strong></p>
+</blockquote>
+<p>安装好Vue3的开发环境后，就可以安装Pinia状态管理库了。安装的方法依然是使用<code>npm</code> 来安装。</p>
+<figure class="highlight powershell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">npm install pinia</span><br><span class="line"><span class="comment"># or with yarn</span></span><br><span class="line">yarn add pinia</span><br></pre></td></tr></table></figure>
+
+<h2 id="用Pinia的方式创建一个Store"><a href="#用Pinia的方式创建一个Store" class="headerlink" title="用Pinia的方式创建一个Store"></a>用Pinia的方式创建一个Store</h2><blockquote>
+<p><strong>在main.js中引入Pinia</strong></p>
+</blockquote>
+<p>安装好Pinia后，需要作的第一件事就是在<code>/src/main.ts</code>里引入<code>pinia</code>。 这里我们直接使用<code>import</code>引入。</p>
+<p>引入后，通过<code>createPinia( )</code>方法，得到pinia的实例和挂载到Vue根实例上。</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// src/main.ts</span></span><br><span class="line"><span class="keyword">import</span> &#123; createApp &#125; <span class="keyword">from</span> <span class="string">'vue'</span></span><br><span class="line"><span class="keyword">import</span> App <span class="keyword">from</span> <span class="string">'./App.vue'</span></span><br><span class="line"><span class="keyword">import</span> &#123; createPinia &#125; <span class="keyword">from</span> <span class="string">'pinia'</span> </span><br><span class="line"></span><br><span class="line"><span class="comment">// 创建pinia 实例</span></span><br><span class="line"><span class="keyword">const</span> pinia = createPinia()</span><br><span class="line"><span class="keyword">const</span> app = createApp(App)</span><br><span class="line"><span class="comment">// 挂载到 Vue 根实例上</span></span><br><span class="line">app.use(pinia)</span><br><span class="line">app.mount(<span class="string">'#app'</span>)</span><br></pre></td></tr></table></figure>
+
+<p>这样我们就在项目中引入了<code>Pinia</code>,也就是说我们可以在项目中使用它进行编程了。</p>
+<blockquote>
+<p><strong>创建store状态管理库</strong></p>
+</blockquote>
+<p>引入Pinia后，就可以创建状态管理库了，也就是常说的<code>Store</code>。直接在<code>/src</code>目录下，新建一个<code>store</code>文件夹。有了文件夹之后，再创建一个<code>index.ts</code>文件。</p>
+<p>这个文件里的代码，我们一般只做三件事。</p>
+<ol>
+<li>定义状态容器(仓库)</li>
+<li>修改容器(仓库)中的 state</li>
+<li>仓库中的 action 的使用</li>
+</ol>
+<p>明确了这四件事以后，我们来编写代码。先来定义容器,这个写法是固定的，你甚至可以在VSCode中定义一个代码片段，以后用到的时候，直接可以生成这样的代码</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// src/store/index.ts</span></span><br><span class="line"><span class="keyword">import</span> &#123; defineStore&#125; <span class="keyword">from</span> <span class="string">'pinia'</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">export</span> <span class="keyword">const</span> mainStore = defineStore(<span class="string">'main'</span>,&#123;</span><br><span class="line">  state:<span class="function"><span class="params">()</span>=&gt;</span>&#123;</span><br><span class="line">    <span class="keyword">return</span> &#123;&#125;</span><br><span class="line">  &#125;,</span><br><span class="line">  getters:&#123;&#125;,</span><br><span class="line">  actions:&#123;&#125;</span><br><span class="line">&#125;)</span><br></pre></td></tr></table></figure>
+
+<p>写完这段代码，你会感觉这个很像一个Vue的小组件，这也算是Pinia的一个优点。</p>
+<ul>
+<li><code>defineStore( )</code>方法的第一个参数：相当于为容器起一个名字。<code>注意：这里的名字必须唯一，不能重复</code>。这个是官方特别说明的一个事情。</li>
+<li><code>defineStore( )</code>方法的第二个参数：可以简单理解为一个配置对象，里边是对容器仓库的配置说明。当然这种说明是以对象的形式。</li>
+<li>state 属性：用来存储全局的状态的，这里边定义的，就可以是为SPA里全局的状态了。</li>
+<li>getters属性：用来监视或者说是计算状态的变化的，有缓存的功能。</li>
+<li>actions属性：对state里数据变化的业务逻辑，需求不同，编写逻辑不同。说白了就是修改state全局状态数据的。</li>
+</ul>
+<p>我们在Store里定义一个State，我们这里就写<code>Hello</code>。</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">state:<span class="function"><span class="params">()</span>=&gt;</span>&#123;</span><br><span class="line">    <span class="keyword">return</span> &#123;</span><br><span class="line">      hello:<span class="string">'Hello Pinia'</span></span><br><span class="line">    &#125;</span><br><span class="line">  &#125;,</span><br></pre></td></tr></table></figure>
+
+<p>这时候这个<code>hello</code>就是全局的状态数据，是每个页面和组件都可以通过Pinia方法读取到的。</p>
+<blockquote>
+<p><strong>在vue组件里 读取 Store数据</strong></p>
+</blockquote>
+<p>在<code>\src\components</code>里，新建一个<code>test.vue</code>的组件。</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">&lt;template&gt;</span><br><span class="line">  &lt;h2 <span class="class"><span class="keyword">class</span></span>=<span class="string">""</span>&gt;&#123;&#123; store.hello &#125;&#125;&lt;<span class="regexp">/h2&gt;</span></span><br><span class="line"><span class="regexp">&lt;/</span>template&gt;</span><br><span class="line"></span><br><span class="line">&lt;script lang=<span class="string">"ts"</span> setup&gt;</span><br><span class="line"><span class="keyword">import</span> &#123; mainStore &#125; <span class="keyword">from</span> <span class="string">"../store/index"</span>;</span><br><span class="line"><span class="keyword">const</span> store = mainStore();</span><br><span class="line">&lt;<span class="regexp">/script&gt;</span></span><br><span class="line"><span class="regexp"></span></span><br><span class="line"><span class="regexp">&lt;style lang="scss" scoped&gt;&lt;/</span>style&gt;</span><br></pre></td></tr></table></figure>
+
+<p>先引入<code>mainStore</code>,然后通过<code>mainStore</code>得到<code>store</code>实例，就可以在组件里调用store里的<code>state</code>定义的状态数据了。</p>
+<p>写好这个组件后，到<code>App.vue</code>里引入，就可以使用了。</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">&lt;script setup lang=<span class="string">"ts"</span>&gt;</span><br><span class="line"><span class="keyword">import</span> test <span class="keyword">from</span> <span class="string">"./components/test.vue"</span>;</span><br><span class="line">&lt;<span class="regexp">/script&gt;</span></span><br><span class="line"><span class="regexp"></span></span><br><span class="line"><span class="regexp">&lt;template&gt;</span></span><br><span class="line"><span class="regexp">  &lt;test&gt;&lt;/</span>test&gt;</span><br><span class="line">&lt;<span class="regexp">/template&gt;</span></span><br><span class="line"><span class="regexp"></span></span><br><span class="line"><span class="regexp">&lt;style&gt;</span></span><br><span class="line"><span class="regexp"></span></span><br><span class="line"><span class="regexp">&lt;/</span>style&gt;</span><br></pre></td></tr></table></figure>
+
+<h2 id="Pinia修改状态数据的四种方式"><a href="#Pinia修改状态数据的四种方式" class="headerlink" title="Pinia修改状态数据的四种方式"></a>Pinia修改状态数据的四种方式</h2><p>首先在<code>\store\index.ts</code>的state属性中，增加一个状态数据<code>count : 0</code>.</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">state:<span class="function"><span class="params">()</span>=&gt;</span>&#123;</span><br><span class="line">  <span class="keyword">return</span> &#123;</span><br><span class="line">    hello:<span class="string">'Hello Pinia'</span>,</span><br><span class="line">    count:<span class="number">0</span></span><br><span class="line">  &#125;</span><br><span class="line">&#125;,</span><br></pre></td></tr></table></figure>
+
+<p>添加一个状态数据后，在任意的组件中，可以对其进行修改操作</p>
+<blockquote>
+<ol>
+<li><strong>直接对状态数据进行修改</strong></li>
+</ol>
+</blockquote>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">&lt;template&gt;</span><br><span class="line">  &lt;div&gt;<span class="xml"><span class="tag">&lt;<span class="name">button</span> @<span class="attr">click</span>=<span class="string">"handleClick"</span>&gt;</span>点击增加,对状态数据进行修改<span class="tag">&lt;/<span class="name">button</span>&gt;</span></span><span class="xml"><span class="tag">&lt;/<span class="name">div</span>&gt;</span></span></span><br><span class="line">&lt;<span class="regexp">/template&gt;</span></span><br><span class="line"><span class="regexp"></span></span><br><span class="line"><span class="regexp">&lt;script lang="ts" setup&gt;</span></span><br><span class="line"><span class="regexp">import &#123; mainStore &#125; from "../</span>store/index<span class="string">";</span></span><br><span class="line"><span class="string">const store = mainStore();</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">const handleClick = () =&gt; &#123;</span></span><br><span class="line"><span class="string">  store.count++; // 最简单的一种修改方式</span></span><br><span class="line"><span class="string">&#125;;</span></span><br><span class="line"><span class="string">&lt;/script&gt;</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">&lt;style lang="</span>scss<span class="string">" scoped&gt;&lt;/style&gt;</span></span><br></pre></td></tr></table></figure>
+
+<p>我们先写了一个按钮，点击后直接执行<code>handleClick</code>方法。你会发现，这种改变状态数据的方法是非常方便的，要比<code>Vuex</code>简洁太多了。</p>
+<ul>
+<li>这种修改方式虽然简单直接，但是修改的状态数据如果存在多条，就需要逐条修改，稍微繁琐了一些</li>
+</ul>
+<blockquote>
+<ol start="2">
+<li><strong>使用 $patch 修改多条数据</strong></li>
+</ol>
+</blockquote>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> handleClick = <span class="function"><span class="params">()</span> =&gt;</span> &#123;</span><br><span class="line">store.$patch(&#123;</span><br><span class="line">    count: store.count + <span class="number">2</span>,</span><br><span class="line">    hello: store.hello + <span class="string">"1234"</span>,</span><br><span class="line">  &#125;);</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li><p>简单来讲，修改单条数据就直接使用第一种，多条数据就使用 <code>$patch</code></p>
+</li>
+<li><p>其实第一种也可以实现 <code>$patch</code> 的功能，无非是繁琐一点点，为什么更推荐 <code>$patch</code>呢？</p>
+</li>
+</ul>
+<p>因为Pinia 的官方网站，已经明确表示<code>$patch</code>的方式是经过优化的，会加快修改速度，对程序的性能有很大的好处。所以如果你是多条数据同时更新状态数据，推荐使用<code>$patch</code>方式更新。</p>
+<blockquote>
+<ol start="3">
+<li><strong>$patch 加函数的形式修改数据</strong></li>
+</ol>
+</blockquote>
+<p>上面的<code>$patch</code>方法，我们的参数使用的是一个对象。还有一种方式是传递函数，这种方法适合复杂数据的修改，比如数组、对象的修改。</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> handleClickMethod = <span class="function"><span class="params">()</span> =&gt;</span> &#123;</span><br><span class="line">  store.$patch(<span class="function">(<span class="params">state</span>) =&gt;</span> &#123;</span><br><span class="line">    state.count++;</span><br><span class="line">    state.hello = state.hello + <span class="string">"1234"</span></span><br><span class="line">  &#125;);</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<ol start="4">
+<li><strong>在actions中写好逻辑，其它组件再调用actions</strong></li>
+</ol>
+</blockquote>
+<p>如果你有一个修改的过程非常复杂，你可以先在<code>store</code>里，定义好<code>actions</code>中的函数，然后在组件里再调用函数。</p>
+<p>我们先到<code>\src\store\index.ts</code>文件里，在<code>actions</code>的地方编写一个<code>changeState( )</code>方法，用来改变数据状态。代码如下：</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">actions:&#123;</span><br><span class="line">    changeState()&#123;</span><br><span class="line">        <span class="keyword">this</span>.count++</span><br><span class="line">        <span class="keyword">this</span>.hello=<span class="string">'hello actios'</span></span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br></pre></td></tr></table></figure>
+
+<p>有了这个<code>changeState( )</code>函数后，就可以在组件中调用这个函数来修改状态数据了。</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> handleClickActions = <span class="function"><span class="params">()</span>=&gt;</span>&#123;</span><br><span class="line">  store.changeState()</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>注意：在用<code>actions</code>的时候，不能使用箭头函数，因为箭头函数绑定是外部的this。</li>
+</ul>
+<h2 id="Pinia-的解构取值问题"><a href="#Pinia-的解构取值问题" class="headerlink" title="Pinia 的解构取值问题"></a>Pinia 的解构取值问题</h2><blockquote>
+<p>在引入 store 的时候，我们只需要其中两个状态怎么办，当然可以采用解构的方式获取</p>
+</blockquote>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">&lt;script lang=<span class="string">"ts"</span> setup&gt;</span><br><span class="line"><span class="keyword">import</span> &#123; mainStore &#125; <span class="keyword">from</span> <span class="string">"../store/index"</span>;</span><br><span class="line"><span class="keyword">const</span> store = mainStore();</span><br><span class="line"><span class="keyword">const</span> &#123; hello, count &#125; = store;</span><br><span class="line">&lt;<span class="regexp">/script&gt;</span></span><br></pre></td></tr></table></figure>
+
+<p>这样看似简单，但通过解构的数据，只有一次作用，不是响应式数据（容易踩坑）。也就是说当你改变数据状态时，解构的状态数据不会发生变化。</p>
+<p>于是官方文档提供了<code>storeToRefs( )</code>方法。这个方法在<code>Pinia</code>中，所以我们先用<code>import</code>引入。</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">&lt;script lang=<span class="string">"ts"</span> setup&gt;</span><br><span class="line"><span class="keyword">import</span> &#123; mainStore &#125; <span class="keyword">from</span> <span class="string">"../store/index"</span>;</span><br><span class="line"><span class="keyword">import</span> &#123; storeToRefs &#125; <span class="keyword">from</span> <span class="string">"pinia"</span>; <span class="comment">// 引入 storeToRefs</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">const</span> store = mainStore();</span><br><span class="line"><span class="keyword">const</span> &#123; hello, count &#125; = storeToRefs(store); <span class="comment">// 使用 storeToRefs() 使得解构出的数据变为响应式数据</span></span><br><span class="line">&lt;<span class="regexp">/script&gt;</span></span><br></pre></td></tr></table></figure>
+
+<h2 id="Pinia-中-Getters-使用"><a href="#Pinia-中-Getters-使用" class="headerlink" title="Pinia 中 Getters 使用"></a>Pinia 中 Getters 使用</h2><blockquote>
+<p>Pinia中的Getter和Vue中的计算属性几乎一样，就是在获取State的值时作一些处理。</p>
+</blockquote>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">state:<span class="function"><span class="params">()</span>=&gt;</span>&#123;</span><br><span class="line">  <span class="keyword">return</span> &#123;</span><br><span class="line">    hello:<span class="string">'Hello'</span>,</span><br><span class="line">    count:<span class="number">0</span>,</span><br><span class="line">    str:<span class="string">'Pinia'</span></span><br><span class="line">  &#125;</span><br><span class="line">&#125;,</span><br></pre></td></tr></table></figure>
+
+<p>假设现在需要将 <code>hello</code>和<code>str两个状态数据拼接起来</code>，可以在 getters 中编写一个方法</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">getters:&#123;</span><br><span class="line">    strJoin(state)&#123;</span><br><span class="line">      <span class="keyword">return</span> state.hello + state.str</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;,</span><br></pre></td></tr></table></figure>
+
+<p>然后其他组件中可以直接使用这个方法：</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">&lt;template&gt;</span><br><span class="line">  &lt;h2&gt;&#123;&#123; hello &#125;&#125;&lt;<span class="regexp">/h2&gt;</span></span><br><span class="line"><span class="regexp">  &lt;h2&gt;&#123;&#123; str &#125;&#125;&lt;/</span>h2&gt;</span><br><span class="line">  &lt;h2&gt;&#123;&#123; strJoin &#125;&#125;&lt;<span class="regexp">/h2&gt;</span></span><br><span class="line"><span class="regexp">&lt;/</span>template&gt;</span><br><span class="line"></span><br><span class="line">&lt;script lang=<span class="string">"ts"</span> setup&gt;</span><br><span class="line"><span class="keyword">import</span> &#123; storeToRefs &#125; <span class="keyword">from</span> <span class="string">"pinia"</span>;</span><br><span class="line"><span class="keyword">import</span> &#123; mainStore &#125; <span class="keyword">from</span> <span class="string">"../store/index"</span>;</span><br><span class="line"><span class="keyword">const</span> store = mainStore();</span><br><span class="line"><span class="keyword">const</span> &#123; hello, str, strJoin &#125; = storeToRefs(store); <span class="comment">// 解构</span></span><br><span class="line">&lt;<span class="regexp">/script&gt;</span></span><br><span class="line"><span class="regexp"></span></span><br><span class="line"><span class="regexp">&lt;style lang="scss" scoped&gt;&lt;/</span>style&gt;</span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p>Getters 的缓存特性</p>
+</blockquote>
+<p>同一个组件中，即使调用了 <code>strJoin</code>多次，Getters 也只会执行一次</p>
+<h2 id="Pinia-中-Store-的互相调用"><a href="#Pinia-中-Store-的互相调用" class="headerlink" title="Pinia 中 Store 的互相调用"></a>Pinia 中 Store 的互相调用</h2><p>上面举的例子一直只使用了一个<code>Store</code>仓库，在真实项目中我们往往是有多个<code>Store</code>的。有多个<code>Stroe</code>时，就会涉及Store内部的互相调用问题。</p>
+<p>在<code>\src\store</code>下新建一个<code>test.ts</code>文件。然后下入下面的代码。</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> &#123; defineStore&#125; <span class="keyword">from</span> <span class="string">'pinia'</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">export</span> <span class="keyword">const</span> testStore = defineStore(<span class="string">'test'</span>,&#123;</span><br><span class="line">  state:<span class="function"><span class="params">()</span>=&gt;</span>&#123;</span><br><span class="line">    <span class="keyword">return</span> &#123;</span><br><span class="line">      list:[<span class="string">'小红'</span>,<span class="string">'小美'</span>,<span class="string">'小明'</span>]</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;)</span><br></pre></td></tr></table></figure>
+
+<p>这是一个非常简单的仓库，只有<code>state</code>（状态数据），需要注意的是<code>ID</code>要是唯一的。有了这个仓库后，就可以回到<code>index.ts</code>这个仓库中调用了</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> &#123; defineStore&#125; <span class="keyword">from</span> <span class="string">'pinia'</span></span><br><span class="line"><span class="keyword">import</span> &#123;testStore&#125; <span class="keyword">from</span> <span class="string">'./test'</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">export</span> <span class="keyword">const</span> mainStore = defineStore(<span class="string">'main'</span>,&#123;</span><br><span class="line">state:<span class="function"><span class="params">()</span>=&gt;</span>&#123;</span><br><span class="line">  <span class="keyword">return</span> &#123;</span><br><span class="line">    helloWorld:<span class="string">'Hello Pinia'</span>,</span><br><span class="line">    count:<span class="number">0</span>,</span><br><span class="line">  &#125;</span><br><span class="line">&#125;,</span><br><span class="line">  getters:&#123;&#125;,</span><br><span class="line">  actions:&#123;</span><br><span class="line">    getList()&#123;</span><br><span class="line">       <span class="built_in">console</span>.log(testStore().list) <span class="comment">// 这里就已经获取到了 testStore 仓库的数据</span></span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;)</span><br></pre></td></tr></table></figure>
+
+<p>这就实现了多个仓库之间的互相调用，其它组件中直接调用 actions 即可</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> getList = <span class="function"><span class="params">()</span> =&gt;</span> &#123;</span><br><span class="line">  store.getList();</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+
+<p>文章摘录：<a href="https://jspang.com/detailed?id=82" target="_blank" rel="noopener">点击进入原文地址</a></p>
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/%E7%9F%A5%E8%AF%86%E7%82%B9/" rel="tag"><i class="fa fa-tag"></i> 知识点</a>
+              <a href="/tags/%E5%B8%B8%E7%94%A8/" rel="tag"><i class="fa fa-tag"></i> 常用</a>
+              <a href="/tags/%E7%AC%94%E8%AE%B0/" rel="tag"><i class="fa fa-tag"></i> 笔记</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-next post-nav-item">
+                <a href="/2021/05/11/VUE%E8%A3%85%E9%A5%B0%E5%99%A8/" rel="next" title="VUE装饰器">
+                  <i class="fa fa-chevron-left"></i> VUE装饰器
+                </a>
+            </div>
+
+            <span class="post-nav-divider"></span>
+
+            <div class="post-nav-prev post-nav-item">
+            </div>
+          </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+  </div>
+
+
+          </div>
+          
+
+        </div>
+        
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#pinia五大优势"><span class="nav-number">1.</span> <span class="nav-text">pinia五大优势</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#用Pinia的方式创建一个Store"><span class="nav-number">2.</span> <span class="nav-text">用Pinia的方式创建一个Store</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Pinia修改状态数据的四种方式"><span class="nav-number">3.</span> <span class="nav-text">Pinia修改状态数据的四种方式</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Pinia-的解构取值问题"><span class="nav-number">4.</span> <span class="nav-text">Pinia 的解构取值问题</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Pinia-中-Getters-使用"><span class="nav-number">5.</span> <span class="nav-text">Pinia 中 Getters 使用</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Pinia-中-Store-的互相调用"><span class="nav-number">6.</span> <span class="nav-text">Pinia 中 Store 的互相调用</span></a></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <img class="site-author-image" itemprop="image" alt="淡然"
+    src="https://pic1.zhimg.com/v2-0a2b112762d84f53ce576a24a8b895ed_b.jpg">
+  <p class="site-author-name" itemprop="name">淡然</p>
+  <div class="site-description" itemprop="description">Life-long learning</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">38</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">11</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">41</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <a href="https://github.com/meitian3611" title="GitHub &amp;rarr; https:&#x2F;&#x2F;github.com&#x2F;meitian3611" rel="noopener" target="_blank"><i class="fa fa-fw fa-github"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="mailto:meitian3611@163.com" title="E-Mail &amp;rarr; mailto:meitian3611@163.com" rel="noopener" target="_blank"><i class="fa fa-fw fa-envelope"></i>E-Mail</a>
+      </span>
+  </div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2022</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">淡然</span>
+</div>
+
+<!--
+  <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> 强力驱动 v4.0.0
+  </div>
+  <span class="post-meta-divider">|</span>
+  <div class="theme-info">主题 – <a href="https://theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Gemini</a> v7.4.2
+  </div>  -->
+
+        
+<div class="busuanzi-count">
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+    <span class="post-meta-item" id="busuanzi_container_site_uv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-user"></i>
+      </span>
+      <span class="site-uv" title="总访客量">
+        <span id="busuanzi_value_site_uv"></span>
+      </span>
+    </span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item" id="busuanzi_container_site_pv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-eye"></i>
+      </span>
+      <span class="site-pv" title="总访问量">
+        <span id="busuanzi_value_site_pv"></span>
+      </span>
+    </span>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+  </div>
+
+  
+  
+  <script color='0,0,255' opacity='0.5' zIndex='-1' count='99' src="/lib/canvas-nest/canvas-nest.min.js"></script>
+  <script src="/lib/anime.min.js?v=3.1.0"></script>
+  <script src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  <script src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+<script src="/js/utils.js?v=7.4.2"></script><script src="/js/motion.js?v=7.4.2"></script>
+<script src="/js/schemes/pisces.js?v=7.4.2"></script>
+<script src="/js/next-boot.js?v=7.4.2"></script>
+
+
+
+  
+
+
+
+
+
+
+  <script src="/js/local-search.js?v=7.4.2"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+    
+
+    
+
+    
+
+  
+  <script type="text/javascript" src="//cdn.bootcss.com/canvas-nest.js/1.0.0/canvas-nest.min.js"></script>
+  \
+  <!-- 页面点击小红心 -->
+
+</body>
+</html>
+
+<script type="text/javascript" src="/js/love.js"></script>
