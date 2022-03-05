@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <search>
   <entry>
-    <title>Pina</title>
-    <url>/2022/03/04/Pina/</url>
+    <title>Pinia</title>
+    <url>/2022/03/04/Pinia/</url>
     <content><![CDATA[<blockquote>
 <p>Pinia是Vue生态里Vuex的代替者，一个全新Vue的状态管理库。在Vue3成为正式版以后，尤雨溪强势推荐的项目就是Pinia。那先来看看Pinia比Vuex好的地方，也就是Pinia的五大优势。</p>
 </blockquote>
@@ -159,8 +159,8 @@
       </categories>
       <tags>
         <tag>知识点</tag>
-        <tag>常用</tag>
         <tag>笔记</tag>
+        <tag>常用</tag>
       </tags>
   </entry>
   <entry>
@@ -1305,8 +1305,8 @@
       </categories>
       <tags>
         <tag>框架</tag>
-        <tag>常用</tag>
         <tag>笔记</tag>
+        <tag>常用</tag>
       </tags>
   </entry>
   <entry>
@@ -2245,8 +2245,8 @@
         <category>web前端</category>
       </categories>
       <tags>
-        <tag>语法</tag>
         <tag>知识点</tag>
+        <tag>语法</tag>
         <tag>es6</tag>
       </tags>
   </entry>
@@ -2327,8 +2327,8 @@
         <category>项目相关</category>
       </categories>
       <tags>
-        <tag>笔记</tag>
         <tag>Git</tag>
+        <tag>笔记</tag>
         <tag>工具</tag>
       </tags>
   </entry>
@@ -3203,8 +3203,8 @@
         <category>技术文档</category>
       </categories>
       <tags>
-        <tag>hexo</tag>
         <tag>语法</tag>
+        <tag>hexo</tag>
         <tag>博客</tag>
       </tags>
   </entry>
