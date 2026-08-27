@@ -1,6 +1,6 @@
 ---
 title: Markdown Example
-published: 2023-10-01
+published: 2000-01-01
 description: A simple example of a Markdown blog post.
 tags: [Markdown, Demo]
 category: Examples

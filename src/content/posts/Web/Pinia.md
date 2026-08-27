@@ -1,6 +1,7 @@
 ---
 title: "Pinia"
 published: 2022-03-04
+updated: 2026-08-27
 description: 前端热门公共状态管理工具
 tags: [Vue, Pinia]
 category: Web
