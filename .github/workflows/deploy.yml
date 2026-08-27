@@ -1,4 +1,4 @@
-name: Deploy Fuwari to GitHub Pages
+name: Build and Deploy Fuwari
 
 on:
   push:
@@ -7,14 +7,12 @@ on:
 
   workflow_dispatch:
 
-concurrency:
-  group: github-pages
-  cancel-in-progress: true
-
 permissions:
-  contents: read
-  pages: write
-  id-token: write
+  contents: write
+
+concurrency:
+  group: fuwari-build
+  cancel-in-progress: true
 
 jobs:
   build:
@@ -23,14 +21,14 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
 
-      # 先安装 pnpm
       - name: Setup pnpm
         uses: pnpm/action-setup@v4
         with:
           run_install: false
 
-      # 再设置 Node，并开启 pnpm 缓存
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
@@ -40,26 +38,21 @@ jobs:
       - name: Install dependencies
         run: pnpm install --frozen-lockfile
 
-      - name: Setup GitHub Pages
-        uses: actions/configure-pages@v5
-
       - name: Build Astro
         run: pnpm astro build
 
-      - name: Upload Pages artifact
-        uses: actions/upload-pages-artifact@v4
-        with:
-          path: ./dist
+      - name: Deploy dist to master
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
 
-  deploy:
-    needs: build
-    runs-on: ubuntu-latest
+          cd dist
 
-    environment:
-      name: github-pages
-      url: ${{ steps.deployment.outputs.page_url }}
+          git init
+          git checkout -B master
 
-    steps:
-      - name: Deploy to GitHub Pages
-        id: deployment
-        uses: actions/deploy-pages@v5
+          git add -A
+          git commit -m "deploy: update blog"
+
+          git remote add origin "https://x-access-token:${{ secrets.GITHUB_TOKEN }}@github.com/${{ github.repository }}.git"
+          git push -f origin master
