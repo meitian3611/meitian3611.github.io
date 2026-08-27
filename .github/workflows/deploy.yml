@@ -28,6 +28,24 @@ jobs:
           # build-cmd: pnpm run build # 用于构建你的网站的命令。默认运行软件包的构建脚本或任务。（可选）
         # env:
           # PUBLIC_POKEAPI: 'https://pokeapi.co/api/v2' # 对变量值使用单引号。（可选）
+          # Astro 构建完成后，将 dist 推送到 master
+      - name: Deploy dist to master
+        run: |
+          cd dist
+
+          git init
+          git checkout -B master
+
+          # 配置 Git 提交身份
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+
+          git add -A
+          git commit -m "deploy: update blog"
+
+          # 推送到当前仓库的 master
+          git remote add origin "https://x-access-token:${{ github.token }}@github.com/${{ github.repository }}.git"
+          git push -f origin master
 
   deploy:
     needs: build
