@@ -9,7 +9,7 @@ on:
 
 # 允许 job 克隆 repo 并创建一个 page deployment
 permissions:
-  contents: read
+  contents: write # 允许 Actions 读取仓库并推送 master
   pages: write
   id-token: write
 
