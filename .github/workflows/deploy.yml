@@ -28,8 +28,8 @@ jobs:
           # build-cmd: pnpm run build # 用于构建你的网站的命令。默认运行软件包的构建脚本或任务。（可选）
         # env:
           # PUBLIC_POKEAPI: 'https://pokeapi.co/api/v2' # 对变量值使用单引号。（可选）
-          # Astro 构建完成后，将 dist 推送到 master
       - name: Deploy dist to master
+          # Astro 构建完成后，将 dist 推送到 master
         run: |
           cd dist
 
