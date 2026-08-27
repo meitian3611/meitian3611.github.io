@@ -17,7 +17,7 @@ jobs:
   build:
     strategy:
       matrix:
-        node: [ 22, 24 ]
+        node: [ 22]
     runs-on: ubuntu-latest
     name: Astro Build for Node.js ${{ matrix.node }} # Corrected job name
     steps:
