@@ -4,7 +4,7 @@ published: 2021-05-11
 updated: 2026-08-28
 description: "vue-property-decorator 装饰器用法速查"
 tags: [Vue, TypeScript]
-category: Web
+category: 前端开发
 ---
 
 `vue-property-decorator` 是 Vue 2 + TypeScript 场景下的常用装饰器库，基于 `vue-class-component` 封装，用类组件语法替代冗长的 options 写法，提升代码可读性与类型安全。

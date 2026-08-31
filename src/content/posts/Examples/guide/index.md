@@ -3,7 +3,7 @@ title: Fuwari 使用指南
 published: 2026-08-28
 description: "如何使用这个博客模板。"
 image: "./cover.jpeg"
-tags: ["Fuwari", "博客"]
+tags: ["Fuwari", "博客", "教程"]
 category: Examples
 draft: false
 ---

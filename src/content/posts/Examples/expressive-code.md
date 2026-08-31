@@ -1,8 +1,8 @@
 ---
-title: Expressive Code 示例
+title: Expressive Code 教程
 published: 2026-08-28
 description: 演示 Markdown 中代码块在 Expressive Code 下的呈现效果
-tags: [Markdown, 博客, 示例]
+tags: [Markdown, 博客, 教程]
 category: Examples
 draft: false
 ---
