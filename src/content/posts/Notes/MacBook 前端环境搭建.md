@@ -8,7 +8,56 @@ category: Mac系统
 draft: false
 ---
 
-> 本文只面向 macOS，按「系统设置 → 命令行工具 → 终端 → Node → Git → 软件 → 避坑」的顺序组织，从上到下执行一遍即可。文中路径以 Apple 芯片（M 系列）为准，Intel 机型仅 Homebrew 前缀不同。
+> 本文只面向 macOS，按「系统设置 → 命令行工具 → 终端 → Node → Git → 软件 → 避坑」的顺序组织，从上到下执行一遍即可。赶时间的话直接看下面懒人版。文中路径以 Apple 芯片（M 系列）为准，Intel 机型仅 Homebrew 前缀不同。
+
+## 懒人版：核心流程一条龙
+
+不想逐节看的话，按下面顺序把命令跑完即可开工。每一步的原理和注意事项都在后文对应章节。
+
+**第一步：先单独装 Command Line Tools**（会弹图形窗口，点「安装」并等待装完，再跑后面）：
+
+```bash
+xcode-select --install
+```
+
+**第二步：按顺序执行核心配置**（git 用户名、邮箱记得换成自己的）：
+
+```bash
+# 1. Homebrew（装完自动加入 PATH，自动兼容 Apple / Intel 芯片）
+/bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
+echo 'eval "$(/opt/homebrew/bin/brew shellenv 2>/dev/null || /usr/local/bin/brew shellenv)"' >> ~/.zprofile
+eval "$(/opt/homebrew/bin/brew shellenv 2>/dev/null || /usr/local/bin/brew shellenv)"
+
+# 2. 必装软件与命令行工具
+brew install --cask visual-studio-code google-chrome iterm2 rectangle
+brew install git fnm
+
+# 3. Node：fnm + LTS + pnpm + 镜像源
+echo 'eval "$(fnm env --use-on-cd)"' >> ~/.zshrc
+source ~/.zshrc
+fnm install --lts && fnm default --lts
+corepack enable && corepack prepare pnpm@latest --activate
+npm config set registry https://registry.npmmirror.com
+pnpm config set registry https://registry.npmmirror.com
+
+# 4. Git 基础配置
+git config --global user.name "你的名字"
+git config --global user.email "you@example.com"
+git config --global init.defaultBranch main
+git config --global credential.helper osxkeychain   # macOS 钥匙串保存账号
+
+# 5. 全局忽略 .DS_Store
+echo ".DS_Store" >> ~/.gitignore_global
+echo "**/.DS_Store" >> ~/.gitignore_global
+git config --global core.excludesfile ~/.gitignore_global
+
+# 6. 验证（code 命令需先在 VS Code 命令面板里装一次，见第六节）
+node -v && npm -v && pnpm -v && git --version && code .
+```
+
+::::tip
+系统初始化（触控板、Finder、Dock 等）无法用脚本表达，建议照着第一节的图形路径花五分钟点一遍；SSH 接入 GitHub 看第五节；其余按需选装看第六节。
+::::
 
 ## 一、系统初始化设置
 
@@ -124,12 +173,16 @@ export HOMEBREW_BREW_GIT_REMOTE="https://mirrors.tuna.tsinghua.edu.cn/git/homebr
 export HOMEBREW_CORE_GIT_REMOTE="https://mirrors.tuna.tsinghua.edu.cn/git/homebrew/homebrew-core.git"
 ```
 
-安装结束后，**按终端末尾的提示**把 `brew` 加入 PATH（Apple 芯片路径为 `/opt/homebrew`，Intel 为 `/usr/local`）：
+安装结束后，**按终端末尾的提示**把 `brew` 加入 PATH，按机型二选一（Apple 芯片路径为 `/opt/homebrew`，Intel 为 `/usr/local`）：
 
 ```bash
-# Apple 芯片
+# Apple 芯片（M 系列）
 echo 'eval "$(/opt/homebrew/bin/brew shellenv)"' >> ~/.zprofile
 eval "$(/opt/homebrew/bin/brew shellenv)"
+
+# Intel 芯片（/usr/local/bin 通常已在默认 PATH，但显式写入可保证 brew 的优先级稳定）
+echo 'eval "$(/usr/local/bin/brew shellenv)"' >> ~/.zprofile
+eval "$(/usr/local/bin/brew shellenv)"
 
 # 验证
 brew --version
@@ -292,29 +345,37 @@ git config --global core.excludesfile ~/.gitignore_global
 - **图形方式**：App Store 搜索安装，或官网下载 `.dmg` 后把 `.app` 拖进「应用程序」文件夹，适合只装一两个软件；
 - **命令行方式（推荐）**：`brew install --cask xxx`，一条命令装完，后续 `brew upgrade` 统一升级，适合批量装机，也是下面表格采用的方式。
 
-软件清单（`brew install --cask xxx`）：
+软件按「必装 → 推荐 → 按需」分级，装到哪一级看个人需求。**费用**：全部可免费使用——多数本身免费开源；Raycast、Apifox、Postman、Figma、The Unarchiver、Rectangle 是「免费版 + 付费档」，免费部分对个人开发完全够用；
+
+### 必装（前端开工就靠这几样）
 
 | 软件 | 用途 | 命令 |
 | --- | --- | --- |
 | Visual Studio Code | 主力编辑器 | `brew install --cask visual-studio-code` |
 | Google Chrome | 开发调试主浏览器 | `brew install --cask google-chrome` |
-| Firefox Developer Edition | 兼容性调试 | `brew install --cask firefox@developer-edition` |
 | iTerm2 | 终端 | `brew install --cask iterm2` |
-| Raycast | 启动器 / 剪贴板 / 快捷键（mac 独有） | `brew install --cask raycast` |
 | Rectangle | 窗口分屏快捷键（mac 独有） | `brew install --cask rectangle` |
-| Docker Desktop | 容器环境 | `brew install --cask docker` |
-| Apifox / Postman | 接口调试 | `brew install --cask apifox` |
-| IINA | 视频播放器 | `brew install --cask iina` |
-| The Unarchiver | 解压（处理 GBK 压缩包） | `brew install --cask the-unarchiver` |
-| Figma | 设计稿 | `brew install --cask figma` |
-
-命令行工具：
 
 ```bash
-brew install git          # 系统自带的 git 版本较旧，用 brew 覆盖
-brew install jq tree wget # JSON 处理 / 目录树 / 下载
-brew install mas          # Mac App Store 命令行版，可装 App Store 里的应用
+brew install git          # 必装：系统自带的 git 版本较旧，用 brew 覆盖
 ```
+
+### 推荐（装上幸福感明显提升）
+
+| 软件 | 用途 | 命令 |
+| --- | --- | --- |
+| Raycast | 启动器 / 剪贴板历史 / 窗口管理（mac 独有） | `brew install --cask raycast` |
+| Apifox | 接口调试 | `brew install --cask apifox` |
+| IINA | 视频播放器 | `brew install --cask iina` |
+| The Unarchiver | 解压（能处理 GBK 压缩包，中文不乱码） | `brew install --cask the-unarchiver` |
+
+### 按需（项目或场景需要再装）
+
+| 软件 | 用途 | 命令 |
+| --- | --- | --- |
+| Firefox Developer Edition | 浏览器兼容性调试 | `brew install --cask firefox@developer-edition` |
+| Figma | 查看设计稿 | `brew install --cask figma` |
+| Postman | 接口调试（Apifox 的替代品） | `brew install --cask postman` |
 
 VS Code 装完后，打开命令面板（<kbd>Cmd</kbd> + <kbd>Shift</kbd> + <kbd>P</kbd>）执行 `Shell Command: Install 'code' command in PATH`，之后终端里 `code .` 直接打开当前目录。
 
@@ -389,22 +450,24 @@ brew bundle --file=~/Brewfile                 # 新机器上还原
 一份前端常用的 `Brewfile` 示例：
 
 ```bash
-# ~/Brewfile
+# ~/Brewfile —— 与第六节的分级对应，按需增删
+
+# 命令行工具
 brew "git"
 brew "fnm"
-brew "jq"
-brew "tree"
-brew "wget"
 brew "mas"
 
+# GUI：必装
 cask "visual-studio-code"
 cask "google-chrome"
 cask "iterm2"
-cask "raycast"
 cask "rectangle"
+
+# GUI：推荐
+cask "raycast"
+cask "apifox"
 cask "iina"
 cask "the-unarchiver"
-cask "docker"
 ```
 
 ## 九、完成自检
