@@ -1,16 +1,16 @@
 ---
-title: "MacBook 前端环境搭建"
-published: 2026-08-31
-updated: 2026-08-31
-description: 拿到一台新 Mac 后，从系统设置、Homebrew、终端、Node 到 Git 与常用软件，按本文顺序走一遍即可开工。
-tags: [环境搭建, 教程]
+title: "MacBook 前端开发环境搭建指南（macOS 新机配置教程）"
+published: 2026-09-01
+updated: 2026-09-01
+description: "MacBook 新机开箱的前端环境搭建教程：Homebrew、iTerm2 + Oh My Zsh、fnm 管理 Node.js、pnpm 镜像源、Git 与 SSH 配置，附懒人版一键命令，M 系列与 Intel 芯片通用。"
+tags: [macOS, 前端, 环境搭建, 教程]
 category: Mac系统
 draft: false
 ---
 
-> 本文只面向 macOS，按「系统设置 → 命令行工具 → 终端 → Node → Git → 软件 → 避坑」的顺序组织，从上到下执行一遍即可。赶时间的话直接看下面懒人版。文中路径以 Apple 芯片（M 系列）为准，Intel 机型仅 Homebrew 前缀不同。
+> 本文只面向 macOS，按「系统设置 → 命令行工具 → 终端 → Node → Git → 软件」的顺序组织，从上到下执行一遍即可。赶时间的话直接看下面懒人版。文中路径以 Apple 芯片（M 系列）为准，Intel 机型仅 Homebrew 前缀不同。
 
-## 懒人版：核心流程一条龙
+## 懒人版-速通流程
 
 不想逐节看的话，按下面顺序把命令跑完即可开工。每一步的原理和注意事项都在后文对应章节。
 
@@ -32,7 +32,13 @@ eval "$(/opt/homebrew/bin/brew shellenv 2>/dev/null || /usr/local/bin/brew shell
 brew install --cask visual-studio-code google-chrome iterm2 rectangle
 brew install git fnm
 
-# 3. Node：fnm + LTS + pnpm + 镜像源
+# 3. Oh My Zsh 与插件（会重写 ~/.zshrc，必须放在 fnm 配置之前）
+sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)" "" --unattended
+git clone https://github.com/zsh-users/zsh-autosuggestions ~/.oh-my-zsh/custom/plugins/zsh-autosuggestions
+git clone https://github.com/zsh-users/zsh-syntax-highlighting ~/.oh-my-zsh/custom/plugins/zsh-syntax-highlighting
+sed -i '' 's/plugins=(git)/plugins=(git zsh-autosuggestions zsh-syntax-highlighting)/' ~/.zshrc
+
+# 4. Node：fnm + LTS + pnpm + 镜像源
 echo 'eval "$(fnm env --use-on-cd)"' >> ~/.zshrc
 source ~/.zshrc
 fnm install --lts && fnm default --lts
@@ -40,23 +46,23 @@ corepack enable && corepack prepare pnpm@latest --activate
 npm config set registry https://registry.npmmirror.com
 pnpm config set registry https://registry.npmmirror.com
 
-# 4. Git 基础配置
+# 5. Git 基础配置
 git config --global user.name "你的名字"
 git config --global user.email "you@example.com"
 git config --global init.defaultBranch main
 git config --global credential.helper osxkeychain   # macOS 钥匙串保存账号
 
-# 5. 全局忽略 .DS_Store
+# 6. 全局忽略 .DS_Store
 echo ".DS_Store" >> ~/.gitignore_global
 echo "**/.DS_Store" >> ~/.gitignore_global
 git config --global core.excludesfile ~/.gitignore_global
 
-# 6. 验证（code 命令需先在 VS Code 命令面板里装一次，见第六节）
+# 7. 验证（code 命令需先在 VS Code 命令面板里装一次，见第六节）
 node -v && npm -v && pnpm -v && git --version && code .
 ```
 
 ::::tip
-系统初始化（触控板、Finder、Dock 等）无法用脚本表达，建议照着第一节的图形路径花五分钟点一遍；SSH 接入 GitHub 看第五节；其余按需选装看第六节。
+终端美化（Powerlevel10k 主题与字体）需要跑交互向导，照第三章第 3 节手动做一次即可；系统初始化（触控板、Finder、Dock 等）照第一节图形路径花五分钟点一遍；SSH 接入 GitHub 看第五节；其余按需选装看第六节。
 ::::
 
 ## 一、系统初始化设置
@@ -77,7 +83,6 @@ node -v && npm -v && pnpm -v && git --version && code .
 | 三指拖移窗口 | 系统设置 → 辅助功能 → 指针控制 → 触控板拖移样式 |
 | 触发角（快速息屏/调度中心） | 系统设置 → 桌面与程序坞 → 触发角 |
 | F1–F12 作为标准功能键 | 系统设置 → 键盘 → 键盘快捷键 → 功能键 |
-| Caps Lock 映射为 Control | 系统设置 → 键盘 → 键盘快捷键 → 修饰键 |
 
 ::::tip[三指拖移]
 macOS 默认没有开启三指拖移，需要在辅助功能里手动打开。开启后拖拽窗口、拖选文本都不用按住触控板，效率提升明显。
@@ -101,20 +106,6 @@ Finder 默认隐藏了很多开发常用的信息，按下面路径一次性配�
 - 显示/隐藏隐藏文件（`.git`、`.zshrc` 等）：Finder 中按 <kbd>Cmd</kbd> + <kbd>Shift</kbd> + <kbd>.</kbd>；
 - 进入任意文件夹的绝对路径：<kbd>Cmd</kbd> + <kbd>Shift</kbd> + <kbd>G</kbd>，例如输入 `~/Library`。
 
-::::note[命令行方式]
-需要写进脚本、换机批量执行时用 `defaults`，改完必须 `killall` 重启进程才生效：
-
-```bash
-defaults write com.apple.finder ShowPathbar -bool true       # 显示路径栏
-defaults write com.apple.finder ShowStatusBar -bool true     # 显示状态栏
-defaults write com.apple.finder FXDefaultSearchScope -string "SCcf"  # 搜索当前文件夹
-defaults write NSGlobalDomain AppleShowAllExtensions -bool true      # 显示所有文件扩展名
-defaults write com.apple.dock autohide -bool true            # Dock 自动隐藏
-defaults write com.apple.dock tilesize -int 48               # Dock 图标大小
-
-killall Finder && killall Dock
-```
-::::
 
 ### 4. 截图与录屏
 
@@ -130,15 +121,6 @@ killall Finder && killall Dock
 | <kbd>Cmd</kbd> + <kbd>Shift</kbd> + <kbd>4</kbd> | 区域截图 |
 | <kbd>Cmd</kbd> + <kbd>Shift</kbd> + <kbd>5</kbd> | 打开截图/录屏工具条 |
 
-::::note[命令行方式]
-需要指定到任意路径（或写进配置脚本）时用命令，改完需重启 `SystemUIServer` 生效：
-
-```bash
-mkdir -p ~/Pictures/Screenshots
-defaults write com.apple.screencapture location ~/Pictures/Screenshots
-killall SystemUIServer
-```
-::::
 
 ## 二、命令行工具与 Homebrew
 
@@ -204,30 +186,83 @@ brew --version
 | `brew services start <name>` | 后台启动服务（如 nginx、mysql） |
 | `brew doctor` | 环境问题自检 |
 
-## 三、终端与 Shell
+## 三、终端与 Shell：iTerm2 + Oh My Zsh
 
-macOS 默认 Shell 就是 `zsh`，无需额外切换。可选装一个更好用的终端：
+macOS 默认 Shell 就是 `zsh`，无需切换。终端推荐「iTerm2 + Oh My Zsh」组合：iTerm2 负责窗口体验，Oh My Zsh 负责主题与插件。
+
+### 1. 安装 iTerm2
 
 ```bash
-brew install --cask iterm2        # 老牌终端，可配 Oh My Zsh
-brew install --cask warp          # 现代终端，开箱即用（可选其一）
+brew install --cask iterm2
 ```
 
-推荐的最小 Shell 配置（写入 `~/.zshrc`）：
+装完后设为默认终端：iTerm2 菜单栏 → Make iTerm2 Default Term。
+
+### 2. 安装 Oh My Zsh
 
 ```bash
-# ~/.zshrc
+sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)"
+```
+
+::::important[会重写 ~/.zshrc]
+安装脚本会把现有的 `~/.zshrc` 备份为 `~/.zshrc.pre-oh-my-zsh` 再覆盖。如果先跑了懒人版（里面往 `.zshrc` 写过 `fnm env`），装完 Oh My Zsh 后把这行从备份文件拷回新的 `~/.zshrc` 即可。因此推荐顺序：**先装 Oh My Zsh，再加 fnm 等工具配置**。
+::::
+
+### 3. 安装 Powerlevel10k 主题
+
+好看好用的提示符，能显示 git 分支、执行耗时、返回码等：
+
+```bash
+git clone --depth=1 https://github.com/romkatv/powerlevel10k.git \
+  "${ZSH_CUSTOM:-$HOME/.oh-my-zsh/custom}/themes/powerlevel10k"
+```
+
+编辑 `~/.zshrc` 改主题行：
+
+```bash
+ZSH_THEME="powerlevel10k/powerlevel10k"
+```
+
+然后 `source ~/.zshrc`，会自动进入 `p10k configure` 配置向导，一路按喜好选择即可。向导会提示安装 **MesloLGS NF** 字体（向导里有下载链接，四个字体文件都装上），装完在 iTerm2 里启用：iTerm2 → Settings → Profiles → Text → Font → 选择 `MesloLGS NF`。
+
+::::tip
+不想折腾主题的话，跳过本小节，把 `~/.zshrc` 里的 `ZSH_THEME` 改成内置的 `agnoster` 或保持默认的 `robbyrussell` 也够用。
+::::
+
+### 4. 安装两个必装插件
+
+```bash
+# 命令自动补全建议（灰色提示历史命令，按 → 采纳）
+git clone https://github.com/zsh-users/zsh-autosuggestions \
+  "${ZSH_CUSTOM:-~/.oh-my-zsh/custom}/plugins/zsh-autosuggestions"
+
+# 命令语法高亮（正确的命令绿色、错误的红色）
+git clone https://github.com/zsh-users/zsh-syntax-highlighting \
+  "${ZSH_CUSTOM:-~/.oh-my-zsh/custom}/plugins/zsh-syntax-highlighting"
+```
+
+编辑 `~/.zshrc` 启用插件（`git` 插件内置，提供 `gst`、`gco` 等大量 git 别名）：
+
+```bash
+plugins=(git zsh-autosuggestions zsh-syntax-highlighting)
+```
+
+### 5. 常用别名
+
+追加到 `~/.zshrc` 末尾：
+
+```bash
 alias ll="ls -alh"
 alias ..="cd .."
-alias ip="ipconfig getifaddr en0"   # 查看本机局域网 IP（macOS 独有命令）
+alias ip="ipconfig getifaddr en0"          # 查看本机局域网 IP（macOS 独有命令）
 alias ports="lsof -i -P -n | grep LISTEN"  # 查看端口占用
-
-# 清理系统垃圾（谨慎使用）
-alias cleands="find . -name '.DS_Store' -delete"
+alias cleands="find . -name '.DS_Store' -delete"  # 清理 .DS_Store
 ```
 
+最后 `source ~/.zshrc` 生效。
+
 ::::warning[PATH 被 path_helper 打乱]
-macOS 会在 `/etc/zshrc` 中通过 `path_helper` 重新排列 PATH，把 `/usr/bin`、`/usr/sbin` 等系统路径**前置**，可能让你自己装的 node/python 被系统自带版本顶掉。解决：把自定义 PATH 写在 `~/.zshrc` 的**最后一行**，或改用 `~/.zshrc` 追加而非 `.zprofile`。
+macOS 会在 `/etc/zshrc` 中通过 `path_helper` 重新排列 PATH，把 `/usr/bin`、`/usr/sbin` 等系统路径**前置**，可能让你自己装的 node/python 被系统自带版本顶掉。解决：把自定义 PATH 写在 `~/.zshrc` 的**最后一行**。
 ::::
 
 ## 四、Node.js 环境
@@ -299,7 +334,16 @@ npm config get registry && pnpm config get registry
 
 ## 五、Git 与 SSH
 
-### 1. 基础配置
+### 1. 安装与基础配置
+
+macOS 自带 git 但版本较旧，用 brew 覆盖后统一管理升级：
+
+```bash
+brew install git
+git --version
+```
+
+然后做全局配置：
 
 ```bash
 git config --global user.name "你的名字"
@@ -345,7 +389,7 @@ git config --global core.excludesfile ~/.gitignore_global
 - **图形方式**：App Store 搜索安装，或官网下载 `.dmg` 后把 `.app` 拖进「应用程序」文件夹，适合只装一两个软件；
 - **命令行方式（推荐）**：`brew install --cask xxx`，一条命令装完，后续 `brew upgrade` 统一升级，适合批量装机，也是下面表格采用的方式。
 
-软件按「必装 → 推荐 → 按需」分级，装到哪一级看个人需求。**费用**：全部可免费使用——多数本身免费开源；Raycast、Apifox、Postman、Figma、The Unarchiver、Rectangle 是「免费版 + 付费档」，免费部分对个人开发完全够用；
+软件按「必装 → 推荐 → 按需」分级，装到哪一级看个人需求。
 
 ### 必装（前端开工就靠这几样）
 
@@ -354,11 +398,7 @@ git config --global core.excludesfile ~/.gitignore_global
 | Visual Studio Code | 主力编辑器 | `brew install --cask visual-studio-code` |
 | Google Chrome | 开发调试主浏览器 | `brew install --cask google-chrome` |
 | iTerm2 | 终端 | `brew install --cask iterm2` |
-| Rectangle | 窗口分屏快捷键（mac 独有） | `brew install --cask rectangle` |
 
-```bash
-brew install git          # 必装：系统自带的 git 版本较旧，用 brew 覆盖
-```
 
 ### 推荐（装上幸福感明显提升）
 
@@ -383,94 +423,7 @@ VS Code 装完后，打开命令面板（<kbd>Cmd</kbd> + <kbd>Shift</kbd> + <kb
 VS Code 左下角齿轮 → 开启「设置同步」，用 GitHub 登录即可在新机器上拉取插件与配置，不用重新配一遍。
 ::::
 
-## 七、macOS 开发避坑
-
-### 1. 文件系统默认不区分大小写
-
-APFS 默认大小写**不敏感**，`Foo.ts` 和 `foo.ts` 被视为同一个文件。在 Mac 上把文件从 `utils.ts` 改成 `Utils.ts`，Git 可能识别不到变更，代码推到服务器/CI 上却直接报错。
-
-解决：重命名用 `git mv utils.ts Utils.ts` 显式告诉 Git，或提交后确认 `git status` 里确实出现了删除+新增两条记录。
-
-::::tip[确实需要区分大小写]
-用「磁盘工具」新建一个格式为 **APFS（区分大小写）** 的宗卷专门放代码即可：磁盘工具 → 右上角「宗卷」→ 添加宗卷 → 格式选 APFS（区分大小写）。系统盘不要改，部分软件在系统盘上会因大小写问题安装失败。
-::::
-
-### 2. 应用被 Gatekeeper 拦截
-
-打开非 App Store 应用提示「无法打开，因为它来自身份不明的开发者」：
-
-- 图形方式：系统设置 → 隐私与安全性 → 滑到底部点「仍要打开」；
-- 命令行方式（去掉隔离标记）：
-
-```bash
-sudo xattr -rd com.apple.quarantine /Applications/xxx.app
-```
-
-### 3. Apple 芯片需要 Rosetta 2
-
-部分老软件只有 x86 版本，首次打开时系统会自动弹窗提示安装 Rosetta，点「安装」即可；需要提前装或弹窗没出来时再手动装：
-
-```bash
-softwareupdate --install-rosetta --agree-to-license
-```
-
-需要在 x86 环境下安装某个包时，加 `arch -x86_64`：
-
-```bash
-arch -x86_64 brew install <name>   # 会装到 /usr/local，与 /opt/homebrew 隔离
-```
-
-### 4. GUI 应用读不到 Shell 环境变量
-
-从 Dock 或 Launchpad 打开的应用**不会**加载 `.zshrc`，所以在终端里能用的环境变量，VS Code 里可能读不到（反之亦然，VS Code 的集成终端会继承 Shell 环境）。
-
-需要全局生效时用：
-
-```bash
-launchctl setenv MY_ENV "value"   # 仅当前登录会话有效
-```
-
-### 5. 三个 Library 目录别搞混
-
-| 路径 | 含义 |
-| --- | --- |
-| `~/Library` | 当前用户的配置与缓存，删错会影响应用配置 |
-| `/Library` | 本机全体用户的共享配置 |
-| `/System/Library` | 系统自带，**不要动** |
-
-## 八、一键复现：Brewfile
-
-把已装软件导出成 `Brewfile`，换新机时一条命令还原：
-
-```bash
-cd ~ && brew bundle dump --describe --force   # 导出到 ~/Brewfile
-brew bundle --file=~/Brewfile                 # 新机器上还原
-```
-
-一份前端常用的 `Brewfile` 示例：
-
-```bash
-# ~/Brewfile —— 与第六节的分级对应，按需增删
-
-# 命令行工具
-brew "git"
-brew "fnm"
-brew "mas"
-
-# GUI：必装
-cask "visual-studio-code"
-cask "google-chrome"
-cask "iterm2"
-cask "rectangle"
-
-# GUI：推荐
-cask "raycast"
-cask "apifox"
-cask "iina"
-cask "the-unarchiver"
-```
-
-## 九、完成自检
+## 七、完成自检
 
 ```bash
 xcode-select -p               # CommandLineTools 路径
