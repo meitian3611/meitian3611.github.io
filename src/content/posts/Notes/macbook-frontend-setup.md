@@ -2,13 +2,13 @@
 title: "MacBook 前端开发环境搭建指南（macOS 新机配置教程）"
 published: 2026-09-01
 updated: 2026-09-01
-description: "MacBook 新机开箱的前端环境搭建教程：Homebrew、iTerm2 + Oh My Zsh、fnm 管理 Node.js、pnpm 镜像源、Git 与 SSH 配置，附懒人版一键命令，M 系列与 Intel 芯片通用。"
+description: "MacBook 新机开箱的前端环境搭建教程：Homebrew、iTerm2 + Oh My Zsh、fnm 管理 Node.js、pnpm 镜像源、Git 与 SSH 配置，附懒人版一键命令。"
 tags: [macOS, 前端, 环境搭建, 教程]
 category: Mac系统
 draft: false
 ---
 
-> 本文只面向 macOS，按「系统设置 → 命令行工具 → 终端 → Node → Git → 软件」的顺序组织，从上到下执行一遍即可。赶时间的话直接看下面懒人版。文中路径以 Apple 芯片（M 系列）为准，Intel 机型仅 Homebrew 前缀不同。
+> 本文只面向 macOS，按「系统设置 → 命令行工具 → 终端 → Node → Git → 软件」的顺序组织，从上到下执行一遍即可。赶时间的话直接看下面懒人版。文中路径以 Apple 芯片（M 系列）为准。
 
 ## 懒人版-速通流程
 
@@ -23,10 +23,10 @@ xcode-select --install
 **第二步：按顺序执行核心配置**（git 用户名、邮箱记得换成自己的）：
 
 ```bash
-# 1. Homebrew（装完自动加入 PATH，自动兼容 Apple / Intel 芯片）
+# 1. Homebrew（装完自动加入 PATH）
 /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
-echo 'eval "$(/opt/homebrew/bin/brew shellenv 2>/dev/null || /usr/local/bin/brew shellenv)"' >> ~/.zprofile
-eval "$(/opt/homebrew/bin/brew shellenv 2>/dev/null || /usr/local/bin/brew shellenv)"
+echo 'eval "$(/opt/homebrew/bin/brew shellenv)"' >> ~/.zprofile
+eval "$(/opt/homebrew/bin/brew shellenv)"
 
 # 2. 必装软件与命令行工具
 brew install --cask visual-studio-code google-chrome iterm2 rectangle
@@ -155,16 +155,12 @@ export HOMEBREW_BREW_GIT_REMOTE="https://mirrors.tuna.tsinghua.edu.cn/git/homebr
 export HOMEBREW_CORE_GIT_REMOTE="https://mirrors.tuna.tsinghua.edu.cn/git/homebrew/homebrew-core.git"
 ```
 
-安装结束后，**按终端末尾的提示**把 `brew` 加入 PATH，按机型二选一（Apple 芯片路径为 `/opt/homebrew`，Intel 为 `/usr/local`）：
+安装结束后，**按终端末尾的提示**把 `brew` 加入 PATH（Apple 芯片路径为 `/opt/homebrew`）：
 
 ```bash
 # Apple 芯片（M 系列）
 echo 'eval "$(/opt/homebrew/bin/brew shellenv)"' >> ~/.zprofile
 eval "$(/opt/homebrew/bin/brew shellenv)"
-
-# Intel 芯片（/usr/local/bin 通常已在默认 PATH，但显式写入可保证 brew 的优先级稳定）
-echo 'eval "$(/usr/local/bin/brew shellenv)"' >> ~/.zprofile
-eval "$(/usr/local/bin/brew shellenv)"
 
 # 验证
 brew --version
