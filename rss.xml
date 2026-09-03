@@ -1,0 +1,2217 @@
+<?xml version="1.0" encoding="UTF-8"?><rss version="2.0" xmlns:content="http://purl.org/rss/1.0/modules/content/"><channel><title>淡淡然</title><description>Blog</description><link>https://meitian3611.github.io/</link><language>zh_CN</language><item><title>React 19 核心知识整理（Hooks / Zustand / Router）</title><link>https://meitian3611.github.io/posts/web/react/</link><guid isPermaLink="true">https://meitian3611.github.io/posts/web/react/</guid><description>React 19 核心知识梳理：不可变状态更新、副作用与依赖数组、渲染优化、自定义 Hook、Zustand 与 React Router，含 React 16/18/19 特性对比、高频坑位清单与 Vue 迁移对照表。</description><pubDate>Thu, 03 Sep 2026 00:00:00 GMT</pubDate><content:encoded>&lt;blockquote&gt;
+&lt;p&gt;本文面向有 Vue 经验、要上手 React 的人，按「基本概念 → Hooks → 自定义 Hook → Zustand → Router → 版本特性对比 → 坑位」的顺序组织，从上往下读一遍即可。赶时间的话直接看开头速查表和第十章坑位清单，Vue 转过来的拉到最后看对照表&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;h2&gt;速查表&lt;/h2&gt;
+&lt;table&gt;
+&lt;thead&gt;
+&lt;tr&gt;
+&lt;th&gt;Hook&lt;/th&gt;
+&lt;th&gt;干什么&lt;/th&gt;
+&lt;th&gt;什么时候用&lt;/th&gt;
+&lt;/tr&gt;
+&lt;/thead&gt;
+&lt;tbody&gt;
+&lt;tr&gt;
+&lt;td&gt;&lt;code&gt;useState&lt;/code&gt;&lt;/td&gt;
+&lt;td&gt;声明会驱动界面的状态&lt;/td&gt;
+&lt;td&gt;值变了界面要跟着变&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;&lt;code&gt;useEffect&lt;/code&gt;&lt;/td&gt;
+&lt;td&gt;声明副作用&lt;/td&gt;
+&lt;td&gt;发请求、订阅、定时器、改 DOM&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;&lt;code&gt;useRef&lt;/code&gt;&lt;/td&gt;
+&lt;td&gt;跨渲染存一个可变值&lt;/td&gt;
+&lt;td&gt;拿 DOM、存不触发渲染的标记&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;&lt;code&gt;useMemo&lt;/code&gt;&lt;/td&gt;
+&lt;td&gt;缓存计算结果 / 稳定引用&lt;/td&gt;
+&lt;td&gt;重计算，或下游依赖引用相等&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;&lt;code&gt;useCallback&lt;/code&gt;&lt;/td&gt;
+&lt;td&gt;缓存函数引用&lt;/td&gt;
+&lt;td&gt;配合 &lt;code&gt;memo&lt;/code&gt; 子组件，或作为 effect 依赖&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;自定义 Hook&lt;/td&gt;
+&lt;td&gt;复用带状态的逻辑&lt;/td&gt;
+&lt;td&gt;多处用到同一段逻辑&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
+&lt;p&gt;&lt;code&gt;useRef&lt;/code&gt; 和 &lt;code&gt;useState&lt;/code&gt; 的区分：要显示在界面上的用 state，只是「记住一下」的用 ref。&lt;/p&gt;
+&lt;h2&gt;一、五个基本概念&lt;/h2&gt;
+&lt;p&gt;这一章不涉及具体 API，先把 React 的几条规定说清楚。后面各章的写法都能从这里推出来。&lt;/p&gt;
+&lt;h3&gt;1. 界面由状态推导出来&lt;/h3&gt;
+&lt;p&gt;React 里没有「当前界面」这样一个可被直接修改的对象，界面是每次渲染时从 state 现算出来的。&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;// 描述的是关系：collapsed 为真时宽 80，否则 240
+&amp;lt;Sider collapsed={collapsed} width={collapsed ? 80 : 240} /&amp;gt;
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;要改宽度就去改 &lt;code&gt;collapsed&lt;/code&gt;，不要拿 DOM 节点改 style。好处是界面不会和状态对不上——state 是对的，界面就是对的。&lt;/p&gt;
+&lt;p&gt;代价是任何影响界面的东西都得进 state，包括 loading、错误提示、弹窗开关这些。&lt;/p&gt;
+&lt;h3&gt;2. 数据向下，事件向上&lt;/h3&gt;
+&lt;p&gt;父组件通过 props 把数据传下去，子组件拿到的是只读值。子组件要改，只能调用父组件传下来的函数。&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;&amp;lt;PortalMenu collapsed={collapsed} /&amp;gt;                              {/* 只读 */}
+&amp;lt;PortalTop collapsed={collapsed} setCollapsed={setCollapsed} /&amp;gt;    {/* 读 + 改 */}
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;这条规定有个直接结论：&lt;strong&gt;两个兄弟组件要共享状态，就得把状态提到它们最近的公共父组件&lt;/strong&gt;，也就是常说的状态提升。&lt;/p&gt;
+&lt;h3&gt;3. 渲染就是重新执行组件函数&lt;/h3&gt;
+&lt;p&gt;&lt;code&gt;collapsed&lt;/code&gt; 一变，&lt;code&gt;Portal&lt;/code&gt; 这个函数会整体重新跑一遍，返回新的 JSX，React 再对比新旧结果去更新 DOM。&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;function Portal() {
+  const [collapsed, setCollapsed] = useState(false);
+  // collapsed 变化时，从这里往下全部重新执行
+}
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;由此推出一件重要的事：&lt;strong&gt;函数体里创建的普通变量、函数、对象，每次渲染都是新的&lt;/strong&gt;。第五章的 &lt;code&gt;useMemo&lt;/code&gt; / &lt;code&gt;useCallback&lt;/code&gt; 全是为了处理这件事。&lt;/p&gt;
+&lt;h3&gt;4. 变更要产生新引用&lt;/h3&gt;
+&lt;p&gt;React 判断「状态变了没」用的是引用比较（&lt;code&gt;Object.is&lt;/code&gt;）。原地修改数组或对象，引用没变，React 就认为没变，不重新渲染。&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;tabList.push(newTab);
+setTabList(tabList);               // 引用没变，不渲染
+
+setTabList([...tabList, newTab]);  // 新数组，正常渲染
+&lt;/code&gt;&lt;/pre&gt;
+&lt;h3&gt;5. 渲染之外的事要单独声明&lt;/h3&gt;
+&lt;p&gt;发请求、订阅、定时器、直接改 &lt;code&gt;document&lt;/code&gt; 这些不属于「算界面」的动作，统称副作用。它们必须写在 &lt;code&gt;useEffect&lt;/code&gt; 里，React 才知道什么时候执行、什么时候清理。&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;useEffect(() =&amp;gt; {
+  fetchUserInfo();
+  return () =&amp;gt; { /* 卸载时清理 */ };
+}, []);
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;&lt;code&gt;useEffect&lt;/code&gt; 的定位是逃生舱，用来接外部系统。能由 props 或 state 直接算出来的东西，不要放进 state，更不要用 effect 去同步——那样只会多渲染一次，还容易漏依赖。&lt;/p&gt;
+&lt;h2&gt;二、useState：状态与不可变更新&lt;/h2&gt;
+&lt;pre&gt;&lt;code&gt;const [collapsed, setCollapsed] = useState(false);
+//     ↑ 当前值        ↑ 更新函数        ↑ 初始值（只在首次渲染生效）
+&lt;/code&gt;&lt;/pre&gt;
+&lt;h3&gt;函数式更新&lt;/h3&gt;
+&lt;pre&gt;&lt;code&gt;// 连续调用两次，结果只加 1
+setCount(count + 1);
+setCount(count + 1);
+// 原因：两次读到的 count 都是本次渲染快照里的同一个值
+
+// 基于最新值计算
+setCount((prev) =&amp;gt; prev + 1);
+setCount((prev) =&amp;gt; prev + 1);   // 结果 +2
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;新值依赖旧值时，用函数式更新。&lt;/p&gt;
+&lt;h3&gt;不可变更新的几种写法&lt;/h3&gt;
+&lt;pre&gt;&lt;code&gt;// 新增用展开、删除用 filter、修改用 map
+setTabList([...tabList, newTab]);
+setList(list.filter((i) =&amp;gt; i.id !== id));
+setList(list.map((i) =&amp;gt; (i.id === id ? { ...i, done: true } : i)));
+
+// 对象：展开覆盖
+setUser({ ...user, name: &quot;newName&quot; });
+
+// 嵌套对象：逐层展开，层级深了建议上 immer
+setState({ ...state, user: { ...state.user, age: 18 } });
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;::::warning[从 Vue 转过来容易踩的坑]
+Vue 3 的 &lt;code&gt;reactive&lt;/code&gt; 允许 &lt;code&gt;arr.push(x)&lt;/code&gt; 直接响应，React 必须 &lt;code&gt;setArr([...arr, x])&lt;/code&gt;。写惯了 Vue 会在这里反复出错。
+::::&lt;/p&gt;
+&lt;h3&gt;状态放哪一层&lt;/h3&gt;
+&lt;p&gt;找「需要读它的所有组件的最近公共祖先」。层级一深、共享方一多，就该换全局状态库，见第七章。&lt;/p&gt;
+&lt;h2&gt;三、useEffect：最容易踩坑的一个&lt;/h2&gt;
+&lt;h3&gt;依赖数组的三种写法&lt;/h3&gt;
+&lt;pre&gt;&lt;code&gt;useEffect(() =&amp;gt; { /* ... */ });          // 无数组：每次渲染后都跑（基本不用）
+useEffect(() =&amp;gt; { /* ... */ }, []);      // 空数组：挂载时跑一次
+useEffect(() =&amp;gt; { /* ... */ }, [a, b]);  // a 或 b 变化时跑
+&lt;/code&gt;&lt;/pre&gt;
+&lt;h3&gt;清理函数&lt;/h3&gt;
+&lt;pre&gt;&lt;code&gt;useEffect(() =&amp;gt; {
+  const timer = setInterval(() =&amp;gt; setNow(Date.now()), 1000);
+  return () =&amp;gt; clearInterval(timer);   // 卸载前 / 下次 effect 前执行
+}, []);
+
+useEffect(() =&amp;gt; {
+  const controller = new AbortController();
+  fetch(url, { signal: controller.signal }).then(setData);
+  return () =&amp;gt; controller.abort();     // 组件卸载或 url 变化时取消请求
+}, [url]);
+&lt;/code&gt;&lt;/pre&gt;
+&lt;h3&gt;四个高频坑&lt;/h3&gt;
+&lt;table&gt;
+&lt;thead&gt;
+&lt;tr&gt;
+&lt;th&gt;坑&lt;/th&gt;
+&lt;th&gt;症状&lt;/th&gt;
+&lt;th&gt;怎么处理&lt;/th&gt;
+&lt;/tr&gt;
+&lt;/thead&gt;
+&lt;tbody&gt;
+&lt;tr&gt;
+&lt;td&gt;依赖数组漏项&lt;/td&gt;
+&lt;td&gt;拿到旧值（stale closure）&lt;/td&gt;
+&lt;td&gt;补全依赖，或改函数式更新&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;依赖里放每次都变的对象&lt;/td&gt;
+&lt;td&gt;effect 无限执行&lt;/td&gt;
+&lt;td&gt;&lt;code&gt;useMemo&lt;/code&gt; 稳定它，或依赖原始字段&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;effect 里 setState 无中止条件&lt;/td&gt;
+&lt;td&gt;死循环渲染&lt;/td&gt;
+&lt;td&gt;加判断条件 / 加闸门标记&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;忘记清理&lt;/td&gt;
+&lt;td&gt;内存泄漏、竞态、重复请求&lt;/td&gt;
+&lt;td&gt;返回清理函数&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
+&lt;p&gt;::::warning[StrictMode 下 effect 会跑两遍]
+开发环境 React 会故意走一遍「挂载 → 卸载 → 再挂载」，用来暴露清理逻辑的缺陷。所以 effect 必须幂等。如果发现请求发了两次，说明缺一个「已请求过」的守卫。生产环境没这个问题。
+::::&lt;/p&gt;
+&lt;h3&gt;用 useRef 破解双向同步死循环&lt;/h3&gt;
+&lt;p&gt;中后台常见的一道题：菜单、Tab、路由三者要互相同步。URL 变了要激活对应 Tab，点 Tab 又要跳转路由，两边互相影响，稍不注意就死循环。&lt;/p&gt;
+&lt;p&gt;做法是拿 &lt;code&gt;useRef&lt;/code&gt; 记一个标记，区分这次变更是谁发起的：&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;const currentUrl = pathname.replace(&quot;/page/&quot;, &quot;&quot;);
+const isUserAction = useRef(false);   // 是否由用户操作引起
+
+// ① 路径变化 → 激活匹配 Tab（URL 是权威来源）
+useEffect(() =&amp;gt; {
+  const item = findKeyByUrl(menusItems, currentUrl);
+  if (item) addTabList(item);
+}, [menusItems, currentUrl, addTabList, findKeyByUrl]);
+
+// ② activeKey 变化 → 仅在用户操作时才导航
+useEffect(() =&amp;gt; {
+  if (!isUserAction.current) return;   // 关键闸门
+  isUserAction.current = false;        // 用完即复位
+  const url = findUrlByKey(menusItems, activeKey);
+  if (url &amp;amp;&amp;amp; url !== currentUrl) navigate(`/page/${url}`);
+}, [activeKey]);
+
+// ③ 用户点 Tab 时打标记
+const onChange = (key: string) =&amp;gt; {
+  if (key !== activeKey) isUserAction.current = true;
+  setActiveKey(key);
+};
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;这个模式一般叫意图标记（intent flag）。Vue 里对应的做法是 &lt;code&gt;watch&lt;/code&gt; 配一个 &lt;code&gt;isInternalUpdate&lt;/code&gt; 标志位，思路一样。&lt;/p&gt;
+&lt;p&gt;差别在于 Vue 的 &lt;code&gt;watch&lt;/code&gt; 自动收集依赖，React 的 &lt;code&gt;useEffect&lt;/code&gt; 要手工列依赖，漏一个就是 bug。&lt;/p&gt;
+&lt;h2&gt;四、useRef：不触发渲染的变量&lt;/h2&gt;
+&lt;pre&gt;&lt;code&gt;// 用途①：拿 DOM 节点
+const inputRef = useRef&amp;lt;HTMLInputElement&amp;gt;(null);
+&amp;lt;input ref={inputRef} /&amp;gt;
+inputRef.current?.focus();
+
+// 用途②：存一个「不需要触发渲染」的可变值
+const isUserAction = useRef(false);
+isUserAction.current = true;   // 改了不会重渲染
+&lt;/code&gt;&lt;/pre&gt;
+&lt;table&gt;
+&lt;thead&gt;
+&lt;tr&gt;
+&lt;th&gt;&lt;/th&gt;
+&lt;th&gt;&lt;code&gt;useRef&lt;/code&gt;&lt;/th&gt;
+&lt;th&gt;&lt;code&gt;useState&lt;/code&gt;&lt;/th&gt;
+&lt;/tr&gt;
+&lt;/thead&gt;
+&lt;tbody&gt;
+&lt;tr&gt;
+&lt;td&gt;变化后触发渲染&lt;/td&gt;
+&lt;td&gt;否&lt;/td&gt;
+&lt;td&gt;是&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;读取时机&lt;/td&gt;
+&lt;td&gt;&lt;code&gt;.current&lt;/code&gt; 永远是最新值&lt;/td&gt;
+&lt;td&gt;闭包里读到的可能是快照值&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;典型用途&lt;/td&gt;
+&lt;td&gt;DOM 引用、计时器 id、意图标记&lt;/td&gt;
+&lt;td&gt;影响界面的数据&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
+&lt;p&gt;::::tip[React 19 的变化]
+&lt;code&gt;ref&lt;/code&gt; 现在就是普通 prop，不再需要 &lt;code&gt;forwardRef&lt;/code&gt;：&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;// React 18
+const Input = forwardRef&amp;lt;HTMLInputElement, Props&amp;gt;((props, ref) =&amp;gt; &amp;lt;input ref={ref} /&amp;gt;);
+
+// React 19
+function Input({ ref, ...props }: Props) {
+  return &amp;lt;input ref={ref} /&amp;gt;;
+}
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;::::&lt;/p&gt;
+&lt;h2&gt;五、useMemo / useCallback / memo：别乱用&lt;/h2&gt;
+&lt;p&gt;组件函数每次渲染整体重跑，函数内的普通变量、函数、对象会全部重建。这三个 API 用来收敛这个成本。&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;function Comp({ items }) {
+  const result = useMemo(() =&amp;gt; heavyCalc(items), [items]);      // 缓存重计算
+  const handler = useCallback(() =&amp;gt; save(items), [items]);      // 缓存函数引用
+  return &amp;lt;Child data={result} onClick={handler} /&amp;gt;;
+}
+
+const Child = memo(function Child({ data, onClick }) { /* ... */ });  // props 浅比较
+&lt;/code&gt;&lt;/pre&gt;
+&lt;h3&gt;一个实际例子&lt;/h3&gt;
+&lt;pre&gt;&lt;code&gt;function useMenuSelection(menusMemo: MenuItemConverted[]) {
+  const { pathname } = useLocation();
+  const curUrl = pathname.slice(6);
+
+  const keyPath = useMemo(() =&amp;gt; findKeyPath(menusMemo, curUrl), [menusMemo, curUrl]);
+  const selectedKeys = useMemo(() =&amp;gt; [keyPath.at(-1) ?? &quot;IMAS_Index&quot;], [keyPath]);
+  const parentKeys = useMemo(() =&amp;gt; keyPath.slice(0, -1), [keyPath]);
+
+  return { selectedKeys, parentKeys };
+}
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;三个 &lt;code&gt;useMemo&lt;/code&gt; 的意义并不一样：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;code&gt;keyPath&lt;/code&gt; 缓存的是递归遍历整棵菜单树的结果，省的是实打实的计算；&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;selectedKeys&lt;/code&gt; 和 &lt;code&gt;parentKeys&lt;/code&gt; 本身几乎不花钱，但它们返回的是新数组，缓存的真正作用是&lt;strong&gt;保证引用稳定&lt;/strong&gt;——下游要用 &lt;code&gt;parentKeys !== prevParentKeys&lt;/code&gt; 做引用比较，引用一变语义就错了。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;::::tip[useMemo 的另一半用途]
+除了省计算，&lt;code&gt;useMemo&lt;/code&gt; 还常常用来稳引用。后者往往更刚需：引用不稳，下游的引用比较和 &lt;code&gt;memo&lt;/code&gt; 全部失效。
+::::&lt;/p&gt;
+&lt;h3&gt;什么时候不该用&lt;/h3&gt;
+&lt;pre&gt;&lt;code&gt;// 缓存比计算还贵
+const name = useMemo(() =&amp;gt; user.firstName + user.lastName, [user]);
+
+// 依赖每次都变，缓存永不命中
+const data = useMemo(() =&amp;gt; process(list), [list]);  // list 是内联字面量
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;加不加看 Profiler，React DevTools 里能看到每个组件的渲染耗时，确实慢了再说。&lt;/p&gt;
+&lt;p&gt;另外 &lt;code&gt;memo&lt;/code&gt; 做的是 props 浅比较，必须配 &lt;code&gt;useCallback&lt;/code&gt; / &lt;code&gt;useMemo&lt;/code&gt; 使用，否则父组件每次传进来新函数，&lt;code&gt;memo&lt;/code&gt; 直接失效。&lt;/p&gt;
+&lt;p&gt;::::note[React Compiler]
+官方的 React Compiler 能自动完成这三者的优化，将来手写的这部分可以逐步删掉。现在可以先把 &lt;code&gt;eslint-plugin-react-hooks@7&lt;/code&gt; 装上（内置 Compiler 规则），把代码风格规范起来。
+::::&lt;/p&gt;
+&lt;h2&gt;六、自定义 Hook：逻辑复用的正解&lt;/h2&gt;
+&lt;p&gt;React 的逻辑复用走过三代：Mixin（已废弃）→ HOC / Render Props（嵌套地狱）→ 自定义 Hook。&lt;/p&gt;
+&lt;p&gt;自定义 Hook 就是一个内部用了 Hooks 的普通函数，命名以 &lt;code&gt;use&lt;/code&gt; 开头。&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;function useMenuSelection(menusMemo: MenuItemConverted[]) {
+  const { pathname } = useLocation();      // URL 自己拿，调用方不用管
+  const curUrl = pathname.slice(6);
+  const keyPath = useMemo(() =&amp;gt; findKeyPath(menusMemo, curUrl), [menusMemo, curUrl]);
+
+  return { selectedKeys, parentKeys };     // 用对象返回，方便按需解构
+}
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;几条约定：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;命名 &lt;code&gt;useXxx&lt;/code&gt;，ESLint 靠这个前缀判断 Hook 规则；&lt;/li&gt;
+&lt;li&gt;纯函数、常量定义在 Hook 外部，避免每次渲染重复创建；&lt;/li&gt;
+&lt;li&gt;返回值用对象，后续扩展方便；&lt;/li&gt;
+&lt;li&gt;想清楚这是派生逻辑（无 state）还是状态容器（有 state，要处理同步）；&lt;/li&gt;
+&lt;li&gt;不要在条件或循环里调用 Hook，Hooks 依赖调用顺序；&lt;/li&gt;
+&lt;li&gt;不要在普通函数里调用 Hook。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3&gt;render 期 setState&lt;/h3&gt;
+&lt;p&gt;下面这段看着违反规则，在 render 期间调了 setState：&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;function useMenuOpenKeys(menusMemo, parentKeys = []) {
+  const [stateOpenKeys, setStateOpenKeys] = useState(parentKeys);
+  const [prevParentKeys, setPrevParentKeys] = useState(parentKeys);
+
+  if (parentKeys !== prevParentKeys) {
+    setPrevParentKeys(parentKeys);
+    setStateOpenKeys((prev) =&amp;gt; [...new Set([...prev, ...parentKeys])]);
+  }
+  // ...
+}
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;这是官方认可的「根据 props 变化调整 state」写法，有三个前提：必须条件执行，否则无限渲染；只能改本组件自己的 state；React 会丢弃本次渲染结果重新跑，不会把中间态刷到屏幕上。&lt;/p&gt;
+&lt;p&gt;不用 &lt;code&gt;useEffect&lt;/code&gt; 的原因：effect 方案的流程是「渲染旧值 → 提交到 DOM（用户看到菜单没展开）→ 跑 effect → 再渲染」，中间态会闪一下。render 期 setState 在提交到屏幕之前就纠正了。&lt;/p&gt;
+&lt;p&gt;::::warning[这里有隐式契约]
+这个写法强依赖 &lt;code&gt;parentKeys&lt;/code&gt; 的引用稳定性，由上游 &lt;code&gt;useMemo&lt;/code&gt; 保证。谁把那个 &lt;code&gt;useMemo&lt;/code&gt; 删了，&lt;code&gt;parentKeys&lt;/code&gt; 每次都是新数组，引用比较永远为真，直接无限渲染。用这种写法记得加注释说明。
+::::&lt;/p&gt;
+&lt;h2&gt;七、Zustand：现在的主流状态管理&lt;/h2&gt;
+&lt;table&gt;
+&lt;thead&gt;
+&lt;tr&gt;
+&lt;th&gt;方案&lt;/th&gt;
+&lt;th&gt;样板代码&lt;/th&gt;
+&lt;th&gt;适用&lt;/th&gt;
+&lt;/tr&gt;
+&lt;/thead&gt;
+&lt;tbody&gt;
+&lt;tr&gt;
+&lt;td&gt;&lt;code&gt;useState&lt;/code&gt; + props 透传&lt;/td&gt;
+&lt;td&gt;少&lt;/td&gt;
+&lt;td&gt;层级浅（≤2 层）&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;Context + &lt;code&gt;useReducer&lt;/code&gt;&lt;/td&gt;
+&lt;td&gt;中&lt;/td&gt;
+&lt;td&gt;低频更新（主题、语言）&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;Redux Toolkit&lt;/td&gt;
+&lt;td&gt;多&lt;/td&gt;
+&lt;td&gt;大型团队、需要时间旅行调试&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;Zustand&lt;/td&gt;
+&lt;td&gt;极少&lt;/td&gt;
+&lt;td&gt;中后台绝大多数场景&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
+&lt;p&gt;用起来不需要 Provider 包裹，store 本身就是一个 Hook。&lt;/p&gt;
+&lt;h3&gt;基本用法&lt;/h3&gt;
+&lt;pre&gt;&lt;code&gt;import { create } from &quot;zustand&quot;;   // v5 只有具名导出，没有 default
+
+const useStore = create&amp;lt;Store&amp;gt;()((set) =&amp;gt; ({
+  activeKey: &quot;IMAS_Index&quot;,
+  tabList: [],
+
+  // 同步：set 返回的对象会自动浅合并，不用自己展开 ...state
+  addTabList: (item) =&amp;gt;
+    set((state) =&amp;gt; {
+      const exist = state.tabList.some((t) =&amp;gt; t.key === item.key);
+      if (exist) return { activeKey: item.key };
+      return { tabList: [...state.tabList, item], activeKey: item.key };
+    }),
+
+  // 异步：直接 async/await
+  fetchMenus: async () =&amp;gt; {
+    const data = await getMenus();
+    set({ menusItems: toMenuItems(data) });
+  },
+}));
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;&lt;code&gt;set&lt;/code&gt; 里 &lt;code&gt;return {}&lt;/code&gt; 表示什么都不改，不会通知订阅者。异步不需要 middleware，也不用作 &lt;code&gt;pending/fulfilled/rejected&lt;/code&gt; 三件套，await 完直接 set。&lt;/p&gt;
+&lt;h3&gt;selector 决定订阅粒度&lt;/h3&gt;
+&lt;pre&gt;&lt;code&gt;// 独立 selector：只订阅用到的字段
+const tabList = useStore((state) =&amp;gt; state.tabList);
+const addTabList = useStore((state) =&amp;gt; state.addTabList);
+
+// 订阅整个 store：任何字段变化都会重渲染本组件
+const { tabList, activeKey } = useStore();
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;Zustand 会比较 selector 的返回值是否变化（默认 &lt;code&gt;Object.is&lt;/code&gt;），没变就不重渲染。&lt;/p&gt;
+&lt;p&gt;一次要取多个值时用 &lt;code&gt;useShallow&lt;/code&gt;：&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;import { useShallow } from &quot;zustand/react/shallow&quot;;
+
+// useShallow 做浅比较
+const { tabList, activeKey } = useStore(
+  useShallow((state) =&amp;gt; ({ tabList: state.tabList, activeKey: state.activeKey })),
+);
+
+// 直接返回对象字面量：每次都是新对象，引用永远不等，等于每次都重渲染
+&lt;/code&gt;&lt;/pre&gt;
+&lt;h3&gt;组件外使用&lt;/h3&gt;
+&lt;pre&gt;&lt;code&gt;useStore.getState().addTabList(item);   // 工具函数、路由守卫里直接操作
+useStore.setState({ activeKey: &quot;x&quot; });
+useStore.subscribe((state) =&amp;gt; console.log(state.activeKey));
+&lt;/code&gt;&lt;/pre&gt;
+&lt;h2&gt;八、React Router：Outlet 与懒加载&lt;/h2&gt;
+&lt;pre&gt;&lt;code&gt;const router = createBrowserRouter([
+  {
+    path: &quot;/&quot;,
+    element: &amp;lt;Portal /&amp;gt;,        // 父路由 = 布局
+    children: [
+      { path: &quot;&quot;, element: &amp;lt;Navigate to=&quot;/page/index&quot; /&amp;gt; },           // 默认重定向
+      { path: &quot;/page/index&quot;, element: lazyLoad(() =&amp;gt; import(&quot;@/pages/Home&quot;)) },
+    ],
+  },
+  { path: &quot;*&quot;, element: &amp;lt;NotFound /&amp;gt; },
+]);
+&lt;/code&gt;&lt;/pre&gt;
+&lt;table&gt;
+&lt;thead&gt;
+&lt;tr&gt;
+&lt;th&gt;概念&lt;/th&gt;
+&lt;th&gt;作用&lt;/th&gt;
+&lt;th&gt;Vue 对应&lt;/th&gt;
+&lt;/tr&gt;
+&lt;/thead&gt;
+&lt;tbody&gt;
+&lt;tr&gt;
+&lt;td&gt;&lt;code&gt;&amp;lt;Outlet /&amp;gt;&lt;/code&gt;&lt;/td&gt;
+&lt;td&gt;子路由渲染占位符&lt;/td&gt;
+&lt;td&gt;&lt;code&gt;&amp;lt;router-view&amp;gt;&lt;/code&gt;&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;&lt;code&gt;&amp;lt;Navigate to&amp;gt;&lt;/code&gt;&lt;/td&gt;
+&lt;td&gt;重定向&lt;/td&gt;
+&lt;td&gt;&lt;code&gt;redirect&lt;/code&gt;&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;&lt;code&gt;useNavigate()&lt;/code&gt;&lt;/td&gt;
+&lt;td&gt;编程式导航&lt;/td&gt;
+&lt;td&gt;&lt;code&gt;router.push()&lt;/code&gt;&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;&lt;code&gt;useLocation()&lt;/code&gt;&lt;/td&gt;
+&lt;td&gt;当前 location&lt;/td&gt;
+&lt;td&gt;&lt;code&gt;route&lt;/code&gt;&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;&lt;code&gt;useParams()&lt;/code&gt;&lt;/td&gt;
+&lt;td&gt;动态路由参数&lt;/td&gt;
+&lt;td&gt;&lt;code&gt;route.params&lt;/code&gt;&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;&lt;code&gt;lazy&lt;/code&gt; + &lt;code&gt;Suspense&lt;/code&gt;&lt;/td&gt;
+&lt;td&gt;组件级代码分割&lt;/td&gt;
+&lt;td&gt;&lt;code&gt;defineAsyncComponent&lt;/code&gt;&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
+&lt;p&gt;父路由渲染 Layout，子路由渲染进 &lt;code&gt;&amp;lt;Outlet /&amp;gt;&lt;/code&gt; 所在的位置，嵌套路由就是这么撑起整个布局的。&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;const lazyLoad = (importFn: () =&amp;gt; Promise&amp;lt;{ default: React.ComponentType }&amp;gt;) =&amp;gt; {
+  const Component = lazy(importFn);
+  return (
+    &amp;lt;Suspense fallback={&amp;lt;Skeleton active /&amp;gt;}&amp;gt;   {/* fallback 留空会白屏一瞬 */}
+      &amp;lt;Component /&amp;gt;
+    &amp;lt;/Suspense&amp;gt;
+  );
+};
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;::::tip[React Router 7 支持路由级 lazy]&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;{ path: &quot;/page/index&quot;, lazy: async () =&amp;gt; ({ Component: (await import(&quot;@/pages/Home&quot;)).default }) }
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;连 &lt;code&gt;Suspense&lt;/code&gt; 都不用手写，loader 还能和组件并行预加载。
+::::&lt;/p&gt;
+&lt;h2&gt;九、React 16 / 18 / 19 特性对比&lt;/h2&gt;
+&lt;p&gt;三个大版本各解决一个问题：16 把渲染架构换成 Fiber，并在 16.8 引入 Hooks；18 把并发渲染正式开放；19 补上异步表单这块，同时开始用编译器自动做优化。17 属于过渡版，只改了 JSX 转换和事件委托，没有新增 API。&lt;/p&gt;
+&lt;table&gt;
+&lt;thead&gt;
+&lt;tr&gt;
+&lt;th&gt;维度&lt;/th&gt;
+&lt;th&gt;React 16（2017）&lt;/th&gt;
+&lt;th&gt;React 18（2022）&lt;/th&gt;
+&lt;th&gt;React 19（2024）&lt;/th&gt;
+&lt;/tr&gt;
+&lt;/thead&gt;
+&lt;tbody&gt;
+&lt;tr&gt;
+&lt;td&gt;主线&lt;/td&gt;
+&lt;td&gt;Fiber 重写，Hooks（16.8）&lt;/td&gt;
+&lt;td&gt;并发渲染落地&lt;/td&gt;
+&lt;td&gt;异步与表单、编译器自动优化&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;渲染架构&lt;/td&gt;
+&lt;td&gt;Fiber，渲染可中断&lt;/td&gt;
+&lt;td&gt;Concurrent 正式可用&lt;/td&gt;
+&lt;td&gt;并发默认，React Compiler 自动加 memo&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;逻辑复用&lt;/td&gt;
+&lt;td&gt;&lt;strong&gt;Hooks&lt;/strong&gt;：useState / useEffect / useMemo 等&lt;/td&gt;
+&lt;td&gt;—&lt;/td&gt;
+&lt;td&gt;—&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;并发控制&lt;/td&gt;
+&lt;td&gt;无&lt;/td&gt;
+&lt;td&gt;&lt;code&gt;useTransition&lt;/code&gt;、&lt;code&gt;useDeferredValue&lt;/code&gt;、&lt;code&gt;startTransition&lt;/code&gt;&lt;/td&gt;
+&lt;td&gt;沿用，&lt;code&gt;useDeferredValue&lt;/code&gt; 支持初始值&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;批量更新&lt;/td&gt;
+&lt;td&gt;只有事件回调里批处理&lt;/td&gt;
+&lt;td&gt;自动批处理，含 Promise、setTimeout&lt;/td&gt;
+&lt;td&gt;沿用，await 之后也批处理&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;表单与异步&lt;/td&gt;
+&lt;td&gt;手写 loading + try/catch&lt;/td&gt;
+&lt;td&gt;同左&lt;/td&gt;
+&lt;td&gt;&lt;strong&gt;Actions&lt;/strong&gt;：&lt;code&gt;useActionState&lt;/code&gt;、&lt;code&gt;useFormStatus&lt;/code&gt;、&lt;code&gt;useOptimistic&lt;/code&gt;&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;读取异步数据&lt;/td&gt;
+&lt;td&gt;无&lt;/td&gt;
+&lt;td&gt;无&lt;/td&gt;
+&lt;td&gt;&lt;strong&gt;&lt;code&gt;use()&lt;/code&gt;&lt;/strong&gt;，且允许条件调用&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;ref&lt;/td&gt;
+&lt;td&gt;&lt;code&gt;forwardRef&lt;/code&gt;&lt;/td&gt;
+&lt;td&gt;&lt;code&gt;forwardRef&lt;/code&gt;&lt;/td&gt;
+&lt;td&gt;&lt;strong&gt;ref 作为普通 prop&lt;/strong&gt;，不再需要 forwardRef，且支持清理函数&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;Context&lt;/td&gt;
+&lt;td&gt;新 Context API（16.3）&lt;/td&gt;
+&lt;td&gt;&lt;code&gt;useContext&lt;/code&gt;&lt;/td&gt;
+&lt;td&gt;可直接写 &lt;code&gt;&amp;lt;Context value={...}&amp;gt;&lt;/code&gt;&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;文档元数据&lt;/td&gt;
+&lt;td&gt;手写或第三方（react-helmet）&lt;/td&gt;
+&lt;td&gt;同左&lt;/td&gt;
+&lt;td&gt;原生支持 &lt;code&gt;&amp;lt;title&amp;gt;&lt;/code&gt; / &lt;code&gt;&amp;lt;meta&amp;gt;&lt;/code&gt; / &lt;code&gt;&amp;lt;link&amp;gt;&lt;/code&gt;，自动提到 head&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;挂载 API&lt;/td&gt;
+&lt;td&gt;&lt;code&gt;ReactDOM.render&lt;/code&gt;&lt;/td&gt;
+&lt;td&gt;&lt;code&gt;createRoot&lt;/code&gt;&lt;/td&gt;
+&lt;td&gt;&lt;code&gt;createRoot&lt;/code&gt;（render / hydrate 已移除）&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;SSR&lt;/td&gt;
+&lt;td&gt;&lt;code&gt;ReactDOM.hydrate&lt;/code&gt;&lt;/td&gt;
+&lt;td&gt;&lt;code&gt;hydrateRoot&lt;/code&gt; + 流式 SSR&lt;/td&gt;
+&lt;td&gt;Server Components、Server Actions&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;错误边界&lt;/td&gt;
+&lt;td&gt;&lt;code&gt;componentDidCatch&lt;/code&gt;（16.0）&lt;/td&gt;
+&lt;td&gt;沿用&lt;/td&gt;
+&lt;td&gt;沿用，hydration 报错改成 diff 展示&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
+&lt;h3&gt;React 19 新增的 API&lt;/h3&gt;
+&lt;table&gt;
+&lt;thead&gt;
+&lt;tr&gt;
+&lt;th&gt;特性&lt;/th&gt;
+&lt;th&gt;说明&lt;/th&gt;
+&lt;/tr&gt;
+&lt;/thead&gt;
+&lt;tbody&gt;
+&lt;tr&gt;
+&lt;td&gt;Actions&lt;/td&gt;
+&lt;td&gt;&lt;code&gt;&amp;lt;form action={fn}&amp;gt;&lt;/code&gt; + &lt;code&gt;useActionState&lt;/code&gt; + &lt;code&gt;useFormStatus&lt;/code&gt;&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;&lt;code&gt;useOptimistic&lt;/code&gt;&lt;/td&gt;
+&lt;td&gt;乐观更新，请求没回来先渲染预期结果&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;&lt;code&gt;use()&lt;/code&gt;&lt;/td&gt;
+&lt;td&gt;渲染中读取 Promise / Context，允许条件调用&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;&lt;code&gt;ref&lt;/code&gt; 作为 prop&lt;/td&gt;
+&lt;td&gt;不再需要 &lt;code&gt;forwardRef&lt;/code&gt;&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;ref 清理函数&lt;/td&gt;
+&lt;td&gt;ref 回调可返回清理函数&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;&lt;code&gt;&amp;lt;Context value&amp;gt;&lt;/code&gt;&lt;/td&gt;
+&lt;td&gt;可代替 &lt;code&gt;&amp;lt;Context.Provider&amp;gt;&lt;/code&gt;&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;文档元数据&lt;/td&gt;
+&lt;td&gt;组件里直接写 &lt;code&gt;&amp;lt;title&amp;gt;&lt;/code&gt; / &lt;code&gt;&amp;lt;meta&amp;gt;&lt;/code&gt;&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;资源预加载&lt;/td&gt;
+&lt;td&gt;&lt;code&gt;preload&lt;/code&gt; / &lt;code&gt;preinit&lt;/code&gt; / &lt;code&gt;preconnect&lt;/code&gt; / &lt;code&gt;prefetchDNS&lt;/code&gt;&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;&lt;code&gt;useDeferredValue&lt;/code&gt;&lt;/td&gt;
+&lt;td&gt;新增 &lt;code&gt;initialValue&lt;/code&gt; 参数&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;React Compiler&lt;/td&gt;
+&lt;td&gt;自动完成 memo / useMemo / useCallback&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
+&lt;h3&gt;从 16 / 18 升到 19 要注意&lt;/h3&gt;
+&lt;p&gt;19 删掉了一批 18 就已标废弃的 API，升级前先把控制台警告清干净：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;函数组件的 &lt;code&gt;defaultProps&lt;/code&gt; 移除，改用参数默认值；&lt;code&gt;propTypes&lt;/code&gt; 直接无效&lt;/li&gt;
+&lt;li&gt;字符串 ref、legacy Context（&lt;code&gt;contextTypes&lt;/code&gt; / &lt;code&gt;getChildContext&lt;/code&gt;）移除&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;ReactDOM.render&lt;/code&gt;、&lt;code&gt;ReactDOM.hydrate&lt;/code&gt;、&lt;code&gt;unmountComponentAtNode&lt;/code&gt;、&lt;code&gt;findDOMNode&lt;/code&gt; 移除&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;element.ref&lt;/code&gt; 不再可读&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;另外 &lt;code&gt;ref&lt;/code&gt; 的语义变了，之前靠 &lt;code&gt;forwardRef&lt;/code&gt; 转发的组件要改成从 props 里取 &lt;code&gt;ref&lt;/code&gt;。antd 6 已经适配，从 antd 5 升上来时不用再加 &lt;code&gt;@ant-design/v5-patch-for-react-19&lt;/code&gt;。&lt;/p&gt;
+&lt;h3&gt;Actions&lt;/h3&gt;
+&lt;p&gt;中后台表单多，Actions 把提交中 / 错误 / 成功三个状态内建了：&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;function UpdateForm() {
+  const [state, submitAction, isPending] = useActionState(
+    async (prevState, formData) =&amp;gt; {
+      const res = await updateUser(formData);
+      return res.ok ? { ok: true } : { error: res.message };
+    },
+    { ok: false },
+  );
+
+  return (
+    &amp;lt;form action={submitAction}&amp;gt;
+      &amp;lt;input name=&quot;name&quot; /&amp;gt;
+      &amp;lt;button type=&quot;submit&quot; disabled={isPending}&amp;gt;
+        {isPending ? &quot;提交中...&quot; : &quot;提交&quot;}
+      &amp;lt;/button&amp;gt;
+      {state.error &amp;amp;&amp;amp; &amp;lt;span&amp;gt;{state.error}&amp;lt;/span&amp;gt;}
+    &amp;lt;/form&amp;gt;
+  );
+}
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;对比手写 loading state 加 &lt;code&gt;try/catch/finally&lt;/code&gt;，样板代码少一半。&lt;/p&gt;
+&lt;h2&gt;十、高频坑位清单&lt;/h2&gt;
+&lt;table&gt;
+&lt;thead&gt;
+&lt;tr&gt;
+&lt;th&gt;#&lt;/th&gt;
+&lt;th&gt;坑&lt;/th&gt;
+&lt;th&gt;怎么处理&lt;/th&gt;
+&lt;/tr&gt;
+&lt;/thead&gt;
+&lt;tbody&gt;
+&lt;tr&gt;
+&lt;td&gt;1&lt;/td&gt;
+&lt;td&gt;用数组下标当 &lt;code&gt;key&lt;/code&gt;&lt;/td&gt;
+&lt;td&gt;用稳定唯一 id。下标会让插入/删除时全部错位，导致重建和表单状态错乱&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;2&lt;/td&gt;
+&lt;td&gt;依赖数组漏项&lt;/td&gt;
+&lt;td&gt;补全依赖，或改函数式更新&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;3&lt;/td&gt;
+&lt;td&gt;&lt;code&gt;arr.push()&lt;/code&gt; 后 setState&lt;/td&gt;
+&lt;td&gt;必须产生新引用：&lt;code&gt;[...arr, x]&lt;/code&gt;&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;4&lt;/td&gt;
+&lt;td&gt;effect 里 setState 无中止条件&lt;/td&gt;
+&lt;td&gt;加判断 / 加 ref 闸门&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;5&lt;/td&gt;
+&lt;td&gt;忘记返回清理函数&lt;/td&gt;
+&lt;td&gt;定时器、订阅、请求都要清&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;6&lt;/td&gt;
+&lt;td&gt;到处加 &lt;code&gt;useMemo&lt;/code&gt;&lt;/td&gt;
+&lt;td&gt;看 Profiler，缓存本身也有开销&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;7&lt;/td&gt;
+&lt;td&gt;&lt;code&gt;memo&lt;/code&gt; 配内联箭头函数&lt;/td&gt;
+&lt;td&gt;必须配 &lt;code&gt;useCallback&lt;/code&gt;，否则 &lt;code&gt;memo&lt;/code&gt; 失效&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;8&lt;/td&gt;
+&lt;td&gt;用 &lt;code&gt;useEffect&lt;/code&gt; 做数据转换&lt;/td&gt;
+&lt;td&gt;render 期间直接算，或 &lt;code&gt;useMemo&lt;/code&gt;&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;9&lt;/td&gt;
+&lt;td&gt;全量订阅 store&lt;/td&gt;
+&lt;td&gt;用独立 selector 或 &lt;code&gt;useShallow&lt;/code&gt;&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;10&lt;/td&gt;
+&lt;td&gt;&lt;code&gt;Suspense fallback&lt;/code&gt; 留空&lt;/td&gt;
+&lt;td&gt;用 &lt;code&gt;Skeleton&lt;/code&gt; / &lt;code&gt;Spin&lt;/code&gt;&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
+&lt;h2&gt;附：Vue → React 对照表&lt;/h2&gt;
+&lt;table&gt;
+&lt;thead&gt;
+&lt;tr&gt;
+&lt;th&gt;Vue 3&lt;/th&gt;
+&lt;th&gt;React 19&lt;/th&gt;
+&lt;th&gt;差异&lt;/th&gt;
+&lt;/tr&gt;
+&lt;/thead&gt;
+&lt;tbody&gt;
+&lt;tr&gt;
+&lt;td&gt;&lt;code&gt;ref()&lt;/code&gt; / &lt;code&gt;reactive()&lt;/code&gt;&lt;/td&gt;
+&lt;td&gt;&lt;code&gt;useState()&lt;/code&gt;&lt;/td&gt;
+&lt;td&gt;React 要显式 setState&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;&lt;code&gt;computed()&lt;/code&gt;&lt;/td&gt;
+&lt;td&gt;&lt;code&gt;useMemo()&lt;/code&gt;&lt;/td&gt;
+&lt;td&gt;Vue 自动收集依赖，React 手工列&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;&lt;code&gt;watch()&lt;/code&gt; / &lt;code&gt;watchEffect()&lt;/code&gt;&lt;/td&gt;
+&lt;td&gt;&lt;code&gt;useEffect()&lt;/code&gt;&lt;/td&gt;
+&lt;td&gt;同上，这是转过来最大的障碍&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;&lt;code&gt;onMounted()&lt;/code&gt;&lt;/td&gt;
+&lt;td&gt;&lt;code&gt;useEffect(fn, [])&lt;/code&gt;&lt;/td&gt;
+&lt;td&gt;&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;&lt;code&gt;onUnmounted()&lt;/code&gt;&lt;/td&gt;
+&lt;td&gt;&lt;code&gt;useEffect(() =&amp;gt; () =&amp;gt; {}, [])&lt;/code&gt;&lt;/td&gt;
+&lt;td&gt;React 用返回清理函数&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;&lt;code&gt;defineProps()&lt;/code&gt;&lt;/td&gt;
+&lt;td&gt;函数参数 + TS interface&lt;/td&gt;
+&lt;td&gt;&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;&lt;code&gt;defineEmits()&lt;/code&gt;&lt;/td&gt;
+&lt;td&gt;父传回调函数 prop&lt;/td&gt;
+&lt;td&gt;&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;&lt;code&gt;&amp;lt;slot /&amp;gt;&lt;/code&gt;&lt;/td&gt;
+&lt;td&gt;&lt;code&gt;children&lt;/code&gt; / render props&lt;/td&gt;
+&lt;td&gt;&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;Pinia store&lt;/td&gt;
+&lt;td&gt;Zustand store&lt;/td&gt;
+&lt;td&gt;概念接近&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;&lt;code&gt;v-if&lt;/code&gt;&lt;/td&gt;
+&lt;td&gt;&lt;code&gt;{cond &amp;amp;&amp;amp; &amp;lt;X /&amp;gt;}&lt;/code&gt;&lt;/td&gt;
+&lt;td&gt;&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;&lt;code&gt;v-for&lt;/code&gt;&lt;/td&gt;
+&lt;td&gt;&lt;code&gt;{list.map(...)}&lt;/code&gt;&lt;/td&gt;
+&lt;td&gt;React 必须带 key&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;&lt;code&gt;v-model&lt;/code&gt;&lt;/td&gt;
+&lt;td&gt;&lt;code&gt;value&lt;/code&gt; + &lt;code&gt;onChange&lt;/code&gt;&lt;/td&gt;
+&lt;td&gt;React 没有双向绑定语法糖&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;&lt;code&gt;class&lt;/code&gt; / &lt;code&gt;:style&lt;/code&gt;&lt;/td&gt;
+&lt;td&gt;&lt;code&gt;className&lt;/code&gt; / &lt;code&gt;style={{marginTop: 8}}&lt;/code&gt;&lt;/td&gt;
+&lt;td&gt;React 数值自动加 px&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;&lt;code&gt;&amp;lt;router-view&amp;gt;&lt;/code&gt;&lt;/td&gt;
+&lt;td&gt;&lt;code&gt;&amp;lt;Outlet /&amp;gt;&lt;/code&gt;&lt;/td&gt;
+&lt;td&gt;&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;&lt;code&gt;defineAsyncComponent&lt;/code&gt;&lt;/td&gt;
+&lt;td&gt;&lt;code&gt;lazy()&lt;/code&gt; + &lt;code&gt;Suspense&lt;/code&gt;&lt;/td&gt;
+&lt;td&gt;&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;Composable &lt;code&gt;useXxx&lt;/code&gt;&lt;/td&gt;
+&lt;td&gt;自定义 Hook &lt;code&gt;useXxx&lt;/code&gt;&lt;/td&gt;
+&lt;td&gt;概念基本一样&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;&lt;code&gt;&amp;lt;Teleport&amp;gt;&lt;/code&gt;&lt;/td&gt;
+&lt;td&gt;&lt;code&gt;createPortal()&lt;/code&gt;&lt;/td&gt;
+&lt;td&gt;&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;&lt;code&gt;&amp;lt;KeepAlive&amp;gt;&lt;/code&gt;&lt;/td&gt;
+&lt;td&gt;需第三方（react-activation）&lt;/td&gt;
+&lt;td&gt;React 官方未提供&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;&lt;code&gt;nextTick()&lt;/code&gt;&lt;/td&gt;
+&lt;td&gt;&lt;code&gt;useLayoutEffect&lt;/code&gt; / &lt;code&gt;flushSync&lt;/code&gt;&lt;/td&gt;
+&lt;td&gt;&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
+&lt;h3&gt;几个要转过来的习惯&lt;/h3&gt;
+&lt;ol&gt;
+&lt;li&gt;&lt;strong&gt;依赖要自己列&lt;/strong&gt;。Vue 的依赖收集是自动的，React 的依赖数组是手工的。写 &lt;code&gt;useEffect&lt;/code&gt; 时得问自己：这个函数用到了哪些会变的东西。&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;变更要产生新引用&lt;/strong&gt;。Vue 3 允许 &lt;code&gt;arr.push(x)&lt;/code&gt;，React 必须 &lt;code&gt;setArr([...arr, x])&lt;/code&gt;。&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;更新是重算加对比&lt;/strong&gt;。Vue 改一个字段只更新依赖它的组件，React 默认重跑整棵子树。所以控制渲染边界（&lt;code&gt;memo&lt;/code&gt;、selector、状态放置位置）是 React 的常规技能。&lt;/li&gt;
+&lt;/ol&gt;
+&lt;h2&gt;学习顺序&lt;/h2&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;阶段一（能写）&lt;/strong&gt;：组件、JSX、props / state、事件与受控表单、条件与列表渲染。产出：手写一个 Tab 切换组件&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;阶段二（写对）&lt;/strong&gt;：&lt;code&gt;useEffect&lt;/code&gt; 的依赖与清理、&lt;code&gt;useRef&lt;/code&gt;、状态提升、自定义 Hook&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;阶段三（写好）&lt;/strong&gt;：Zustand selector 粒度、性能 Hook 取舍、路由嵌套与懒加载、请求层封装、TS 类型套路。产出：一个完整 CRUD 模块&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;阶段四（原理）&lt;/strong&gt;：Fiber 与并发渲染、协调算法与 key、React 19 Actions、Profiler 性能剖析&lt;/li&gt;
+&lt;/ul&gt;
+</content:encoded></item><item><title>MacBook 前端开发环境搭建指南（macOS 新机配置教程）</title><link>https://meitian3611.github.io/posts/notes/macbook-frontend-setup/</link><guid isPermaLink="true">https://meitian3611.github.io/posts/notes/macbook-frontend-setup/</guid><description>MacBook 新机开箱的前端环境搭建教程：Homebrew、iTerm2 + Oh My Zsh、fnm 管理 Node.js、pnpm 镜像源、Git 与 SSH 配置，附懒人版一键命令。</description><pubDate>Tue, 01 Sep 2026 00:00:00 GMT</pubDate><content:encoded>&lt;blockquote&gt;
+&lt;p&gt;本文只面向 macOS，按「系统设置 → 命令行工具 → 终端 → Node → Git → 软件」的顺序组织，从上到下执行一遍即可。赶时间的话直接看下面懒人版。文中路径以 Apple 芯片（M 系列）为准。&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;h2&gt;懒人版-速通流程&lt;/h2&gt;
+&lt;p&gt;不想逐节看的话，按下面顺序把命令跑完即可开工。每一步的原理和注意事项都在后文对应章节。&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;第一步：先单独装 Command Line Tools&lt;/strong&gt;（会弹图形窗口，点「安装」并等待装完，再跑后面）：&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;xcode-select --install
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;&lt;strong&gt;第二步：按顺序执行核心配置&lt;/strong&gt;（git 用户名、邮箱记得换成自己的）：&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;# 1. Homebrew（装完自动加入 PATH）
+/bin/bash -c &quot;$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)&quot;
+echo &apos;eval &quot;$(/opt/homebrew/bin/brew shellenv)&quot;&apos; &amp;gt;&amp;gt; ~/.zprofile
+eval &quot;$(/opt/homebrew/bin/brew shellenv)&quot;
+
+# 2. 必装软件与命令行工具
+brew install --cask visual-studio-code google-chrome iterm2 rectangle
+brew install git fnm
+
+# 3. Oh My Zsh 与插件（会重写 ~/.zshrc，必须放在 fnm 配置之前）
+sh -c &quot;$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)&quot; &quot;&quot; --unattended
+git clone https://github.com/zsh-users/zsh-autosuggestions ~/.oh-my-zsh/custom/plugins/zsh-autosuggestions
+git clone https://github.com/zsh-users/zsh-syntax-highlighting ~/.oh-my-zsh/custom/plugins/zsh-syntax-highlighting
+sed -i &apos;&apos; &apos;s/plugins=(git)/plugins=(git zsh-autosuggestions zsh-syntax-highlighting)/&apos; ~/.zshrc
+
+# 4. Node：fnm + LTS + pnpm + 镜像源
+echo &apos;eval &quot;$(fnm env --use-on-cd)&quot;&apos; &amp;gt;&amp;gt; ~/.zshrc
+source ~/.zshrc
+fnm install --lts &amp;amp;&amp;amp; fnm default --lts
+corepack enable &amp;amp;&amp;amp; corepack prepare pnpm@latest --activate
+npm config set registry https://registry.npmmirror.com
+pnpm config set registry https://registry.npmmirror.com
+
+# 5. Git 基础配置
+git config --global user.name &quot;你的名字&quot;
+git config --global user.email &quot;you@example.com&quot;
+git config --global init.defaultBranch main
+git config --global credential.helper osxkeychain   # macOS 钥匙串保存账号
+
+# 6. 全局忽略 .DS_Store
+echo &quot;.DS_Store&quot; &amp;gt;&amp;gt; ~/.gitignore_global
+echo &quot;**/.DS_Store&quot; &amp;gt;&amp;gt; ~/.gitignore_global
+git config --global core.excludesfile ~/.gitignore_global
+
+# 7. 验证（code 命令需先在 VS Code 命令面板里装一次，见第六节）
+node -v &amp;amp;&amp;amp; npm -v &amp;amp;&amp;amp; pnpm -v &amp;amp;&amp;amp; git --version &amp;amp;&amp;amp; code .
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;::::tip
+终端美化（Powerlevel10k 主题与字体）需要跑交互向导，照第三章第 3 节手动做一次即可；系统初始化（触控板、Finder、Dock 等）照第一节图形路径花五分钟点一遍；SSH 接入 GitHub 看第五节；其余按需选装看第六节。
+::::&lt;/p&gt;
+&lt;h2&gt;一、系统初始化设置&lt;/h2&gt;
+&lt;p&gt;以下都是 macOS 独有的设置项，建议开箱先调。&lt;/p&gt;
+&lt;h3&gt;1. 系统更新与账号&lt;/h3&gt;
+&lt;ol&gt;
+&lt;li&gt;系统设置 → 通用 → 软件更新，先把系统升到最新；&lt;/li&gt;
+&lt;li&gt;顶部登录 Apple ID，开启「系统设置 → [你的名字] → iCloud」中的钥匙串、文稿同步（按需）；&lt;/li&gt;
+&lt;li&gt;系统设置 → 通用 → 共享，把「电脑名称」改成好认的名字（比如 &lt;code&gt;MacBook-Pro-Dev&lt;/code&gt;），终端提示符和局域网共享都用它。&lt;/li&gt;
+&lt;/ol&gt;
+&lt;h3&gt;2. 触控板与键盘&lt;/h3&gt;
+&lt;table&gt;
+&lt;thead&gt;
+&lt;tr&gt;
+&lt;th&gt;设置项&lt;/th&gt;
+&lt;th&gt;路径&lt;/th&gt;
+&lt;/tr&gt;
+&lt;/thead&gt;
+&lt;tbody&gt;
+&lt;tr&gt;
+&lt;td&gt;轻点代替点按&lt;/td&gt;
+&lt;td&gt;系统设置 → 触控板 → 光标与点按&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;三指拖移窗口&lt;/td&gt;
+&lt;td&gt;系统设置 → 辅助功能 → 指针控制 → 触控板拖移样式&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;触发角（快速息屏/调度中心）&lt;/td&gt;
+&lt;td&gt;系统设置 → 桌面与程序坞 → 触发角&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;F1–F12 作为标准功能键&lt;/td&gt;
+&lt;td&gt;系统设置 → 键盘 → 键盘快捷键 → 功能键&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
+&lt;p&gt;::::tip[三指拖移]
+macOS 默认没有开启三指拖移，需要在辅助功能里手动打开。开启后拖拽窗口、拖选文本都不用按住触控板，效率提升明显。
+::::&lt;/p&gt;
+&lt;h3&gt;3. Finder 与 Dock&lt;/h3&gt;
+&lt;p&gt;Finder 默认隐藏了很多开发常用的信息，按下面路径一次性配好（图形操作即时生效）：&lt;/p&gt;
+&lt;table&gt;
+&lt;thead&gt;
+&lt;tr&gt;
+&lt;th&gt;设置项&lt;/th&gt;
+&lt;th&gt;图形操作路径&lt;/th&gt;
+&lt;th&gt;快捷键&lt;/th&gt;
+&lt;/tr&gt;
+&lt;/thead&gt;
+&lt;tbody&gt;
+&lt;tr&gt;
+&lt;td&gt;显示路径栏&lt;/td&gt;
+&lt;td&gt;Finder 菜单栏 → 显示 → 显示路径栏&lt;/td&gt;
+&lt;td&gt;&amp;lt;kbd&amp;gt;Cmd&amp;lt;/kbd&amp;gt; + &amp;lt;kbd&amp;gt;Option&amp;lt;/kbd&amp;gt; + &amp;lt;kbd&amp;gt;P&amp;lt;/kbd&amp;gt;&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;显示状态栏&lt;/td&gt;
+&lt;td&gt;Finder 菜单栏 → 显示 → 显示状态栏&lt;/td&gt;
+&lt;td&gt;&amp;lt;kbd&amp;gt;Cmd&amp;lt;/kbd&amp;gt; + &amp;lt;kbd&amp;gt;/&amp;lt;/kbd&amp;gt;&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;搜索当前文件夹&lt;/td&gt;
+&lt;td&gt;Finder → 设置 → 高级 → 执行搜索时：搜索当前文件夹&lt;/td&gt;
+&lt;td&gt;&amp;lt;kbd&amp;gt;Cmd&amp;lt;/kbd&amp;gt; + &amp;lt;kbd&amp;gt;,&amp;lt;/kbd&amp;gt;&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;显示所有文件扩展名&lt;/td&gt;
+&lt;td&gt;Finder → 设置 → 高级 → 勾选「显示所有文件扩展名」&lt;/td&gt;
+&lt;td&gt;&amp;lt;kbd&amp;gt;Cmd&amp;lt;/kbd&amp;gt; + &amp;lt;kbd&amp;gt;,&amp;lt;/kbd&amp;gt;&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;Dock 自动隐藏&lt;/td&gt;
+&lt;td&gt;系统设置 → 桌面与程序坞 → 勾选「自动显示和隐藏 Dock」&lt;/td&gt;
+&lt;td&gt;—&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;Dock 图标大小&lt;/td&gt;
+&lt;td&gt;系统设置 → 桌面与程序坞 → 拖动「大小」滑条&lt;/td&gt;
+&lt;td&gt;—&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
+&lt;p&gt;另外两个高频操作：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;显示/隐藏隐藏文件（&lt;code&gt;.git&lt;/code&gt;、&lt;code&gt;.zshrc&lt;/code&gt; 等）：Finder 中按 &amp;lt;kbd&amp;gt;Cmd&amp;lt;/kbd&amp;gt; + &amp;lt;kbd&amp;gt;Shift&amp;lt;/kbd&amp;gt; + &amp;lt;kbd&amp;gt;.&amp;lt;/kbd&amp;gt;；&lt;/li&gt;
+&lt;li&gt;进入任意文件夹的绝对路径：&amp;lt;kbd&amp;gt;Cmd&amp;lt;/kbd&amp;gt; + &amp;lt;kbd&amp;gt;Shift&amp;lt;/kbd&amp;gt; + &amp;lt;kbd&amp;gt;G&amp;lt;/kbd&amp;gt;，例如输入 &lt;code&gt;~/Library&lt;/code&gt;。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3&gt;4. 截图与录屏&lt;/h3&gt;
+&lt;p&gt;&amp;lt;kbd&amp;gt;Cmd&amp;lt;/kbd&amp;gt; + &amp;lt;kbd&amp;gt;Shift&amp;lt;/kbd&amp;gt; + &amp;lt;kbd&amp;gt;5&amp;lt;/kbd&amp;gt; 打开截图工具条（区域截图、窗口截图、录屏都在这里）。默认截图会堆在桌面，建议改一下保存位置：&lt;/p&gt;
+&lt;p&gt;在工具条上点「选项」→「存储到」→ 其他位置 → 选择或新建 &lt;code&gt;~/Pictures/Screenshots&lt;/code&gt;。同一面板里还可以关掉 5 秒计时器（改为「无」）、取消勾选「显示鼠标指针」，截图更干净。&lt;/p&gt;
+&lt;p&gt;常用截图快捷键：&lt;/p&gt;
+&lt;table&gt;
+&lt;thead&gt;
+&lt;tr&gt;
+&lt;th&gt;快捷键&lt;/th&gt;
+&lt;th&gt;作用&lt;/th&gt;
+&lt;/tr&gt;
+&lt;/thead&gt;
+&lt;tbody&gt;
+&lt;tr&gt;
+&lt;td&gt;&amp;lt;kbd&amp;gt;Cmd&amp;lt;/kbd&amp;gt; + &amp;lt;kbd&amp;gt;Shift&amp;lt;/kbd&amp;gt; + &amp;lt;kbd&amp;gt;3&amp;lt;/kbd&amp;gt;&lt;/td&gt;
+&lt;td&gt;全屏截图&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;&amp;lt;kbd&amp;gt;Cmd&amp;lt;/kbd&amp;gt; + &amp;lt;kbd&amp;gt;Shift&amp;lt;/kbd&amp;gt; + &amp;lt;kbd&amp;gt;4&amp;lt;/kbd&amp;gt;&lt;/td&gt;
+&lt;td&gt;区域截图&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;&amp;lt;kbd&amp;gt;Cmd&amp;lt;/kbd&amp;gt; + &amp;lt;kbd&amp;gt;Shift&amp;lt;/kbd&amp;gt; + &amp;lt;kbd&amp;gt;5&amp;lt;/kbd&amp;gt;&lt;/td&gt;
+&lt;td&gt;打开截图/录屏工具条&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
+&lt;h2&gt;二、命令行工具与 Homebrew&lt;/h2&gt;
+&lt;h3&gt;1. 安装 Xcode Command Line Tools&lt;/h3&gt;
+&lt;p&gt;&lt;code&gt;git&lt;/code&gt;、&lt;code&gt;ssh&lt;/code&gt;、&lt;code&gt;make&lt;/code&gt; 等工具都由它提供，且后面 Homebrew、Rosetta 都依赖它：&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;xcode-select --install
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;安装完成后验证：&lt;code&gt;xcode-select -p&lt;/code&gt;，输出 &lt;code&gt;/Library/Developer/CommandLineTools&lt;/code&gt; 即为成功。&lt;/p&gt;
+&lt;p&gt;::::note
+&lt;code&gt;xcode-select --install&lt;/code&gt; 只是命令行工具包（约 1–2 GB），不要去 App Store 装完整版 Xcode（几十 GB），除非你要做 iOS 开发。
+::::&lt;/p&gt;
+&lt;h3&gt;2. 安装 Homebrew&lt;/h3&gt;
+&lt;p&gt;官方安装脚本（需要网络通畅）：&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;/bin/bash -c &quot;$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)&quot;
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;网络不佳时，先设置国内镜像再执行上面同一条命令：&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;export HOMEBREW_API_DOMAIN=&quot;https://mirrors.tuna.tsinghua.edu.cn/homebrew-bottles/api&quot;
+export HOMEBREW_BOTTLE_DOMAIN=&quot;https://mirrors.tuna.tsinghua.edu.cn/homebrew-bottles&quot;
+export HOMEBREW_BREW_GIT_REMOTE=&quot;https://mirrors.tuna.tsinghua.edu.cn/git/homebrew/brew.git&quot;
+export HOMEBREW_CORE_GIT_REMOTE=&quot;https://mirrors.tuna.tsinghua.edu.cn/git/homebrew/homebrew-core.git&quot;
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;安装结束后，&lt;strong&gt;按终端末尾的提示&lt;/strong&gt;把 &lt;code&gt;brew&lt;/code&gt; 加入 PATH（Apple 芯片路径为 &lt;code&gt;/opt/homebrew&lt;/code&gt;）：&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;# Apple 芯片（M 系列）
+echo &apos;eval &quot;$(/opt/homebrew/bin/brew shellenv)&quot;&apos; &amp;gt;&amp;gt; ~/.zprofile
+eval &quot;$(/opt/homebrew/bin/brew shellenv)&quot;
+
+# 验证
+brew --version
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;::::important[.zshrc 还是 .zprofile]
+&lt;code&gt;.zprofile&lt;/code&gt; 只在&lt;strong&gt;登录 Shell&lt;/strong&gt; 加载一次，&lt;code&gt;.zshrc&lt;/code&gt; 在&lt;strong&gt;每个交互 Shell&lt;/strong&gt; 都加载。&lt;code&gt;brew shellenv&lt;/code&gt; 这类一次性的 PATH 注入放 &lt;code&gt;.zprofile&lt;/code&gt;；别名、函数、工具初始化（如 &lt;code&gt;fnm env&lt;/code&gt;）放 &lt;code&gt;.zshrc&lt;/code&gt;。
+::::&lt;/p&gt;
+&lt;h3&gt;3. brew 常用命令&lt;/h3&gt;
+&lt;table&gt;
+&lt;thead&gt;
+&lt;tr&gt;
+&lt;th&gt;命令&lt;/th&gt;
+&lt;th&gt;作用&lt;/th&gt;
+&lt;/tr&gt;
+&lt;/thead&gt;
+&lt;tbody&gt;
+&lt;tr&gt;
+&lt;td&gt;&lt;code&gt;brew install &amp;lt;name&amp;gt;&lt;/code&gt;&lt;/td&gt;
+&lt;td&gt;安装命令行工具&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;&lt;code&gt;brew install --cask &amp;lt;name&amp;gt;&lt;/code&gt;&lt;/td&gt;
+&lt;td&gt;安装 GUI 应用&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;&lt;code&gt;brew update &amp;amp;&amp;amp; brew upgrade&lt;/code&gt;&lt;/td&gt;
+&lt;td&gt;更新 brew 自身与已装软件&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;&lt;code&gt;brew cleanup&lt;/code&gt;&lt;/td&gt;
+&lt;td&gt;清理旧版本缓存&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;&lt;code&gt;brew list&lt;/code&gt; / &lt;code&gt;brew list --cask&lt;/code&gt;&lt;/td&gt;
+&lt;td&gt;查看已安装列表&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;&lt;code&gt;brew services start &amp;lt;name&amp;gt;&lt;/code&gt;&lt;/td&gt;
+&lt;td&gt;后台启动服务（如 nginx、mysql）&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;&lt;code&gt;brew doctor&lt;/code&gt;&lt;/td&gt;
+&lt;td&gt;环境问题自检&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
+&lt;h2&gt;三、终端与 Shell：iTerm2 + Oh My Zsh&lt;/h2&gt;
+&lt;p&gt;macOS 默认 Shell 就是 &lt;code&gt;zsh&lt;/code&gt;，无需切换。终端推荐「iTerm2 + Oh My Zsh」组合：iTerm2 负责窗口体验，Oh My Zsh 负责主题与插件。&lt;/p&gt;
+&lt;h3&gt;1. 安装 iTerm2&lt;/h3&gt;
+&lt;pre&gt;&lt;code&gt;brew install --cask iterm2
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;装完后设为默认终端：iTerm2 菜单栏 → Make iTerm2 Default Term。&lt;/p&gt;
+&lt;h3&gt;2. 安装 Oh My Zsh&lt;/h3&gt;
+&lt;pre&gt;&lt;code&gt;sh -c &quot;$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)&quot;
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;::::important[会重写 ~/.zshrc]
+安装脚本会把现有的 &lt;code&gt;~/.zshrc&lt;/code&gt; 备份为 &lt;code&gt;~/.zshrc.pre-oh-my-zsh&lt;/code&gt; 再覆盖。如果先跑了懒人版（里面往 &lt;code&gt;.zshrc&lt;/code&gt; 写过 &lt;code&gt;fnm env&lt;/code&gt;），装完 Oh My Zsh 后把这行从备份文件拷回新的 &lt;code&gt;~/.zshrc&lt;/code&gt; 即可。因此推荐顺序：&lt;strong&gt;先装 Oh My Zsh，再加 fnm 等工具配置&lt;/strong&gt;。
+::::&lt;/p&gt;
+&lt;h3&gt;3. 安装 Powerlevel10k 主题&lt;/h3&gt;
+&lt;p&gt;好看好用的提示符，能显示 git 分支、执行耗时、返回码等：&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;git clone --depth=1 https://github.com/romkatv/powerlevel10k.git \
+  &quot;${ZSH_CUSTOM:-$HOME/.oh-my-zsh/custom}/themes/powerlevel10k&quot;
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;编辑 &lt;code&gt;~/.zshrc&lt;/code&gt; 改主题行：&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;ZSH_THEME=&quot;powerlevel10k/powerlevel10k&quot;
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;然后 &lt;code&gt;source ~/.zshrc&lt;/code&gt;，会自动进入 &lt;code&gt;p10k configure&lt;/code&gt; 配置向导，一路按喜好选择即可。向导会提示安装 &lt;strong&gt;MesloLGS NF&lt;/strong&gt; 字体（向导里有下载链接，四个字体文件都装上），装完在 iTerm2 里启用：iTerm2 → Settings → Profiles → Text → Font → 选择 &lt;code&gt;MesloLGS NF&lt;/code&gt;。&lt;/p&gt;
+&lt;p&gt;::::tip
+不想折腾主题的话，跳过本小节，把 &lt;code&gt;~/.zshrc&lt;/code&gt; 里的 &lt;code&gt;ZSH_THEME&lt;/code&gt; 改成内置的 &lt;code&gt;agnoster&lt;/code&gt; 或保持默认的 &lt;code&gt;robbyrussell&lt;/code&gt; 也够用。
+::::&lt;/p&gt;
+&lt;h3&gt;4. 安装两个必装插件&lt;/h3&gt;
+&lt;pre&gt;&lt;code&gt;# 命令自动补全建议（灰色提示历史命令，按 → 采纳）
+git clone https://github.com/zsh-users/zsh-autosuggestions \
+  &quot;${ZSH_CUSTOM:-~/.oh-my-zsh/custom}/plugins/zsh-autosuggestions&quot;
+
+# 命令语法高亮（正确的命令绿色、错误的红色）
+git clone https://github.com/zsh-users/zsh-syntax-highlighting \
+  &quot;${ZSH_CUSTOM:-~/.oh-my-zsh/custom}/plugins/zsh-syntax-highlighting&quot;
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;编辑 &lt;code&gt;~/.zshrc&lt;/code&gt; 启用插件（&lt;code&gt;git&lt;/code&gt; 插件内置，提供 &lt;code&gt;gst&lt;/code&gt;、&lt;code&gt;gco&lt;/code&gt; 等大量 git 别名）：&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;plugins=(git zsh-autosuggestions zsh-syntax-highlighting)
+&lt;/code&gt;&lt;/pre&gt;
+&lt;h3&gt;5. 常用别名&lt;/h3&gt;
+&lt;p&gt;追加到 &lt;code&gt;~/.zshrc&lt;/code&gt; 末尾：&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;alias ll=&quot;ls -alh&quot;
+alias ..=&quot;cd ..&quot;
+alias ip=&quot;ipconfig getifaddr en0&quot;          # 查看本机局域网 IP（macOS 独有命令）
+alias ports=&quot;lsof -i -P -n | grep LISTEN&quot;  # 查看端口占用
+alias cleands=&quot;find . -name &apos;.DS_Store&apos; -delete&quot;  # 清理 .DS_Store
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;最后 &lt;code&gt;source ~/.zshrc&lt;/code&gt; 生效。&lt;/p&gt;
+&lt;p&gt;::::warning[PATH 被 path_helper 打乱]
+macOS 会在 &lt;code&gt;/etc/zshrc&lt;/code&gt; 中通过 &lt;code&gt;path_helper&lt;/code&gt; 重新排列 PATH，把 &lt;code&gt;/usr/bin&lt;/code&gt;、&lt;code&gt;/usr/sbin&lt;/code&gt; 等系统路径&lt;strong&gt;前置&lt;/strong&gt;，可能让你自己装的 node/python 被系统自带版本顶掉。解决：把自定义 PATH 写在 &lt;code&gt;~/.zshrc&lt;/code&gt; 的&lt;strong&gt;最后一行&lt;/strong&gt;。
+::::&lt;/p&gt;
+&lt;h2&gt;四、Node.js 环境&lt;/h2&gt;
+&lt;p&gt;不建议直接官网下载 pkg 安装（后续版本管理、权限都很麻烦）。推荐用版本管理器。&lt;/p&gt;
+&lt;h3&gt;1. 安装 fnm（首选）&lt;/h3&gt;
+&lt;p&gt;&lt;code&gt;fnm&lt;/code&gt; 基于 Rust，启动快，且能识别项目下的 &lt;code&gt;.node-version&lt;/code&gt; / &lt;code&gt;.nvmrc&lt;/code&gt; 自动切版本：&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;brew install fnm
+echo &apos;eval &quot;$(fnm env --use-on-cd)&quot;&apos; &amp;gt;&amp;gt; ~/.zshrc
+source ~/.zshrc
+
+fnm install --lts      # 安装最新 LTS
+fnm default --lts      # 设为默认版本
+node -v &amp;amp;&amp;amp; npm -v
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;如果更习惯 &lt;code&gt;nvm&lt;/code&gt;：&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;brew install nvm
+mkdir -p ~/.nvm
+echo &apos;export NVM_DIR=&quot;$HOME/.nvm&quot;&apos; &amp;gt;&amp;gt; ~/.zshrc
+echo &apos;[ -s &quot;$(brew --prefix nvm)/nvm.sh&quot; ] &amp;amp;&amp;amp; . &quot;$(brew --prefix nvm)/nvm.sh&quot;&apos; &amp;gt;&amp;gt; ~/.zshrc
+source ~/.zshrc
+nvm install --lts &amp;amp;&amp;amp; nvm alias default --lts
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;::::tip[项目级 Node 版本]
+公司项目通常锁定了 Node 版本，在仓库根目录建一个 &lt;code&gt;.node-version&lt;/code&gt; 文件写入版本号（如 &lt;code&gt;20.18.0&lt;/code&gt;），配合 fnm 的 &lt;code&gt;--use-on-cd&lt;/code&gt; 进入目录即自动切换。
+::::&lt;/p&gt;
+&lt;h3&gt;2. 安装 pnpm 与镜像源&lt;/h3&gt;
+&lt;p&gt;安装、换源、验证一条命令流走完：&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;# 1. 安装 pnpm：Node 16+ 自带 corepack，直接启用
+corepack enable
+corepack prepare pnpm@latest --activate   # 也可以 npm i -g pnpm
+
+# 2. 配置国内镜像源，npm 与 pnpm 各配一次
+npm config set registry https://registry.npmmirror.com
+pnpm config set registry https://registry.npmmirror.com
+
+# 3. 验证
+node -v &amp;amp;&amp;amp; npm -v &amp;amp;&amp;amp; pnpm -v
+npm config get registry &amp;amp;&amp;amp; pnpm config get registry
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;相关配置命令：&lt;/p&gt;
+&lt;table&gt;
+&lt;thead&gt;
+&lt;tr&gt;
+&lt;th&gt;命令&lt;/th&gt;
+&lt;th&gt;作用&lt;/th&gt;
+&lt;/tr&gt;
+&lt;/thead&gt;
+&lt;tbody&gt;
+&lt;tr&gt;
+&lt;td&gt;&lt;code&gt;npm config list&lt;/code&gt;&lt;/td&gt;
+&lt;td&gt;查看全部生效配置及其来源&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;&lt;code&gt;npm config get registry&lt;/code&gt;&lt;/td&gt;
+&lt;td&gt;查看当前源&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;&lt;code&gt;npm config set registry https://registry.npmjs.org&lt;/code&gt;&lt;/td&gt;
+&lt;td&gt;恢复 npm 官方源&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;&lt;code&gt;pnpm config set registry https://registry.npmjs.org&lt;/code&gt;&lt;/td&gt;
+&lt;td&gt;恢复 pnpm 官方源&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;&lt;code&gt;npm config delete registry&lt;/code&gt;&lt;/td&gt;
+&lt;td&gt;删除该配置&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
+&lt;p&gt;配置会持久化到 &lt;code&gt;~/.npmrc&lt;/code&gt;，换机时把这个文件一起带走即可。&lt;/p&gt;
+&lt;p&gt;::::tip[项目配置优先]
+项目根目录若带了 &lt;code&gt;.npmrc&lt;/code&gt; 且指定了 &lt;code&gt;registry&lt;/code&gt;，会以项目配置优先，覆盖这里的全局配置。
+::::&lt;/p&gt;
+&lt;h2&gt;五、Git 与 SSH&lt;/h2&gt;
+&lt;h3&gt;1. 安装与基础配置&lt;/h3&gt;
+&lt;p&gt;macOS 自带 git 但版本较旧，用 brew 覆盖后统一管理升级：&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;brew install git
+git --version
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;然后做全局配置：&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;git config --global user.name &quot;你的名字&quot;
+git config --global user.email &quot;you@example.com&quot;
+git config --global init.defaultBranch main
+git config --global credential.helper osxkeychain   # 用 macOS 钥匙串保存账号密码
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;其中 &lt;code&gt;credential.helper osxkeychain&lt;/code&gt; 是 macOS 独有的凭证存储方式，装过 Command Line Tools 就能用，HTTPS 拉取只需输一次密码。&lt;/p&gt;
+&lt;h3&gt;2. 生成 SSH Key 并接入 GitHub&lt;/h3&gt;
+&lt;pre&gt;&lt;code&gt;ssh-keygen -t ed25519 -C &quot;you@example.com&quot;
+cat ~/.ssh/id_ed25519.pub | pbcopy   # pbcopy 是 macOS 独有命令，直接复制到剪贴板
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;然后到 GitHub → Settings → SSH and GPG keys 粘贴。为避免每次重启后重新输密码，配置 &lt;code&gt;~/.ssh/config&lt;/code&gt;：&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;Host *
+  AddKeysToAgent yes
+  UseKeychain yes          # macOS 独有，把密钥口令存进钥匙串
+  IdentityFile ~/.ssh/id_ed25519
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;首次添加：&lt;code&gt;ssh-add --apple-use-keychain ~/.ssh/id_ed25519&lt;/code&gt;，验证：&lt;code&gt;ssh -T git@github.com&lt;/code&gt;。&lt;/p&gt;
+&lt;h3&gt;3. 忽略 .DS_Store&lt;/h3&gt;
+&lt;p&gt;macOS 每个文件夹都会生成 &lt;code&gt;.DS_Store&lt;/code&gt;，提交上去会污染仓库，做一次全局忽略：&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;echo &quot;.DS_Store&quot; &amp;gt;&amp;gt; ~/.gitignore_global
+echo &quot;**/.DS_Store&quot; &amp;gt;&amp;gt; ~/.gitignore_global
+git config --global core.excludesfile ~/.gitignore_global
+&lt;/code&gt;&lt;/pre&gt;
+&lt;h2&gt;六、常用软件&lt;/h2&gt;
+&lt;p&gt;安装方式二选一，按习惯来：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;图形方式&lt;/strong&gt;：App Store 搜索安装，或官网下载 &lt;code&gt;.dmg&lt;/code&gt; 后把 &lt;code&gt;.app&lt;/code&gt; 拖进「应用程序」文件夹，适合只装一两个软件；&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;命令行方式（推荐）&lt;/strong&gt;：&lt;code&gt;brew install --cask xxx&lt;/code&gt;，一条命令装完，后续 &lt;code&gt;brew upgrade&lt;/code&gt; 统一升级，适合批量装机，也是下面表格采用的方式。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;软件按「必装 → 推荐 → 按需」分级，装到哪一级看个人需求。&lt;/p&gt;
+&lt;h3&gt;必装（前端开工就靠这几样）&lt;/h3&gt;
+&lt;table&gt;
+&lt;thead&gt;
+&lt;tr&gt;
+&lt;th&gt;软件&lt;/th&gt;
+&lt;th&gt;用途&lt;/th&gt;
+&lt;th&gt;命令&lt;/th&gt;
+&lt;/tr&gt;
+&lt;/thead&gt;
+&lt;tbody&gt;
+&lt;tr&gt;
+&lt;td&gt;Visual Studio Code&lt;/td&gt;
+&lt;td&gt;主力编辑器&lt;/td&gt;
+&lt;td&gt;&lt;code&gt;brew install --cask visual-studio-code&lt;/code&gt;&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;Google Chrome&lt;/td&gt;
+&lt;td&gt;开发调试主浏览器&lt;/td&gt;
+&lt;td&gt;&lt;code&gt;brew install --cask google-chrome&lt;/code&gt;&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;iTerm2&lt;/td&gt;
+&lt;td&gt;终端&lt;/td&gt;
+&lt;td&gt;&lt;code&gt;brew install --cask iterm2&lt;/code&gt;&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
+&lt;h3&gt;推荐（装上幸福感明显提升）&lt;/h3&gt;
+&lt;table&gt;
+&lt;thead&gt;
+&lt;tr&gt;
+&lt;th&gt;软件&lt;/th&gt;
+&lt;th&gt;用途&lt;/th&gt;
+&lt;th&gt;命令&lt;/th&gt;
+&lt;/tr&gt;
+&lt;/thead&gt;
+&lt;tbody&gt;
+&lt;tr&gt;
+&lt;td&gt;Raycast&lt;/td&gt;
+&lt;td&gt;启动器 / 剪贴板历史 / 窗口管理（mac 独有）&lt;/td&gt;
+&lt;td&gt;&lt;code&gt;brew install --cask raycast&lt;/code&gt;&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;Apifox&lt;/td&gt;
+&lt;td&gt;接口调试&lt;/td&gt;
+&lt;td&gt;&lt;code&gt;brew install --cask apifox&lt;/code&gt;&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;IINA&lt;/td&gt;
+&lt;td&gt;视频播放器&lt;/td&gt;
+&lt;td&gt;&lt;code&gt;brew install --cask iina&lt;/code&gt;&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;The Unarchiver&lt;/td&gt;
+&lt;td&gt;解压（能处理 GBK 压缩包，中文不乱码）&lt;/td&gt;
+&lt;td&gt;&lt;code&gt;brew install --cask the-unarchiver&lt;/code&gt;&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
+&lt;h3&gt;按需（项目或场景需要再装）&lt;/h3&gt;
+&lt;table&gt;
+&lt;thead&gt;
+&lt;tr&gt;
+&lt;th&gt;软件&lt;/th&gt;
+&lt;th&gt;用途&lt;/th&gt;
+&lt;th&gt;命令&lt;/th&gt;
+&lt;/tr&gt;
+&lt;/thead&gt;
+&lt;tbody&gt;
+&lt;tr&gt;
+&lt;td&gt;Firefox Developer Edition&lt;/td&gt;
+&lt;td&gt;浏览器兼容性调试&lt;/td&gt;
+&lt;td&gt;&lt;code&gt;brew install --cask firefox@developer-edition&lt;/code&gt;&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;Figma&lt;/td&gt;
+&lt;td&gt;查看设计稿&lt;/td&gt;
+&lt;td&gt;&lt;code&gt;brew install --cask figma&lt;/code&gt;&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;Postman&lt;/td&gt;
+&lt;td&gt;接口调试（Apifox 的替代品）&lt;/td&gt;
+&lt;td&gt;&lt;code&gt;brew install --cask postman&lt;/code&gt;&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
+&lt;p&gt;VS Code 装完后，打开命令面板（&amp;lt;kbd&amp;gt;Cmd&amp;lt;/kbd&amp;gt; + &amp;lt;kbd&amp;gt;Shift&amp;lt;/kbd&amp;gt; + &amp;lt;kbd&amp;gt;P&amp;lt;/kbd&amp;gt;）执行 &lt;code&gt;Shell Command: Install &apos;code&apos; command in PATH&lt;/code&gt;，之后终端里 &lt;code&gt;code .&lt;/code&gt; 直接打开当前目录。&lt;/p&gt;
+&lt;p&gt;::::tip[设置同步]
+VS Code 左下角齿轮 → 开启「设置同步」，用 GitHub 登录即可在新机器上拉取插件与配置，不用重新配一遍。
+::::&lt;/p&gt;
+&lt;h2&gt;七、完成自检&lt;/h2&gt;
+&lt;pre&gt;&lt;code&gt;xcode-select -p               # CommandLineTools 路径
+brew --version                # Homebrew
+node -v &amp;amp;&amp;amp; npm -v &amp;amp;&amp;amp; pnpm -v  # Node 与包管理器
+npm config get registry       # 镜像源是否生效
+git --version                 # Git
+git config --global --list    # 用户名、邮箱、excludesfile 是否生效
+ssh -T git@github.com         # SSH 是否连通
+code .                        # VS Code 命令行是否可用
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;全部正常，就可以 &lt;code&gt;pnpm install&lt;/code&gt; 开工了。&lt;/p&gt;
+</content:encoded></item><item><title>Fuwari 使用指南</title><link>https://meitian3611.github.io/posts/examples/guide/</link><guid isPermaLink="true">https://meitian3611.github.io/posts/examples/guide/</guid><description>如何使用这个博客模板。</description><pubDate>Fri, 28 Aug 2026 00:00:00 GMT</pubDate><content:encoded>&lt;blockquote&gt;
+&lt;p&gt;封面图来源：&lt;a href=&quot;https://image.civitai.com/xG1nkqKTMzGDvpLrqFT7WA/208fc754-890d-4adb-9753-2c963332675d/width=2048/01651-1456859105-(colour_1.5),girl,_Blue,yellow,green,cyan,purple,red,pink,_best,8k,UHD,masterpiece,male%20focus,%201boy,gloves,%20ponytail,%20long%20hair,.jpeg&quot;&gt;来源&lt;/a&gt;&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;p&gt;这个博客模板基于 &lt;a href=&quot;https://astro.build/&quot;&gt;Astro&lt;/a&gt; 构建。本指南未涉及的内容，可以在 &lt;a href=&quot;https://docs.astro.build/&quot;&gt;Astro 官方文档&lt;/a&gt; 中找到答案。&lt;/p&gt;
+&lt;h2&gt;Frontmatter（文章头信息）&lt;/h2&gt;
+&lt;p&gt;每篇文章开头用 &lt;code&gt;---&lt;/code&gt; 包裹一段 YAML 配置。可用字段：&lt;/p&gt;
+&lt;table&gt;
+&lt;thead&gt;
+&lt;tr&gt;
+&lt;th&gt;字段&lt;/th&gt;
+&lt;th&gt;必填&lt;/th&gt;
+&lt;th&gt;默认值&lt;/th&gt;
+&lt;th&gt;说明&lt;/th&gt;
+&lt;/tr&gt;
+&lt;/thead&gt;
+&lt;tbody&gt;
+&lt;tr&gt;
+&lt;td&gt;&lt;code&gt;title&lt;/code&gt;&lt;/td&gt;
+&lt;td&gt;是&lt;/td&gt;
+&lt;td&gt;—&lt;/td&gt;
+&lt;td&gt;文章标题&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;&lt;code&gt;published&lt;/code&gt;&lt;/td&gt;
+&lt;td&gt;是&lt;/td&gt;
+&lt;td&gt;—&lt;/td&gt;
+&lt;td&gt;发布日期，格式 &lt;code&gt;YYYY-MM-DD&lt;/code&gt;&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;&lt;code&gt;updated&lt;/code&gt;&lt;/td&gt;
+&lt;td&gt;否&lt;/td&gt;
+&lt;td&gt;—&lt;/td&gt;
+&lt;td&gt;更新日期&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;&lt;code&gt;description&lt;/code&gt;&lt;/td&gt;
+&lt;td&gt;否&lt;/td&gt;
+&lt;td&gt;&lt;code&gt;&quot;&quot;&lt;/code&gt;&lt;/td&gt;
+&lt;td&gt;摘要，用于卡片和 SEO&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;&lt;code&gt;image&lt;/code&gt;&lt;/td&gt;
+&lt;td&gt;否&lt;/td&gt;
+&lt;td&gt;&lt;code&gt;&quot;&quot;&lt;/code&gt;&lt;/td&gt;
+&lt;td&gt;文章封面图路径。&amp;lt;br/&amp;gt;1. 以 &lt;code&gt;http://&lt;/code&gt; 或 &lt;code&gt;https://&lt;/code&gt; 开头：使用网络图片&amp;lt;br/&amp;gt;2. 以 &lt;code&gt;/&lt;/code&gt; 开头：使用 &lt;code&gt;public&lt;/code&gt; 目录中的图片&amp;lt;br/&amp;gt;3. 无以上前缀：相对于 markdown 文件&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;&lt;code&gt;tags&lt;/code&gt;&lt;/td&gt;
+&lt;td&gt;否&lt;/td&gt;
+&lt;td&gt;&lt;code&gt;[]&lt;/code&gt;&lt;/td&gt;
+&lt;td&gt;标签列表，如 &lt;code&gt;[Vue, Pinia]&lt;/code&gt;&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;&lt;code&gt;category&lt;/code&gt;&lt;/td&gt;
+&lt;td&gt;否&lt;/td&gt;
+&lt;td&gt;&lt;code&gt;&quot;&quot;&lt;/code&gt;&lt;/td&gt;
+&lt;td&gt;分类&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;&lt;code&gt;lang&lt;/code&gt;&lt;/td&gt;
+&lt;td&gt;否&lt;/td&gt;
+&lt;td&gt;&lt;code&gt;&quot;&quot;&lt;/code&gt;&lt;/td&gt;
+&lt;td&gt;语言&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;&lt;code&gt;draft&lt;/code&gt;&lt;/td&gt;
+&lt;td&gt;否&lt;/td&gt;
+&lt;td&gt;&lt;code&gt;false&lt;/code&gt;&lt;/td&gt;
+&lt;td&gt;设为 &lt;code&gt;true&lt;/code&gt; 时生产构建不发布&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
+&lt;pre&gt;&lt;code&gt;---
+title: 我的第一篇博客
+published: 2023-09-09
+description: 这是我的新 Astro 博客的第一篇文章。
+image: ./cover.jpg
+tags: [Foo, Bar]
+category: 前端
+draft: false
+---
+
+&lt;/code&gt;&lt;/pre&gt;
+&lt;h2&gt;本站扩展语法&lt;/h2&gt;
+&lt;h3&gt;告示块（Admonition）&lt;/h3&gt;
+&lt;p&gt;支持 &lt;code&gt;note&lt;/code&gt; &lt;code&gt;tip&lt;/code&gt; &lt;code&gt;important&lt;/code&gt; &lt;code&gt;warning&lt;/code&gt; &lt;code&gt;caution&lt;/code&gt; 五种类型。写法是&lt;strong&gt;四个冒号&lt;/strong&gt; + 类型名，用 &lt;code&gt;::::&lt;/code&gt; 闭合：&lt;/p&gt;
+&lt;p&gt;::::note
+一般提示：读者了解即可。
+::::&lt;/p&gt;
+&lt;p&gt;::::tip
+小技巧：能让文章更易读。
+::::&lt;/p&gt;
+&lt;p&gt;::::important
+关键信息：写作时容易踩坑的地方。
+::::&lt;/p&gt;
+&lt;p&gt;::::warning
+警告：需要注意的风险。
+::::&lt;/p&gt;
+&lt;p&gt;::::caution
+严重警告：可能带来负面后果。
+::::&lt;/p&gt;
+&lt;p&gt;源码写法：&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;::::note
+一般提示：读者了解即可。
+::::
+
+::::tip
+小技巧：能让文章更易读。
+::::
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;&lt;strong&gt;自定义标题&lt;/strong&gt;：把标题写在类型名后面的方括号里。&lt;/p&gt;
+&lt;p&gt;::::note[自定义标题]
+这是带自定义标题的提示块。
+::::&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;::::note[自定义标题]
+这是带自定义标题的提示块。
+::::
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;&lt;strong&gt;GitHub 风格也兼容&lt;/strong&gt;（&lt;code&gt;&amp;gt; [!类型]&lt;/code&gt;）：&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;[!NOTE]
+这是 GitHub 风格的提示。&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;pre&gt;&lt;code&gt;&amp;gt; [!NOTE]
+&amp;gt; 这是 GitHub 风格的提示。
+
+&amp;gt; [!TIP]
+&amp;gt; GitHub 风格的技巧提示。
+&lt;/code&gt;&lt;/pre&gt;
+&lt;h3&gt;GitHub 仓库卡片&lt;/h3&gt;
+&lt;p&gt;下面这张卡片会从 GitHub API 拉取仓库信息：&lt;/p&gt;
+&lt;p&gt;::github{repo=&quot;meitian3611/meitian3611.github.io&quot;}&lt;/p&gt;
+&lt;p&gt;写法是&lt;strong&gt;两个冒号&lt;/strong&gt; + &lt;code&gt;github&lt;/code&gt; + &lt;code&gt;repo&lt;/code&gt; 属性：&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;::github{repo=&quot;owner/repo&quot;}
+&lt;/code&gt;&lt;/pre&gt;
+&lt;h3&gt;剧透（Spoiler）&lt;/h3&gt;
+&lt;p&gt;用 &lt;code&gt;:spoiler[内容]&lt;/code&gt; 隐藏文字，悬停才显示，内部支持 Markdown：&lt;/p&gt;
+&lt;p&gt;这句话里有一个 :spoiler[隐藏的&lt;strong&gt;彩蛋&lt;/strong&gt;]！&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;这句话里有一个 :spoiler[隐藏的**彩蛋**]！
+&lt;/code&gt;&lt;/pre&gt;
+&lt;h3&gt;指令（Directive）冒号数量一览&lt;/h3&gt;
+&lt;p&gt;本站的扩展语法本质都是&quot;指令&quot;，冒号数量决定类型：&lt;/p&gt;
+&lt;table&gt;
+&lt;thead&gt;
+&lt;tr&gt;
+&lt;th&gt;写法&lt;/th&gt;
+&lt;th&gt;类型&lt;/th&gt;
+&lt;th&gt;本站用途&lt;/th&gt;
+&lt;/tr&gt;
+&lt;/thead&gt;
+&lt;tbody&gt;
+&lt;tr&gt;
+&lt;td&gt;&lt;code&gt;:spoiler[...]&lt;/code&gt;&lt;/td&gt;
+&lt;td&gt;单冒号 · 行内指令&lt;/td&gt;
+&lt;td&gt;剧透&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;&lt;code&gt;::github{...}&lt;/code&gt;&lt;/td&gt;
+&lt;td&gt;双冒号 · 叶指令&lt;/td&gt;
+&lt;td&gt;GitHub 卡片&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;&lt;code&gt;::::note ... ::::&lt;/code&gt;&lt;/td&gt;
+&lt;td&gt;四冒号 · 容器指令&lt;/td&gt;
+&lt;td&gt;告示块&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
+&lt;h2&gt;其他实用特性&lt;/h2&gt;
+&lt;h3&gt;首段自动摘要&lt;/h3&gt;
+&lt;p&gt;&lt;strong&gt;文章的第一段会被自动提取为摘要&lt;/strong&gt;（&lt;code&gt;remark-excerpt&lt;/code&gt;），显示在首页和归档的文章卡片上。如果 frontmatter 里写了 &lt;code&gt;description&lt;/code&gt;，则优先显示 &lt;code&gt;description&lt;/code&gt;。&lt;/p&gt;
+&lt;p&gt;所以写作时注意：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;第一段尽量是一句完整、有信息量的话，别写&quot;你好，这是一篇……&quot;之类的水话；&lt;/li&gt;
+&lt;li&gt;想让卡片展示指定文案，就在 frontmatter 里写 &lt;code&gt;description&lt;/code&gt;。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3&gt;标题锚点（页面内跳转）&lt;/h3&gt;
+&lt;p&gt;每个标题都会自动生成 &lt;code&gt;id&lt;/code&gt; 并附带一个 &lt;code&gt;#&lt;/code&gt; 锚点图标（悬停可见）。可以用普通链接做页面内跳转：&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;[跳转到&quot;其他实用特性&quot;](#其他实用特性)
+&lt;/code&gt;&lt;/pre&gt;
+&lt;blockquote&gt;
+&lt;p&gt;锚点规则：中文标题保留中文，空格转成连字符。直接复制浏览器地址栏里标题旁边的 &lt;code&gt;#xxx&lt;/code&gt; 最稳妥。&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;h3&gt;原始 HTML&lt;/h3&gt;
+&lt;p&gt;Markdown 中可以直接嵌入 HTML 标签，适合标准语法表达不了的需求，例如：&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;&amp;lt;kbd&amp;gt;Ctrl&amp;lt;/kbd&amp;gt; + &amp;lt;kbd&amp;gt;C&amp;lt;/kbd&amp;gt;
+
+&amp;lt;details&amp;gt;
+&amp;lt;summary&amp;gt;点击展开&amp;lt;/summary&amp;gt;
+隐藏的细节内容。
+&amp;lt;/details&amp;gt;
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;&amp;lt;kbd&amp;gt;Ctrl&amp;lt;/kbd&amp;gt; + &amp;lt;kbd&amp;gt;C&amp;lt;/kbd&amp;gt;&lt;/p&gt;
+&lt;p&gt;&amp;lt;details&amp;gt;
+&amp;lt;summary&amp;gt;点击展开&amp;lt;/summary&amp;gt;
+隐藏的细节内容。
+&amp;lt;/details&amp;gt;&lt;/p&gt;
+&lt;p&gt;也可以给链接加 &lt;code&gt;target=&quot;_blank&quot;&lt;/code&gt;（见上文&quot;让链接新窗口打开&quot;）。&lt;/p&gt;
+&lt;h2&gt;写作小贴士&lt;/h2&gt;
+&lt;ul&gt;
+&lt;li&gt;标题层级从 &lt;code&gt;##&lt;/code&gt; 开始，避免和文章大标题冲突。&lt;/li&gt;
+&lt;li&gt;代码块记得写语言标识（&lt;code&gt;js&lt;/code&gt;、&lt;code&gt;ts&lt;/code&gt;、&lt;code&gt;vue&lt;/code&gt;、&lt;code&gt;bash&lt;/code&gt; 等）。&lt;/li&gt;
+&lt;li&gt;多用 &lt;code&gt;::::tip&lt;/code&gt; 和 &lt;code&gt;::::warning&lt;/code&gt; 提升阅读体验。&lt;/li&gt;
+&lt;li&gt;写完运行 &lt;code&gt;pnpm astro check&lt;/code&gt; 检查类型，&lt;code&gt;pnpm dev&lt;/code&gt; 本地预览。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2&gt;在文章中嵌入视频&lt;/h2&gt;
+&lt;p&gt;从 YouTube、哔哩哔哩等平台复制视频的嵌入代码，直接粘贴到 markdown 文件中即可。&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;---
+title: 在文章中嵌入视频
+published: 2023-10-19
+// ...
+---
+
+&amp;lt;iframe width=&quot;100%&quot; height=&quot;468&quot; src=&quot;https://www.youtube.com/embed/5gIf0_xpFPI?si=N1WTorLKL0uwLsU_&quot; title=&quot;YouTube video player&quot; frameborder=&quot;0&quot; allowfullscreen&amp;gt;&amp;lt;/iframe&amp;gt;
+&lt;/code&gt;&lt;/pre&gt;
+&lt;h3&gt;YouTube&lt;/h3&gt;
+&lt;p&gt;&amp;lt;iframe width=&quot;100%&quot; height=&quot;468&quot; src=&quot;https://www.youtube.com/embed/5gIf0_xpFPI?si=N1WTorLKL0uwLsU_&quot; title=&quot;YouTube video player&quot; frameborder=&quot;0&quot; allow=&quot;accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share&quot; allowfullscreen&amp;gt;&amp;lt;/iframe&amp;gt;&lt;/p&gt;
+&lt;h3&gt;哔哩哔哩&lt;/h3&gt;
+&lt;p&gt;&amp;lt;iframe width=&quot;100%&quot; height=&quot;468&quot; src=&quot;//player.bilibili.com/player.html?bvid=BV1fK4y1s7Qf&amp;amp;p=1&quot; scrolling=&quot;no&quot; border=&quot;0&quot; frameborder=&quot;no&quot; framespacing=&quot;0&quot; allowfullscreen=&quot;true&quot;&amp;gt; &amp;lt;/iframe&amp;gt;&lt;/p&gt;
+</content:encoded></item><item><title>Expressive Code 教程</title><link>https://meitian3611.github.io/posts/examples/expressive-code/</link><guid isPermaLink="true">https://meitian3611.github.io/posts/examples/expressive-code/</guid><description>演示 Markdown 中代码块在 Expressive Code 下的呈现效果</description><pubDate>Fri, 28 Aug 2026 00:00:00 GMT</pubDate><content:encoded>&lt;p&gt;下面我们通过 &lt;a href=&quot;https://expressive-code.com/&quot;&gt;Expressive Code&lt;/a&gt; 来探索代码块的各种呈现效果。示例基于官方文档，更多细节可参考官方说明。&lt;/p&gt;
+&lt;h2&gt;Expressive Code&lt;/h2&gt;
+&lt;h3&gt;语法高亮&lt;/h3&gt;
+&lt;p&gt;&lt;a href=&quot;https://expressive-code.com/key-features/syntax-highlighting/&quot;&gt;语法高亮&lt;/a&gt;&lt;/p&gt;
+&lt;h4&gt;常规语法高亮&lt;/h4&gt;
+&lt;pre&gt;&lt;code&gt;console.log(&apos;This code is syntax highlighted!&apos;)
+&lt;/code&gt;&lt;/pre&gt;
+&lt;h4&gt;渲染 ANSI 转义序列&lt;/h4&gt;
+&lt;pre&gt;&lt;code&gt;ANSI colors:
+- Regular: [31mRed[0m [32mGreen[0m [33mYellow[0m [34mBlue[0m [35mMagenta[0m [36mCyan[0m
+- Bold:    [1;31mRed[0m [1;32mGreen[0m [1;33mYellow[0m [1;34mBlue[0m [1;35mMagenta[0m [1;36mCyan[0m
+- Dimmed:  [2;31mRed[0m [2;32mGreen[0m [2;33mYellow[0m [2;34mBlue[0m [2;35mMagenta[0m [2;36mCyan[0m
+
+256 colors (showing colors 160-177):
+[38;5;160m160 [38;5;161m161 [38;5;162m162 [38;5;163m163 [38;5;164m164 [38;5;165m165[0m
+[38;5;166m166 [38;5;167m167 [38;5;168m168 [38;5;169m169 [38;5;170m170 [38;5;171m171[0m
+[38;5;172m172 [38;5;173m173 [38;5;174m174 [38;5;175m175 [38;5;176m176 [38;5;177m177[0m
+
+Full RGB colors:
+[38;2;34;139;34mForestGreen - RGB(34, 139, 34)[0m
+
+Text formatting: [1mBold[0m [2mDimmed[0m [3mItalic[0m [4mUnderline[0m
+&lt;/code&gt;&lt;/pre&gt;
+&lt;h3&gt;编辑器与终端窗口&lt;/h3&gt;
+&lt;p&gt;&lt;a href=&quot;https://expressive-code.com/key-features/frames/&quot;&gt;编辑器与终端窗口&lt;/a&gt;&lt;/p&gt;
+&lt;h4&gt;代码编辑器窗口&lt;/h4&gt;
+&lt;pre&gt;&lt;code&gt;console.log(&apos;Title attribute example&apos;)
+&lt;/code&gt;&lt;/pre&gt;
+&lt;hr /&gt;
+&lt;pre&gt;&lt;code&gt;&amp;lt;!-- src/content/index.html --&amp;gt;
+&amp;lt;div&amp;gt;File name comment example&amp;lt;/div&amp;gt;
+&lt;/code&gt;&lt;/pre&gt;
+&lt;h4&gt;终端窗口&lt;/h4&gt;
+&lt;pre&gt;&lt;code&gt;echo &quot;This terminal frame has no title&quot;
+&lt;/code&gt;&lt;/pre&gt;
+&lt;hr /&gt;
+&lt;pre&gt;&lt;code&gt;Write-Output &quot;This one has a title!&quot;
+&lt;/code&gt;&lt;/pre&gt;
+&lt;h4&gt;覆盖窗口类型&lt;/h4&gt;
+&lt;pre&gt;&lt;code&gt;echo &quot;Look ma, no frame!&quot;
+&lt;/code&gt;&lt;/pre&gt;
+&lt;hr /&gt;
+&lt;pre&gt;&lt;code&gt;# Without overriding, this would be a terminal frame
+function Watch-Tail { Get-Content -Tail 20 -Wait $args }
+New-Alias tail Watch-Tail
+&lt;/code&gt;&lt;/pre&gt;
+&lt;h3&gt;文本与行标记&lt;/h3&gt;
+&lt;p&gt;&lt;a href=&quot;https://expressive-code.com/key-features/text-markers/&quot;&gt;文本与行标记&lt;/a&gt;&lt;/p&gt;
+&lt;h4&gt;标记整行与行范围&lt;/h4&gt;
+&lt;pre&gt;&lt;code&gt;// Line 1 - targeted by line number
+// Line 2
+// Line 3
+// Line 4 - targeted by line number
+// Line 5
+// Line 6
+// Line 7 - targeted by range &quot;7-8&quot;
+// Line 8 - targeted by range &quot;7-8&quot;
+&lt;/code&gt;&lt;/pre&gt;
+&lt;h4&gt;选择行标记类型（mark、ins、del）&lt;/h4&gt;
+&lt;pre&gt;&lt;code&gt;function demo() {
+  console.log(&apos;this line is marked as deleted&apos;)
+  // This line and the next one are marked as inserted
+  console.log(&apos;this is the second inserted line&apos;)
+
+  return &apos;this line uses the neutral default marker type&apos;
+}
+&lt;/code&gt;&lt;/pre&gt;
+&lt;h4&gt;为行标记添加标签&lt;/h4&gt;
+&lt;pre&gt;&lt;code&gt;// labeled-line-markers.jsx
+&amp;lt;button
+  role=&quot;button&quot;
+  {...props}
+  value={value}
+  className={buttonClassName}
+  disabled={disabled}
+  active={active}
+&amp;gt;
+  {children &amp;amp;&amp;amp;
+    !active &amp;amp;&amp;amp;
+    (typeof children === &apos;string&apos; ? &amp;lt;span&amp;gt;{children}&amp;lt;/span&amp;gt; : children)}
+&amp;lt;/button&amp;gt;
+&lt;/code&gt;&lt;/pre&gt;
+&lt;h4&gt;在独立行中添加长标签&lt;/h4&gt;
+&lt;pre&gt;&lt;code&gt;// labeled-line-markers.jsx
+&amp;lt;button
+  role=&quot;button&quot;
+  {...props}
+
+  value={value}
+  className={buttonClassName}
+
+  disabled={disabled}
+  active={active}
+&amp;gt;
+
+  {children &amp;amp;&amp;amp;
+    !active &amp;amp;&amp;amp;
+    (typeof children === &apos;string&apos; ? &amp;lt;span&amp;gt;{children}&amp;lt;/span&amp;gt; : children)}
+&amp;lt;/button&amp;gt;
+&lt;/code&gt;&lt;/pre&gt;
+&lt;h4&gt;使用 diff 风格语法&lt;/h4&gt;
+&lt;pre&gt;&lt;code&gt;+this line will be marked as inserted
+-this line will be marked as deleted
+this is a regular line
+&lt;/code&gt;&lt;/pre&gt;
+&lt;hr /&gt;
+&lt;pre&gt;&lt;code&gt;--- a/README.md
++++ b/README.md
+@@ -1,3 +1,4 @@
++this is an actual diff file
+-all contents will remain unmodified
+ no whitespace will be removed either
+&lt;/code&gt;&lt;/pre&gt;
+&lt;h4&gt;语法高亮与 diff 语法结合&lt;/h4&gt;
+&lt;pre&gt;&lt;code&gt;  function thisIsJavaScript() {
+    // This entire block gets highlighted as JavaScript,
+    // and we can still add diff markers to it!
+-   console.log(&apos;Old code to be removed&apos;)
++   console.log(&apos;New and shiny code!&apos;)
+  }
+&lt;/code&gt;&lt;/pre&gt;
+&lt;h4&gt;标记行内的指定文本&lt;/h4&gt;
+&lt;pre&gt;&lt;code&gt;function demo() {
+  // Mark any given text inside lines
+  return &apos;Multiple matches of the given text are supported&apos;;
+}
+&lt;/code&gt;&lt;/pre&gt;
+&lt;h4&gt;正则表达式&lt;/h4&gt;
+&lt;pre&gt;&lt;code&gt;console.log(&apos;The words yes and yep will be marked.&apos;)
+&lt;/code&gt;&lt;/pre&gt;
+&lt;h4&gt;转义正斜杠&lt;/h4&gt;
+&lt;pre&gt;&lt;code&gt;echo &quot;Test&quot; &amp;gt; /home/test.txt
+&lt;/code&gt;&lt;/pre&gt;
+&lt;h4&gt;选择行内标记类型（mark、ins、del）&lt;/h4&gt;
+&lt;pre&gt;&lt;code&gt;function demo() {
+  console.log(&apos;These are inserted and deleted marker types&apos;);
+  // The return statement uses the default marker type
+  return true;
+}
+&lt;/code&gt;&lt;/pre&gt;
+&lt;h3&gt;自动换行&lt;/h3&gt;
+&lt;p&gt;&lt;a href=&quot;https://expressive-code.com/key-features/word-wrap/&quot;&gt;自动换行&lt;/a&gt;&lt;/p&gt;
+&lt;h4&gt;按代码块配置换行&lt;/h4&gt;
+&lt;pre&gt;&lt;code&gt;// Example with wrap
+function getLongString() {
+  return &apos;This is a very long string that will most probably not fit into the available space unless the container is extremely wide&apos;
+}
+&lt;/code&gt;&lt;/pre&gt;
+&lt;hr /&gt;
+&lt;pre&gt;&lt;code&gt;// Example with wrap=false
+function getLongString() {
+  return &apos;This is a very long string that will most probably not fit into the available space unless the container is extremely wide&apos;
+}
+&lt;/code&gt;&lt;/pre&gt;
+&lt;h4&gt;配置换行的缩进&lt;/h4&gt;
+&lt;pre&gt;&lt;code&gt;// Example with preserveIndent (enabled by default)
+function getLongString() {
+  return &apos;This is a very long string that will most probably not fit into the available space unless the container is extremely wide&apos;
+}
+&lt;/code&gt;&lt;/pre&gt;
+&lt;hr /&gt;
+&lt;pre&gt;&lt;code&gt;// Example with preserveIndent=false
+function getLongString() {
+  return &apos;This is a very long string that will most probably not fit into the available space unless the container is extremely wide&apos;
+}
+&lt;/code&gt;&lt;/pre&gt;
+&lt;h2&gt;可折叠区块&lt;/h2&gt;
+&lt;p&gt;&lt;a href=&quot;https://expressive-code.com/plugins/collapsible-sections/&quot;&gt;可折叠区块&lt;/a&gt;&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;// All this boilerplate setup code will be collapsed
+import { someBoilerplateEngine } from &apos;@example/some-boilerplate&apos;
+import { evenMoreBoilerplate } from &apos;@example/even-more-boilerplate&apos;
+
+const engine = someBoilerplateEngine(evenMoreBoilerplate())
+
+// This part of the code will be visible by default
+engine.doSomething(1, 2, 3, calcFn)
+
+function calcFn() {
+  // You can have multiple collapsed sections
+  const a = 1
+  const b = 2
+  const c = a + b
+
+  // This will remain visible
+  console.log(`Calculation result: ${a} + ${b} = ${c}`)
+  return c
+}
+
+// All this code until the end of the block will be collapsed again
+engine.closeConnection()
+engine.freeMemory()
+engine.shutdown({ reason: &apos;End of example boilerplate code&apos; })
+&lt;/code&gt;&lt;/pre&gt;
+&lt;h2&gt;行号&lt;/h2&gt;
+&lt;p&gt;&lt;a href=&quot;https://expressive-code.com/plugins/line-numbers/&quot;&gt;行号&lt;/a&gt;&lt;/p&gt;
+&lt;h3&gt;按代码块显示行号&lt;/h3&gt;
+&lt;pre&gt;&lt;code&gt;// This code block will show line numbers
+console.log(&apos;Greetings from line 2!&apos;)
+console.log(&apos;I am on line 3&apos;)
+&lt;/code&gt;&lt;/pre&gt;
+&lt;hr /&gt;
+&lt;pre&gt;&lt;code&gt;// Line numbers are disabled for this block
+console.log(&apos;Hello?&apos;)
+console.log(&apos;Sorry, do you know what line I am on?&apos;)
+&lt;/code&gt;&lt;/pre&gt;
+&lt;h3&gt;修改起始行号&lt;/h3&gt;
+&lt;pre&gt;&lt;code&gt;console.log(&apos;Greetings from line 5!&apos;)
+console.log(&apos;I am on line 6&apos;)
+&lt;/code&gt;&lt;/pre&gt;
+</content:encoded></item><item><title>Pinia</title><link>https://meitian3611.github.io/posts/web/pinia/</link><guid isPermaLink="true">https://meitian3611.github.io/posts/web/pinia/</guid><description>前端热门公共状态管理工具</description><pubDate>Fri, 04 Mar 2022 00:00:00 GMT</pubDate><content:encoded>&lt;blockquote&gt;
+&lt;p&gt;Pinia是Vue生态里Vuex的代替者，一个全新Vue的状态管理库。在Vue3成为正式版以后，尤雨溪强势推荐的项目就是Pinia。那先来看看Pinia比Vuex好的地方，也就是Pinia的五大优势。&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;h2&gt;pinia五大优势&lt;/h2&gt;
+&lt;ol&gt;
+&lt;li&gt;可以对Vue2和Vue3做到很好的支持，也就是老项目也可以使用Pinia。&lt;/li&gt;
+&lt;li&gt;抛弃了Mutations的操作，只有state、getters和actions.极大的简化了状态管理库的使用，让代码编写更加容易直观。&lt;/li&gt;
+&lt;li&gt;不需要嵌套模块，符合Vue3的Composition api ，让代码更加扁平化。&lt;/li&gt;
+&lt;li&gt;完整的TypeScript支持。Vue3版本的一大优势就是对TypeScript的支持，所以Pinia也做到了完整的支持。如果你对Vuex很熟悉的化，一定知道Vuex对TS的语法支持不是完整的（经常被吐槽）。&lt;/li&gt;
+&lt;li&gt;代码更加简洁，可以实现很好的代码自动分割。Vue2的时代，写代码需要来回翻滚屏幕屏幕找变量，非常的麻烦，Vue3的Composition api完美了解决这个问题。 可以实现代码自动分割，pinia也同样继承了这个优点。&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;如果你说这五点有点太多了，记不住。可以简单总结Pinia的优势就是，更加简洁的语法，完美支持Vue3的Composition api 和 对TypesCcript的完美支持。这些优势和尤雨溪的强烈推荐，个人觉得很快Pinia就会完全取代Vuex，成为最适合Vue3的状态管理库。&lt;/p&gt;
+&lt;p&gt;另外说一点，其实pinia的开发团队，就是Vuex的开发团队。&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;&lt;strong&gt;pinia的安装&lt;/strong&gt;&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;p&gt;安装好Vue3的开发环境后，就可以安装Pinia状态管理库了。安装的方法依然是使用&lt;code&gt;npm&lt;/code&gt; 来安装。&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;npm install pinia
+# or with yarn
+yarn add pinia
+&lt;/code&gt;&lt;/pre&gt;
+&lt;h2&gt;用Pinia的方式创建一个Store&lt;/h2&gt;
+&lt;blockquote&gt;
+&lt;p&gt;&lt;strong&gt;在main.js中引入Pinia&lt;/strong&gt;&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;p&gt;安装好Pinia后，需要作的第一件事就是在&lt;code&gt;/src/main.ts&lt;/code&gt;里引入&lt;code&gt;pinia&lt;/code&gt;。 这里我们直接使用&lt;code&gt;import&lt;/code&gt;引入。&lt;/p&gt;
+&lt;p&gt;引入后，通过&lt;code&gt;createPinia( )&lt;/code&gt;方法，得到pinia的实例和挂载到Vue根实例上。&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;// src/main.ts
+import { createApp } from &apos;vue&apos;
+import App from &apos;./App.vue&apos;
+import { createPinia } from &apos;pinia&apos; 
+
+// 创建pinia 实例
+const pinia = createPinia()
+const app = createApp(App)
+// 挂载到 Vue 根实例上
+app.use(pinia)
+app.mount(&apos;#app&apos;)
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;这样我们就在项目中引入了&lt;code&gt;Pinia&lt;/code&gt;,也就是说我们可以在项目中使用它进行编程了。&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;&lt;strong&gt;创建store状态管理库&lt;/strong&gt;&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;p&gt;引入Pinia后，就可以创建状态管理库了，也就是常说的&lt;code&gt;Store&lt;/code&gt;。直接在&lt;code&gt;/src&lt;/code&gt;目录下，新建一个&lt;code&gt;store&lt;/code&gt;文件夹。有了文件夹之后，再创建一个&lt;code&gt;index.ts&lt;/code&gt;文件。&lt;/p&gt;
+&lt;p&gt;这个文件里的代码，我们一般只做三件事。&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;定义状态容器(仓库)&lt;/li&gt;
+&lt;li&gt;修改容器(仓库)中的 state&lt;/li&gt;
+&lt;li&gt;仓库中的 action 的使用&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;明确了这四件事以后，我们来编写代码。先来定义容器,这个写法是固定的，你甚至可以在VSCode中定义一个代码片段，以后用到的时候，直接可以生成这样的代码&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;// src/store/index.ts
+import { defineStore} from &apos;pinia&apos;
+
+export const mainStore = defineStore(&apos;main&apos;,{
+  state:()=&amp;gt;{
+ return {}
+  },
+  getters:{},
+  actions:{}
+})
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;写完这段代码，你会感觉这个很像一个Vue的小组件，这也算是Pinia的一个优点。&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;code&gt;defineStore( )&lt;/code&gt;方法的第一个参数：相当于为容器起一个名字。&lt;code&gt;注意：这里的名字必须唯一，不能重复&lt;/code&gt;。这个是官方特别说明的一个事情。&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;defineStore( )&lt;/code&gt;方法的第二个参数：可以简单理解为一个配置对象，里边是对容器仓库的配置说明。当然这种说明是以对象的形式。&lt;/li&gt;
+&lt;li&gt;state 属性：用来存储全局的状态的，这里边定义的，就可以是为SPA里全局的状态了。&lt;/li&gt;
+&lt;li&gt;getters属性：用来监视或者说是计算状态的变化的，有缓存的功能。&lt;/li&gt;
+&lt;li&gt;actions属性：对state里数据变化的业务逻辑，需求不同，编写逻辑不同。说白了就是修改state全局状态数据的。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;我们在Store里定义一个State，我们这里就写&lt;code&gt;Hello&lt;/code&gt;。&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;state:()=&amp;gt;{
+ return {
+      hello:&apos;Hello Pinia&apos;
+    }
+  },
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;这时候这个&lt;code&gt;hello&lt;/code&gt;就是全局的状态数据，是每个页面和组件都可以通过Pinia方法读取到的。&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;&lt;strong&gt;在vue组件里 读取 Store数据&lt;/strong&gt;&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;p&gt;在&lt;code&gt;\src\components&lt;/code&gt;里，新建一个&lt;code&gt;test.vue&lt;/code&gt;的组件。&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;&amp;lt;template&amp;gt;
+  &amp;lt;h2 class=&quot;&quot;&amp;gt;{{ store.hello }}&amp;lt;/h2&amp;gt;
+&amp;lt;/template&amp;gt;
+
+&amp;lt;script lang=&quot;ts&quot; setup&amp;gt;
+import { mainStore } from &quot;../store/index&quot;;
+const store = mainStore();
+&amp;lt;/script&amp;gt;
+
+&amp;lt;style lang=&quot;scss&quot; scoped&amp;gt;&amp;lt;/style&amp;gt;
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;先引入&lt;code&gt;mainStore&lt;/code&gt;,然后通过&lt;code&gt;mainStore&lt;/code&gt;得到&lt;code&gt;store&lt;/code&gt;实例，就可以在组件里调用store里的&lt;code&gt;state&lt;/code&gt;定义的状态数据了。&lt;/p&gt;
+&lt;p&gt;写好这个组件后，到&lt;code&gt;App.vue&lt;/code&gt;里引入，就可以使用了。&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;&amp;lt;script setup lang=&quot;ts&quot;&amp;gt;
+import test from &quot;./components/test.vue&quot;;
+&amp;lt;/script&amp;gt;
+
+&amp;lt;template&amp;gt;
+  &amp;lt;test&amp;gt;&amp;lt;/test&amp;gt;
+&amp;lt;/template&amp;gt;
+
+&amp;lt;style&amp;gt;
+
+&amp;lt;/style&amp;gt;
+&lt;/code&gt;&lt;/pre&gt;
+&lt;h2&gt;Pinia修改状态数据的四种方式&lt;/h2&gt;
+&lt;p&gt;首先在&lt;code&gt;\store\index.ts&lt;/code&gt;的state属性中，增加一个状态数据&lt;code&gt;count : 0&lt;/code&gt;.&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;state:()=&amp;gt;{
+ return {
+    hello:&apos;Hello Pinia&apos;,
+    count:0
+  }
+},
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;添加一个状态数据后，在任意的组件中，可以对其进行修改操作&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;ol&gt;
+&lt;li&gt;&lt;strong&gt;直接对状态数据进行修改&lt;/strong&gt;&lt;/li&gt;
+&lt;/ol&gt;
+&lt;/blockquote&gt;
+&lt;pre&gt;&lt;code&gt;&amp;lt;template&amp;gt;
+  &amp;lt;div&amp;gt;&amp;lt;button @click=&quot;handleClick&quot;&amp;gt;点击增加,对状态数据进行修改&amp;lt;/button&amp;gt;&amp;lt;/div&amp;gt;
+&amp;lt;/template&amp;gt;
+
+&amp;lt;script lang=&quot;ts&quot; setup&amp;gt;
+import { mainStore } from &quot;../store/index&quot;;
+const store = mainStore();
+
+const handleClick = () =&amp;gt; {
+  store.count++; // 最简单的一种修改方式
+};
+&amp;lt;/script&amp;gt;
+
+&amp;lt;style lang=&quot;scss&quot; scoped&amp;gt;&amp;lt;/style&amp;gt;
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;我们先写了一个按钮，点击后直接执行&lt;code&gt;handleClick&lt;/code&gt;方法。你会发现，这种改变状态数据的方法是非常方便的，要比&lt;code&gt;Vuex&lt;/code&gt;简洁太多了。&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;这种修改方式虽然简单直接，但是修改的状态数据如果存在多条，就需要逐条修改，稍微繁琐了一些&lt;/li&gt;
+&lt;/ul&gt;
+&lt;blockquote&gt;
+&lt;ol&gt;
+&lt;li&gt;&lt;strong&gt;使用 $patch 修改多条数据&lt;/strong&gt;&lt;/li&gt;
+&lt;/ol&gt;
+&lt;/blockquote&gt;
+&lt;pre&gt;&lt;code&gt;const handleClick = () =&amp;gt; {
+store.$patch({
+    count: store.count + 2,
+    hello: store.hello + &quot;1234&quot;,
+  });
+};
+&lt;/code&gt;&lt;/pre&gt;
+&lt;ul&gt;
+&lt;li&gt;简单来讲，修改单条数据就直接使用第一种，多条数据就使用 &lt;code&gt;$patch&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;其实第一种也可以实现 &lt;code&gt;$patch&lt;/code&gt; 的功能，无非是繁琐一点点，为什么更推荐 &lt;code&gt;$patch&lt;/code&gt;呢？&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;因为Pinia 的官方网站，已经明确表示&lt;code&gt;$patch&lt;/code&gt;的方式是经过优化的，会加快修改速度，对程序的性能有很大的好处。所以如果你是多条数据同时更新状态数据，推荐使用&lt;code&gt;$patch&lt;/code&gt;方式更新。&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;ol&gt;
+&lt;li&gt;&lt;strong&gt;$patch 加函数的形式修改数据&lt;/strong&gt;&lt;/li&gt;
+&lt;/ol&gt;
+&lt;/blockquote&gt;
+&lt;p&gt;上面的&lt;code&gt;$patch&lt;/code&gt;方法，我们的参数使用的是一个对象。还有一种方式是传递函数，这种方法适合复杂数据的修改，比如数组、对象的修改。&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;const handleClickMethod = () =&amp;gt; {
+  store.$patch((state) =&amp;gt; {
+    state.count++;
+    state.hello = state.hello + &quot;1234&quot;
+  });
+};
+&lt;/code&gt;&lt;/pre&gt;
+&lt;blockquote&gt;
+&lt;ol&gt;
+&lt;li&gt;&lt;strong&gt;在actions中写好逻辑，其它组件再调用actions&lt;/strong&gt;&lt;/li&gt;
+&lt;/ol&gt;
+&lt;/blockquote&gt;
+&lt;p&gt;如果你有一个修改的过程非常复杂，你可以先在&lt;code&gt;store&lt;/code&gt;里，定义好&lt;code&gt;actions&lt;/code&gt;中的函数，然后在组件里再调用函数。&lt;/p&gt;
+&lt;p&gt;我们先到&lt;code&gt;\src\store\index.ts&lt;/code&gt;文件里，在&lt;code&gt;actions&lt;/code&gt;的地方编写一个&lt;code&gt;changeState( )&lt;/code&gt;方法，用来改变数据状态。代码如下：&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;actions:{
+    changeState(){
+ this.count++
+ this.hello=&apos;hello actios&apos;
+    }
+  }
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;有了这个&lt;code&gt;changeState( )&lt;/code&gt;函数后，就可以在组件中调用这个函数来修改状态数据了。&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;const handleClickActions = ()=&amp;gt;{
+  store.changeState()
+}
+&lt;/code&gt;&lt;/pre&gt;
+&lt;ul&gt;
+&lt;li&gt;注意：在用&lt;code&gt;actions&lt;/code&gt;的时候，不能使用箭头函数，因为箭头函数绑定是外部的this。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2&gt;Pinia 的解构取值问题&lt;/h2&gt;
+&lt;blockquote&gt;
+&lt;p&gt;在引入 store 的时候，我们只需要其中两个状态怎么办，当然可以采用解构的方式获取&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;pre&gt;&lt;code&gt;&amp;lt;script lang=&quot;ts&quot; setup&amp;gt;
+import { mainStore } from &quot;../store/index&quot;;
+const store = mainStore();
+const { hello, count } = store;
+&amp;lt;/script&amp;gt;
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;这样看似简单，但通过解构的数据，只有一次作用，不是响应式数据（容易踩坑）。也就是说当你改变数据状态时，解构的状态数据不会发生变化。&lt;/p&gt;
+&lt;p&gt;于是官方文档提供了&lt;code&gt;storeToRefs( )&lt;/code&gt;方法。这个方法在&lt;code&gt;Pinia&lt;/code&gt;中，所以我们先用&lt;code&gt;import&lt;/code&gt;引入。&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;&amp;lt;script lang=&quot;ts&quot; setup&amp;gt;
+import { mainStore } from &quot;../store/index&quot;;
+import { storeToRefs } from &quot;pinia&quot;; // 引入 storeToRefs
+
+const store = mainStore();
+const { hello, count } = storeToRefs(store); // 使用 storeToRefs() 使得解构出的数据变为响应式数据
+&amp;lt;/script&amp;gt;
+&lt;/code&gt;&lt;/pre&gt;
+&lt;h2&gt;Pinia 中 Getters 使用&lt;/h2&gt;
+&lt;blockquote&gt;
+&lt;p&gt;Pinia中的Getter和Vue中的计算属性几乎一样，就是在获取State的值时作一些处理。&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;pre&gt;&lt;code&gt;state:()=&amp;gt;{
+ return {
+    hello:&apos;Hello&apos;,
+    count:0,
+    str:&apos;Pinia&apos;
+  }
+},
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;假设现在需要将 &lt;code&gt;hello&lt;/code&gt;和&lt;code&gt;str两个状态数据拼接起来&lt;/code&gt;，可以在 getters 中编写一个方法&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;getters:{
+    strJoin(state){
+      return state.hello + state.str
+    }
+  },
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;然后其他组件中可以直接使用这个方法：&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;&amp;lt;template&amp;gt;
+  &amp;lt;h2&amp;gt;{{ hello }}&amp;lt;/h2&amp;gt;
+  &amp;lt;h2&amp;gt;{{ str }}&amp;lt;/h2&amp;gt;
+  &amp;lt;h2&amp;gt;{{ strJoin }}&amp;lt;/h2&amp;gt;
+&amp;lt;/template&amp;gt;
+
+&amp;lt;script lang=&quot;ts&quot; setup&amp;gt;
+import { storeToRefs } from &quot;pinia&quot;;
+import { mainStore } from &quot;../store/index&quot;;
+const store = mainStore();
+const { hello, str, strJoin } = storeToRefs(store); // 解构
+&amp;lt;/script&amp;gt;
+
+&amp;lt;style lang=&quot;scss&quot; scoped&amp;gt;&amp;lt;/style&amp;gt;
+&lt;/code&gt;&lt;/pre&gt;
+&lt;blockquote&gt;
+&lt;p&gt;Getters 的缓存特性&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;p&gt;同一个组件中，即使调用了 &lt;code&gt;strJoin&lt;/code&gt;多次，Getters 也只会执行一次&lt;/p&gt;
+&lt;h2&gt;Pinia 中 Store 的互相调用&lt;/h2&gt;
+&lt;p&gt;上面举的例子一直只使用了一个&lt;code&gt;Store&lt;/code&gt;仓库，在真实项目中我们往往是有多个&lt;code&gt;Store&lt;/code&gt;的。有多个&lt;code&gt;Stroe&lt;/code&gt;时，就会涉及Store内部的互相调用问题。&lt;/p&gt;
+&lt;p&gt;在&lt;code&gt;\src\store&lt;/code&gt;下新建一个&lt;code&gt;test.ts&lt;/code&gt;文件。然后下入下面的代码。&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;import { defineStore} from &apos;pinia&apos;
+
+export const testStore = defineStore(&apos;test&apos;,{
+  state:()=&amp;gt;{
+  return {
+      list:[&apos;小红&apos;,&apos;小美&apos;,&apos;小明&apos;]
+    }
+  }
+})
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;这是一个非常简单的仓库，只有&lt;code&gt;state&lt;/code&gt;（状态数据），需要注意的是&lt;code&gt;ID&lt;/code&gt;要是唯一的。有了这个仓库后，就可以回到&lt;code&gt;index.ts&lt;/code&gt;这个仓库中调用了&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;import { defineStore} from &apos;pinia&apos;
+import {testStore} from &apos;./test&apos;
+
+export const mainStore = defineStore(&apos;main&apos;,{
+state:()=&amp;gt;{
+ return {
+    helloWorld:&apos;Hello Pinia&apos;,
+    count:0,
+  }
+},
+  getters:{},
+  actions:{
+    getList(){
+ console.log(testStore().list) // 这里就已经获取到了 testStore 仓库的数据
+    }
+  }
+})
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;这就实现了多个仓库之间的互相调用，其它组件中直接调用 actions 即可&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;const getList = () =&amp;gt; {
+  store.getList();
+};
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;文章摘录：&lt;a href=&quot;https://jspang.com/detailed?id=82&quot;&gt;点击进入原文地址&lt;/a&gt;&lt;/p&gt;
+</content:encoded></item><item><title>Vue 装饰器（vue-property-decorator）</title><link>https://meitian3611.github.io/posts/web/vue%E8%A3%85%E9%A5%B0%E5%99%A8/</link><guid isPermaLink="true">https://meitian3611.github.io/posts/web/vue%E8%A3%85%E9%A5%B0%E5%99%A8/</guid><description>vue-property-decorator 装饰器用法速查</description><pubDate>Tue, 11 May 2021 00:00:00 GMT</pubDate><content:encoded>&lt;p&gt;&lt;code&gt;vue-property-decorator&lt;/code&gt; 是 Vue 2 + TypeScript 场景下的常用装饰器库，基于 &lt;code&gt;vue-class-component&lt;/code&gt; 封装，用类组件语法替代冗长的 options 写法，提升代码可读性与类型安全。&lt;/p&gt;
+&lt;h2&gt;装饰器一览&lt;/h2&gt;
+&lt;table&gt;
+&lt;thead&gt;
+&lt;tr&gt;
+&lt;th&gt;装饰器&lt;/th&gt;
+&lt;th&gt;作用&lt;/th&gt;
+&lt;/tr&gt;
+&lt;/thead&gt;
+&lt;tbody&gt;
+&lt;tr&gt;
+&lt;td&gt;&lt;code&gt;@Component&lt;/code&gt;&lt;/td&gt;
+&lt;td&gt;声明类组件&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;&lt;code&gt;@Prop&lt;/code&gt; / &lt;code&gt;@PropSync&lt;/code&gt;&lt;/td&gt;
+&lt;td&gt;声明 props / 双向同步父子 props&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;&lt;code&gt;@Emit&lt;/code&gt;&lt;/td&gt;
+&lt;td&gt;触发事件&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;&lt;code&gt;@Watch&lt;/code&gt;&lt;/td&gt;
+&lt;td&gt;监听数据变化&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;&lt;code&gt;@Provide&lt;/code&gt; / &lt;code&gt;@Inject&lt;/code&gt;&lt;/td&gt;
+&lt;td&gt;跨层级传值&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;&lt;code&gt;@Model&lt;/code&gt;&lt;/td&gt;
+&lt;td&gt;自定义 &lt;code&gt;v-model&lt;/code&gt;&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;&lt;code&gt;@Ref&lt;/code&gt;&lt;/td&gt;
+&lt;td&gt;获取元素或子组件引用&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;&lt;code&gt;Mixins&lt;/code&gt;&lt;/td&gt;
+&lt;td&gt;混入复用逻辑&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
+&lt;h2&gt;@Component 声明组件&lt;/h2&gt;
+&lt;p&gt;&lt;code&gt;@Component&lt;/code&gt; 标记类组件，&lt;code&gt;components&lt;/code&gt;、&lt;code&gt;mixins&lt;/code&gt; 等配置写在参数对象中：&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;import { Vue, Component } from &quot;vue-property-decorator&quot;;
+
+@Component({
+    components: { HelloWorld },
+})
+export default class MyComponent extends Vue {
+    // data：直接声明为类属性
+    private message: string = &quot;Hello&quot;;
+
+    // computed：以 getter 形式书写
+    private get reversedMessage(): string {
+        return this.message.split(&quot;&quot;).reverse().join(&quot;&quot;);
+    }
+}
+&lt;/code&gt;&lt;/pre&gt;
+&lt;h2&gt;@Prop 接收 props&lt;/h2&gt;
+&lt;pre&gt;&lt;code&gt;import { Vue, Component, Prop } from &quot;vue-property-decorator&quot;;
+
+@Component({})
+export default class MyComponent extends Vue {
+    @Prop(Number) propA!: number;
+    @Prop({ default: &quot;default value&quot; }) propB!: string;
+    @Prop([String, Boolean]) propC!: string | boolean;
+}
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;要点：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;code&gt;@Prop&lt;/code&gt; 的参数是&lt;strong&gt;运行时类型&lt;/strong&gt;（&lt;code&gt;Number&lt;/code&gt;、&lt;code&gt;String&lt;/code&gt;、数组等），属性注解是 &lt;strong&gt;TS 类型&lt;/strong&gt;（&lt;code&gt;number&lt;/code&gt;、&lt;code&gt;string&lt;/code&gt;），两者含义不同；&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;!&lt;/code&gt; 表示必传（非空断言），&lt;code&gt;?&lt;/code&gt; 表示可选；&lt;/li&gt;
+&lt;li&gt;需要默认值或类型校验时传入对象形式：&lt;code&gt;@Prop({ default: ... })&lt;/code&gt;。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2&gt;@Emit 触发事件&lt;/h2&gt;
+&lt;p&gt;子组件中触发事件，父组件通过 &lt;code&gt;@change-data&lt;/code&gt; 监听：&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;// 子组件
+@Component({})
+export default class Child extends Vue {
+    str: string = &quot;123&quot;;
+
+    @Emit()
+    changeData(str: string) {} // 事件名：change-data
+}
+&lt;/code&gt;&lt;/pre&gt;
+&lt;pre&gt;&lt;code&gt;&amp;lt;!-- 父组件 --&amp;gt;
+&amp;lt;Child @change-data=&quot;handleChange&quot; /&amp;gt;
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;要点：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;code&gt;@Emit()&lt;/code&gt; 不传参数时，事件名默认为函数名的 &lt;strong&gt;kebab-case&lt;/strong&gt; 形式（&lt;code&gt;changeData&lt;/code&gt; → &lt;code&gt;change-data&lt;/code&gt;）；&lt;/li&gt;
+&lt;li&gt;可显式指定事件名：&lt;code&gt;@Emit(&quot;reset&quot;)&lt;/code&gt;；&lt;/li&gt;
+&lt;li&gt;函数有返回值时，返回值作为事件&lt;strong&gt;第一个&lt;/strong&gt;参数，函数入参依次排在后面。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2&gt;@Watch 监听数据&lt;/h2&gt;
+&lt;pre&gt;&lt;code&gt;@Component({})
+export default class MyComponent extends Vue {
+    // 深度监听 + 立即执行一次
+    @Watch(&quot;person&quot;, { deep: true, immediate: true })
+    onChangePerson(newVal: string, oldVal: string) {
+        // todo...
+    }
+}
+&lt;/code&gt;&lt;/pre&gt;
+&lt;blockquote&gt;
+&lt;p&gt;第一个参数为要监听的属性名（支持 &lt;code&gt;&quot;a.b&quot;&lt;/code&gt; 点路径），第二个参数对应 options 的 &lt;code&gt;immediate&lt;/code&gt; / &lt;code&gt;deep&lt;/code&gt; 配置。&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;h2&gt;@Provide / @Inject 跨层级传值&lt;/h2&gt;
+&lt;p&gt;适用于深层组件传值，免去逐层传递 &lt;code&gt;props&lt;/code&gt;：&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;// 祖先组件：提供数据
+@Component({})
+export default class Parent extends Vue {
+    @Provide() foo: string = &quot;123456&quot;;
+}
+&lt;/code&gt;&lt;/pre&gt;
+&lt;pre&gt;&lt;code&gt;// 后代组件：注入数据
+@Component({})
+export default class Child extends Vue {
+    @Inject() foo!: string;
+}
+&lt;/code&gt;&lt;/pre&gt;
+&lt;blockquote&gt;
+&lt;p&gt;需要自定义 key 时使用 &lt;code&gt;@Provide(&quot;key&quot;)&lt;/code&gt; / &lt;code&gt;@Inject(&quot;key&quot;)&lt;/code&gt; 成对指定。&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;h2&gt;@PropSync 双向同步 props&lt;/h2&gt;
+&lt;p&gt;生成一个以 &lt;code&gt;Sync&lt;/code&gt; 结尾的本地属性，修改时自动触发 &lt;code&gt;update:propName&lt;/code&gt; 事件，配合父组件 &lt;code&gt;:xxx.sync&lt;/code&gt; 使用：&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;@Component({})
+export default class Child extends Vue {
+    @PropSync(&quot;visible&quot;) syncedVisible!: boolean;
+}
+&lt;/code&gt;&lt;/pre&gt;
+&lt;pre&gt;&lt;code&gt;&amp;lt;!-- 父组件 --&amp;gt;
+&amp;lt;Child :visible.sync=&quot;dialogVisible&quot; /&amp;gt;
+&lt;/code&gt;&lt;/pre&gt;
+&lt;blockquote&gt;
+&lt;p&gt;本地属性名必须为 &lt;code&gt;prop名 + Sync&lt;/code&gt;（如 &lt;code&gt;visible&lt;/code&gt; → &lt;code&gt;syncedVisible&lt;/code&gt;）；子组件内直接赋值 &lt;code&gt;this.syncedVisible&lt;/code&gt; 即可同步给父组件，无需手动 &lt;code&gt;$emit&lt;/code&gt;。&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;h2&gt;@Model 自定义 v-model&lt;/h2&gt;
+&lt;p&gt;指定组件 &lt;code&gt;v-model&lt;/code&gt; 绑定的 prop 与事件名：&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;@Component({})
+export default class MyCheckbox extends Vue {
+    @Model(&quot;change&quot;, { type: Boolean }) checked!: boolean;
+}
+&lt;/code&gt;&lt;/pre&gt;
+&lt;blockquote&gt;
+&lt;p&gt;等价于 &lt;code&gt;model: { prop: &quot;checked&quot;, event: &quot;change&quot; }&lt;/code&gt;。&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;h2&gt;@Ref 获取引用&lt;/h2&gt;
+&lt;p&gt;获取模板中的元素或子组件引用，等价于 &lt;code&gt;this.$refs.xxx&lt;/code&gt;：&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;@Component({})
+export default class MyComponent extends Vue {
+    @Ref(&quot;inputRef&quot;) readonly inputEl!: HTMLInputElement;
+    @Ref() readonly child!: ChildComponent; // 不传参数时使用属性名作为 ref 名
+}
+&lt;/code&gt;&lt;/pre&gt;
+&lt;h2&gt;Mixins 混入&lt;/h2&gt;
+&lt;pre&gt;&lt;code&gt;import { Mixins } from &quot;vue-property-decorator&quot;;
+
+class BaseMixin extends Vue {
+    public sayHello(): void {
+        console.log(&quot;hello&quot;);
+    }
+}
+
+@Component({})
+export default class MyComponent extends Mixins(BaseMixin) {}
+&lt;/code&gt;&lt;/pre&gt;
+&lt;blockquote&gt;
+&lt;p&gt;多个混入依次传入：&lt;code&gt;Mixins(MixinA, MixinB)&lt;/code&gt;；也可用 &lt;code&gt;@Component({ mixins: [...] })&lt;/code&gt; 等价声明。&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;h2&gt;总结&lt;/h2&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;code&gt;@Prop&lt;/code&gt; 的参数是运行时类型，属性注解是 TS 类型，不要混用；&lt;/li&gt;
+&lt;li&gt;事件名默认 kebab-case，需要自定义时用 &lt;code&gt;@Emit(&quot;name&quot;)&lt;/code&gt;；&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;!&lt;/code&gt; 表示必传，&lt;code&gt;?&lt;/code&gt; 表示可选；&lt;/li&gt;
+&lt;li&gt;装饰器写法最终编译为 options API，配合 TS 可享受更严格的类型检查，适合中大型 Vue 2 项目。&lt;/li&gt;
+&lt;/ul&gt;
+</content:encoded></item></channel></rss>
